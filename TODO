@@ -1,0 +1,96 @@
+New
+===
+===
+
+- Replace include guards with #pragma once
+- Rename files to use CamelCase
+- Review/check warnings
+- Fully rename project to SimpleTrainingLog
+
+
+Legacy
+======
+======
+
+
+Changing the database file format
+=================================
+
+The size of the database file increased from 7023 bytes to 9644 bytes using
+the new file format.  It has the following advantages:
+- No need for separator character (e.g. '$').
+- More general.  Uses Flex & Bison.
+- Easier to extend, more robust, syntax errors reported, etc.
+- Less redundant.  Identifiers are used to connect fields of tables.
+
+Plans for tomorrow
+==================
+
++ Use the new parser to parse the database file.
++ Call it with name of the file.
++ All data should be collected by the parer to QList containers.
++ These global data structures are shared between the parser and the
+  application.  (Access via extern declarations.)
+- It seems that the nodes (e.g. shoes, exercises, sports, places) should be
+  allocated on the heap inside QLists.  These should be destructed in the end.
+- Use the global data to fill the table and the dialog.
+- UTF-8 issues in Qt.
+- Turn off debugging mode from the parser.
+- Fill the input dialog with data read from the database file.
+- The export functions should use the global data structures.  These global
+  data structures are shared.  To avoid syncronization difficulties use them
+  as pointers or through references.
+
+Plans for this year
+===================
+
++ HTML export improvements.  A small dialog should open on click.  The user
+  should be able to change the name of the exported .html file.  Optional FTP
+  upload with QFtp.
++ The main window should be tabbed.  The current table could be "Summary" and
+  a "Statistics" tab should summarize the exercise data in some way.  Textual
+  statistics only at first.  Just numbers presented in a tasty way.
+- The year should be freely selectable.  Not just between 2002-2008.
+- A new menu point "Database" should be added.  The most basic point in this
+  menu would be "Options" to set the location of the database file.  The
+  default location would be ~/.ktrainer/log.  This setting (later with others)
+  should be saved into KTrainer's configuration file in ~/.ktrainer/config.
+  This way the database could be changed dynamically.  (It would allow
+  splitting of large database files by hand.  It's not that convenient, but
+  possible.)  Other options would be related to managing place/shoe/sport
+  data.  On deletion of a given equipment the user should be warned, because
+  in that case exercises should be deleted as well.
+- Exercise data in a table or list?  Fix it.  It should be possible to edit
+  all elements and delete a complete exercise.  A foldable list would be
+  better.  Unfolded it would shoe only the most relevant data, but as unfolded
+  the whole comment and all data with more detail could be shown.
+- All data from Polar should be saved.
+- GPX file could be attached to a specific exercise.  FTP upload and HTML
+  export should handle these.  All GPX data should be copied to
+  ~/.ktrainer/gpx/*.
+- Extended file handling error.  And extended parser errors with dialogs, not
+  just command line prints.
+- Debian package.
+- Don't publish until these are ready.
+
+Other plans
+===========
+- Use background colors in the main QTreeWidget using QTreeWidgetItem's
+  setBackground() function.
+- Improve statistics.
+- Add charts.
+- Multi-column sorting of the main QTreeWidget.
+
+Known issues
+============
+- The places are not shown correctly in "View Exercises".
+- Scrolling of the main QTreeWidget is slow.
+- Opening an exercise with sport "<unknown>" KTrainer crashes.
++ Statistics are not updated on modification of an exercise.
+- Diagrams cannot be resized.  Alignment issues with diagram labels.
+- Using '"' in textual data fields is a parse error.  '"' should be escaped.
+- Don't do anything when a modification has no effect.
+
+(+ Ready.)
+(- Not ready.)
+(* Won't be fixed.)
