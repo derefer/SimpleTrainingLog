@@ -5,8 +5,8 @@
 #include <QLineEdit>
 #include <QTextEdit>
 
-#include "dataelements.h"
-#include "ktrainer.h"
+#include "DataElements.h"
+#include "SimpleTrainingLogMainWindow.h"
 
 class QLabel;
 class QLineEdit;

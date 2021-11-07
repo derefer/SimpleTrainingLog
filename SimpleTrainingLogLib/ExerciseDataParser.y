@@ -11,14 +11,14 @@
 #include <string.h>
 #include <assert.h>
 #include <QtGlobal>
-#include "dataelements.h"  /* Definition of YYSTYPE.  */
+#include "DataElements.h"  /* Definition of YYSTYPE.  */
 #undef YYDEBUG
 #define YYERROR_VERBOSE
-extern int exercisedataparserlineno;
+extern int ExerciseDataParserlineno;
 /* Compiling with -d the parser will be in debug mode printing "--accepting
    rule at..." messages to stderr.  To suppress this set yy_flex_debug to
    zero.  By default it's non-zero.  */
-extern int exercisedataparser_flex_debug;
+extern int ExerciseDataParser_flex_debug;
 /* Declare basic functions and globale variables.  Conversions from UTF-8 to
    Latin1 were added.  */
 void set_location(const char *str, int reset = 0);
@@ -30,8 +30,8 @@ QList<Sport*> sports;
 QList<Exercise*> exercises;
 QList<Place*> places;
 QList<Weather*> weathers;
-const char *exercisedataparserin_name = NULL;
-static int exercisedataparsercolumnno = 0;
+const char *ExerciseDataParserin_name = NULL;
+static int ExerciseDataParsercolumnno = 0;
 %}
 /* "%debug" is turned off.  */
 /* These are terminals with semantic values.  */
@@ -205,27 +205,27 @@ intlist: INT ',' intlist { $3.append($1); $$ += $3; }
 void set_location(const char *str, int reset)
 {
   if (reset)
-    exercisedataparsercolumnno = 0;
-  yylloc.first_line = exercisedataparserlineno;
-  yylloc.first_column = exercisedataparsercolumnno;  /* Artificial.  */
-  yylloc.last_line = exercisedataparserlineno;
-  yylloc.last_column = (exercisedataparsercolumnno += strlen(str));
+    ExerciseDataParsercolumnno = 0;
+  yylloc.first_line = ExerciseDataParserlineno;
+  yylloc.first_column = ExerciseDataParsercolumnno;  /* Artificial.  */
+  yylloc.last_line = ExerciseDataParserlineno;
+  yylloc.last_column = (ExerciseDataParsercolumnno += strlen(str));
 }
 
 void yyerror(const char *str)  /* Called by yyparse on error.  The exact
 location of the error is reported using yylloc.  */
 {
-  assert(exercisedataparserin_name != NULL);
+  assert(ExerciseDataParserin_name != NULL);
   qWarning("Bison error in file %s: %s at %d:%d-%d:%d",
-    exercisedataparserin_name, str, yylloc.first_line, yylloc.first_column,
+    ExerciseDataParserin_name, str, yylloc.first_line, yylloc.first_column,
     yylloc.last_line, yylloc.last_column);
 }
 
 /* A more specific error function.  */
 void yyerror_verbose(const YYLTYPE *loc, const char *str)
 {
-  assert(exercisedataparserin_name != NULL);
+  assert(ExerciseDataParserin_name != NULL);
   qWarning("Bison error in file %s: %s at %d:%d-%d:%d",
-    exercisedataparserin_name, str, loc->first_line, loc->first_column,
+    ExerciseDataParserin_name, str, loc->first_line, loc->first_column,
     loc->last_line, loc->last_column);
 }

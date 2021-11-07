@@ -11,7 +11,7 @@
 
 // Semantic record for the parser propagated this way.  This is the semantic
 // value of a given token.  That value is returned in yylval.  yylval's type
-// is the union defined above.  Currently KTrainer works only with integers.
+// is the union defined above.  Currently SimpleTrainingLog works only with integers.
 // Floating point numbers are not supported yet.  Originally it was an "%union
 // semrec { ... }" in the next section.  Include this header in
 // exercisedatalexer.l and exercisedataparser.y.

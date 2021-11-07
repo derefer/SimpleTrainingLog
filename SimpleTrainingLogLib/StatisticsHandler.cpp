@@ -4,8 +4,8 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
-#include "statisticshandler.h"
-#include "ktrainer.h"
+#include "StatisticsHandler.h"
+#include "SimpleTrainingLogMainWindow.h"
 
 StatisticsHandler::StatisticsHandler(QWidget *parent) : QFrame(parent)
 {

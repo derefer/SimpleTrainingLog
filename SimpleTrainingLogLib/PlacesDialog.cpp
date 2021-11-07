@@ -9,8 +9,8 @@
 #include <QMessageBox>
 #include <QPainter>
 
-#include "placesdialog.h"
-#include "dataelements.h"
+#include "PlacesDialog.h"
+#include "DataElements.h"
 
 PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places,
     QList<Exercise*> *exercises) : QDialog(parent)
@@ -119,7 +119,7 @@ void PlacesDialog::slotRemove()
         if ((m_exercises->at(i)->getPlaces()).contains(getPlaceId(name)))
             ++count;
     if (count > 0) {
-        int ret = QMessageBox::warning(this, tr("KTrainer"), tr("%1 is used "
+        int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("%1 is used "
             "by %2 exercises. All of these exercises will be removed. Are "
             "you sure?").arg(name).arg(count), QMessageBox::Yes |
             QMessageBox::Default, QMessageBox::No | QMessageBox::Escape);

@@ -2,8 +2,8 @@
 
 #include <QFrame>
 
-#include "dataelements.h"
-#include "diagram.h"
+#include "DataElements.h"
+#include "Diagram.h"
 
 class QComboBox;
 class QLabel;

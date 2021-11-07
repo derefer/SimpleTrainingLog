@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "newexercisedialog.h"
+#include "NewExerciseDialog.h"
 
 // The generated moc_newexercisedialog.cpp generates "newexercisedialog.h:36:
 // warning: ‘months’ defined but not used" if this definition is moved into

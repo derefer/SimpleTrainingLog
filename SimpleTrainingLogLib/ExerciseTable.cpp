@@ -1,6 +1,6 @@
-#include "dataelements.h"
-#include "exercisetable.h"
-#include "ktrainer.h"
+#include "DataElements.h"
+#include "ExerciseTable.h"
+#include "SimpleTrainingLogMainWindow.h"
 
 ExerciseTable::ExerciseTable(QWidget *parent) : QTreeWidget(parent)
 {

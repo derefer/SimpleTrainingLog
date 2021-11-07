@@ -42,7 +42,7 @@
 # define YYDEBUG 0
 #endif
 #if YYDEBUG
-extern int exercisedataparserdebug;
+extern int ExerciseDataParserdebug;
 #endif
 
 /* Token kinds.  */
@@ -102,8 +102,8 @@ struct YYLTYPE
 #endif
 
 
-extern YYSTYPE exercisedataparserlval;
-extern YYLTYPE exercisedataparserlloc;
-int exercisedataparserparse (void);
+extern YYSTYPE ExerciseDataParserlval;
+extern YYLTYPE ExerciseDataParserlloc;
+int ExerciseDataParserparse (void);
 
 #endif /* !YY_EXERCISEDATAPARSER_EXERCISEDATAPARSER_YACC_HPP_INCLUDED  */

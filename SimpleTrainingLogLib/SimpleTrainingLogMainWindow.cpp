@@ -12,22 +12,22 @@
 #include <QtDebug>
 //#include <QFtp>
 
-#include "ktrainer.h"
-#include "newexercisedialog.h"
-#include "exportdialog.h"
-#include "shoesdialog.h"
-#include "sportsdialog.h"
-#include "placesdialog.h"
-#include "weathersdialog.h"
-#include "settingsdialog.h"
+#include "SimpleTrainingLogMainWindow.h"
+#include "NewExerciseDialog.h"
+#include "ExportDialog.h"
+#include "ShoesDialog.h"
+#include "SportsDialog.h"
+#include "PlacesDialog.h"
+#include "WeathersDialog.h"
+#include "SettingsDialog.h"
 
 // This is the driver of the parser.  Everything is prefixed with
 // exercisedataparser*.  The name of the file is for error reporting.
-extern FILE *exercisedataparserin;
-extern const char *exercisedataparserin_name;
-extern int exercisedataparserparse();
-extern int exercisedataparserdebug;
-extern int exercisedataparser_flex_debug;
+extern FILE *ExerciseDataParserin;
+extern const char *ExerciseDataParserin_name;
+extern int ExerciseDataParserparse();
+extern int ExerciseDataParserdebug;
+extern int ExerciseDataParser_flex_debug;
 
 // Global data from the parser.
 extern QList<Shoe*> shoes;
@@ -36,7 +36,7 @@ extern QList<Exercise*> exercises;
 extern QList<Place*> places;
 extern QList<Weather*> weathers;
 
-KTrainer::KTrainer() : /*m_ftp(NULL),*/ m_dirty(false)
+SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_dirty(false)
 {
     createActions();
     createMenus();
@@ -59,7 +59,7 @@ KTrainer::KTrainer() : /*m_ftp(NULL),*/ m_dirty(false)
     m_mainTabWidget->addTab(m_statisticsHandler, tr("Statistics"));
     setCentralWidget(m_mainTabWidget);
 
-    setWindowTitle(QApplication::translate("KTrainer", "KTrainer", 0));
+    setWindowTitle(QApplication::translate("SimpleTrainingLog", "SimpleTrainingLog", 0));
     resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
     loadDatabase(m_curLog);
@@ -73,20 +73,20 @@ KTrainer::KTrainer() : /*m_ftp(NULL),*/ m_dirty(false)
         this, SLOT(editExercise(QTreeWidgetItem *, int)));
 }
 
-void KTrainer::setDirty(int row __attribute__((unused)),
+void SimpleTrainingLogMainWindow::setDirty(int row __attribute__((unused)),
     int col __attribute__((unused)))
 {
     saveAct->setEnabled(true);
     m_dirty = true;
 }
 
-void KTrainer::deleteExercise()
+void SimpleTrainingLogMainWindow::deleteExercise()
 {
     m_exerciseTable->removeCurrentExercise();
     setDirty();
 }
 
-void KTrainer::viewExercise()
+void SimpleTrainingLogMainWindow::viewExercise()
 {
     NewExerciseDialog dialog(this, "View Exercise");
     dialog.addSportStrings(getSportStrings());
@@ -121,7 +121,7 @@ void KTrainer::viewExercise()
     }
 }
 
-void KTrainer::editExercise(QTreeWidgetItem *item __attribute__((unused)),
+void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *item __attribute__((unused)),
     int column __attribute__((unused)))
 {
     NewExerciseDialog dialog(this, "Edit Exercise");
@@ -181,7 +181,7 @@ void KTrainer::editExercise(QTreeWidgetItem *item __attribute__((unused)),
 
 // It seems to be better to do it here instead of using mousePressEvent() in
 // QTreeWidget.
-void KTrainer::contextMenuForTable(const QPoint& pos)
+void SimpleTrainingLogMainWindow::contextMenuForTable(const QPoint& pos)
 {
     QTreeWidgetItem *item = NULL;
     item = m_exerciseTable->itemAt(pos);
@@ -206,7 +206,7 @@ void KTrainer::contextMenuForTable(const QPoint& pos)
     }
 }
 
-void KTrainer::closeEvent(QCloseEvent *event)
+void SimpleTrainingLogMainWindow::closeEvent(QCloseEvent *event)
 {
     if (maybeSave()) {
         writeSettings();
@@ -216,7 +216,7 @@ void KTrainer::closeEvent(QCloseEvent *event)
     }
 }
 
-void KTrainer::newExercise()
+void SimpleTrainingLogMainWindow::newExercise()
 {
     if (!(sports.size() > 0 && shoes.size() > 0)) return;
 
@@ -254,14 +254,14 @@ void KTrainer::newExercise()
     }
 }
 
-bool KTrainer::save()
+bool SimpleTrainingLogMainWindow::save()
 {
     // TODO Ask the user to create a database.  Optionally.  Write the changed
     // exercises only.  All changes on the table will be present in these
     // data structures as well.
     QFile file(m_curLog);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("KTrainer"), tr("Cannot write "
+        QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write "
             "file %1: %2.").arg(DEFAULT_LOG).arg(file.errorString()));
         return false;
     }
@@ -326,7 +326,7 @@ bool KTrainer::save()
     return true;
 }
 
-bool KTrainer::saveAs()
+bool SimpleTrainingLogMainWindow::saveAs()
 {
     QString fileName = QFileDialog::getSaveFileName(this);
     if (fileName.isEmpty())
@@ -335,11 +335,11 @@ bool KTrainer::saveAs()
     return true;
 }
 
-void KTrainer::about()
+void SimpleTrainingLogMainWindow::about()
 {
-    QMessageBox::about(this, tr("KTrainer"),
-        tr("<p><b>KTrainer</b> is a simple GUI application to organize "
-           "exercise data. <b>KTrainer</b> uses a plain text file as its "
+    QMessageBox::about(this, tr("SimpleTrainingLog"),
+        tr("<p><b>SimpleTrainingLog</b> is a simple GUI application to organize "
+           "exercise data. <b>SimpleTrainingLog</b> uses a plain text file as its "
            "database to make the data easy to archive. Brief summary of "
            "features:<ul><li>Managing basic exercise data.</li><li>Limited "
            "sorting capabilities of exercises.</li><li>Exporting to HTML. "
@@ -347,18 +347,18 @@ void KTrainer::about()
            "exercise editing features.</li><li>Uploading exercise data to a "
            "custom FTP site.</li><li>Managing shoe/sport/place/weather data."
            "</li><li>Basic statistics with diagrams.</li></ul></p><p>If you "
-           "have any idea how to improve <b>KTrainer</b> please contact me "
+           "have any idea how to improve <b>SimpleTrainingLog</b> please contact me "
            "at the address below. Bug reports or improvement ideas are "
-           "welcome. Thank you.</p><p>Ferenc Kovacs "
+           "welcome. Thank you.</p><p>Ferenc Kovács "
            "&lt;derefer@gmail.com&gt;</p>"));
 }
 
-void KTrainer::documentWasModified()
+void SimpleTrainingLogMainWindow::documentWasModified()
 {
     setWindowModified(true);
 }
 
-void KTrainer::createActions()
+void SimpleTrainingLogMainWindow::createActions()
 {
     newAct = new QAction(QIcon(":Images/new.png"), tr("&New Exercise"), this);
     newAct->setShortcut(tr("Ctrl+N"));
@@ -403,7 +403,7 @@ void KTrainer::createActions()
     connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
 
     aboutAct = new QAction(QIcon(":Images/about.png"), tr("&About"), this);
-    aboutAct->setStatusTip(tr("About KTrainer"));
+    aboutAct->setStatusTip(tr("About SimpleTrainingLog"));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
     aboutQtAct = new QAction(tr("About &Qt"), this);
@@ -415,7 +415,7 @@ void KTrainer::createActions()
     // SLOT(setEnabled(bool)));
 }
 
-void KTrainer::createMenus()
+void SimpleTrainingLogMainWindow::createMenus()
 {
     fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(newAct);
@@ -440,7 +440,7 @@ void KTrainer::createMenus()
     helpMenu->addAction(aboutQtAct);
 }
 
-void KTrainer::createToolBars()
+void SimpleTrainingLogMainWindow::createToolBars()
 {
     fileToolBar = addToolBar(tr("File"));
     fileToolBar->addAction(newAct);
@@ -449,12 +449,12 @@ void KTrainer::createToolBars()
     fileToolBar->addAction(exportHTMLAct);
 }
 
-void KTrainer::createStatusBar()
+void SimpleTrainingLogMainWindow::createStatusBar()
 {
     statusBar()->showMessage(tr("Ready"));
 }
 
-void KTrainer::readSettings()
+void SimpleTrainingLogMainWindow::readSettings()
 {
     QFile file(m_curConfig);
     if (!file.exists()) {
@@ -478,7 +478,7 @@ void KTrainer::readSettings()
     file.close();
 }
 
-void KTrainer::writeSettings()
+void SimpleTrainingLogMainWindow::writeSettings()
 {
     QFile file(m_curConfig);
     file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
@@ -491,12 +491,12 @@ void KTrainer::writeSettings()
     file.close();
 }
 
-bool KTrainer::maybeSave()
+bool SimpleTrainingLogMainWindow::maybeSave()
 {
     if (!m_dirty)
         return true;
     // Ask for confirmation.
-    int ret = QMessageBox::warning(this, tr("KTrainer"), tr("Exercise data "
+    int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Exercise data "
         "has been modified. Do you want to save your changes?"),
         QMessageBox::Yes | QMessageBox::Default, QMessageBox::No,
         QMessageBox::Cancel | QMessageBox::Escape);
@@ -505,7 +505,7 @@ bool KTrainer::maybeSave()
     return true;
 }
 
-void KTrainer::loadDatabase(const QString& fileName)
+void SimpleTrainingLogMainWindow::loadDatabase(const QString& fileName)
 {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -526,7 +526,7 @@ void KTrainer::loadDatabase(const QString& fileName)
 }
 
 // Set the exercise database.
-void KTrainer::setCurrentFile(const QString& fileName)
+void SimpleTrainingLogMainWindow::setCurrentFile(const QString& fileName)
 {
     m_curLog = fileName;
     // textEdit->document()->setModified(false);
@@ -535,10 +535,10 @@ void KTrainer::setCurrentFile(const QString& fileName)
     QString shownName;
     if (m_curLog.isEmpty()) shownName = "untitled";
     else shownName = strippedName(m_curLog);
-    setWindowTitle(tr("%1 - %2[*]").arg(tr("KTrainer")).arg(shownName));
+    setWindowTitle(tr("%1 - %2[*]").arg(tr("SimpleTrainingLog")).arg(shownName));
 }
 
-bool KTrainer::exportHTML()
+bool SimpleTrainingLogMainWindow::exportHTML()
 {
     // Only HTML export is available.
     ExportDialog dialog(this);
@@ -551,7 +551,7 @@ bool KTrainer::exportHTML()
         QString fileName(QString(m_curLog).append(".html"));
         QFile file(fileName);
         if (!file.open(QFile::WriteOnly | QFile::Text)) {
-            QMessageBox::warning(this, tr("KTrainer"), tr("Cannot write "
+            QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write "
                 "file %1: %2.").arg(fileName).arg(file.errorString()));
             return false;
         }
@@ -649,12 +649,12 @@ bool KTrainer::exportHTML()
     return true;
 }
 
-QString KTrainer::strippedName(const QString &fullFileName)
+QString SimpleTrainingLogMainWindow::strippedName(const QString &fullFileName)
 {
     return QFileInfo(fullFileName).fileName();
 }
 
-void KTrainer::clear()
+void SimpleTrainingLogMainWindow::clear()
 {
     for (int i = 0; i < shoes.size(); ++i) delete shoes.at(i);
     for (int i = 0; i < exercises.size(); ++i) delete exercises.at(i);
@@ -664,7 +664,7 @@ void KTrainer::clear()
     m_statisticsHandler->clear();
 }
 
-KTrainer::~KTrainer()
+SimpleTrainingLogMainWindow::~SimpleTrainingLogMainWindow()
 {
     /*if (m_ftp)
         delete m_ftp;*/
@@ -672,21 +672,21 @@ KTrainer::~KTrainer()
     clear();
 }
 
-int KTrainer::parseFile(const char *fileName)
+int SimpleTrainingLogMainWindow::parseFile(const char *fileName)
 {
     // exercisedataparserdebug = 1;
-    exercisedataparser_flex_debug = 0;
-    exercisedataparserin_name = fileName;
-    exercisedataparserin = fopen(fileName, "r");
-    if (exercisedataparserin == 0) {
+    ExerciseDataParser_flex_debug = 0;
+    ExerciseDataParserin_name = fileName;
+    ExerciseDataParserin = fopen(fileName, "r");
+    if (ExerciseDataParserin == 0) {
         return 1;
     }
-    int ret = exercisedataparserparse();
-    fclose(exercisedataparserin);
+    int ret = ExerciseDataParserparse();
+    fclose(ExerciseDataParserin);
     return ret;
 }
 
-void KTrainer::ftpStateChanged(int /*state*/)
+void SimpleTrainingLogMainWindow::ftpStateChanged(int /*state*/)
 {/*
     switch (state) {
     case QFtp::Unconnected:
@@ -716,7 +716,7 @@ void KTrainer::ftpStateChanged(int /*state*/)
     }*/
 }
 
-int KTrainer::getSportByName(const QString& sport) const
+int SimpleTrainingLogMainWindow::getSportByName(const QString& sport) const
 {
     for (int i = 0; i < sports.size(); ++i)
         if ((sports.at(i))->getName() == sport)
@@ -724,7 +724,7 @@ int KTrainer::getSportByName(const QString& sport) const
     return -1;
 }
 
-int KTrainer::getPlaceByName(const QString& place) const
+int SimpleTrainingLogMainWindow::getPlaceByName(const QString& place) const
 {
     for (int i = 0; i < places.size(); ++i)
         if ((places.at(i))->getName() == place)
@@ -732,7 +732,7 @@ int KTrainer::getPlaceByName(const QString& place) const
     return -1;
 }
 
-int KTrainer::getShoeByName(const QString& shoe) const
+int SimpleTrainingLogMainWindow::getShoeByName(const QString& shoe) const
 {
     for (int i = 0; i < shoes.size(); ++i)
         if ((shoes.at(i))->getName() == shoe)
@@ -740,7 +740,7 @@ int KTrainer::getShoeByName(const QString& shoe) const
     return -1;
 }
 
-int KTrainer::getWeatherByName(const QString& weather) const
+int SimpleTrainingLogMainWindow::getWeatherByName(const QString& weather) const
 {
     for (int i = 0; i < weathers.size(); ++i)
         if ((weathers.at(i))->getName() == weather)
@@ -748,7 +748,7 @@ int KTrainer::getWeatherByName(const QString& weather) const
     return -1;
 }
 
-void KTrainer::manageShoes()
+void SimpleTrainingLogMainWindow::manageShoes()
 {
     ShoesDialog dialog(this, &shoes, &exercises);
     if (dialog.exec()) {
@@ -765,7 +765,7 @@ void KTrainer::manageShoes()
     }
 }
 
-void KTrainer::manageSports()
+void SimpleTrainingLogMainWindow::manageSports()
 {
     SportsDialog dialog(this, &sports, &exercises);
     if (dialog.exec()) {
@@ -782,7 +782,7 @@ void KTrainer::manageSports()
     }
 }
 
-void KTrainer::managePlaces()
+void SimpleTrainingLogMainWindow::managePlaces()
 {
     PlacesDialog dialog(this, &places, &exercises);
     if (dialog.exec()) {
@@ -799,7 +799,7 @@ void KTrainer::managePlaces()
     }
 }
 
-void KTrainer::manageWeathers()
+void SimpleTrainingLogMainWindow::manageWeathers()
 {
     WeathersDialog dialog(this, &weathers, &exercises);
     if (dialog.exec()) {
@@ -816,7 +816,7 @@ void KTrainer::manageWeathers()
     }
 }
 
-void KTrainer::settings()
+void SimpleTrainingLogMainWindow::settings()
 {
     SettingsDialog dialog(this);
     dialog.setLog(m_curLog);

@@ -2,8 +2,8 @@
 #include <string.h>
 #include <unistd.h>
 /* QMake renames this.  */
-#include "dataelements.h"
-#include "exercisedataparser_yacc.h"  /* Tokens from the parser.  */
+#include "DataElements.h"
+#include "ExerciseDataParser_yacc.h"  /* Tokens from the parser.  */
 extern YYSTYPE yylval;  /* Defined by us.  */
 extern YYLTYPE yylloc;  /* Location tracking.  */
 extern void set_location(const char *str, int reset = 0);
@@ -17,12 +17,12 @@ digit [0-9]
      Guide To Lex & Yacc" book.  This string can be terminated by a '"' or a
      '\n'.  Only single line strings are supported.  */
   set_location(yytext);
-  exercisedataparserlval.stringval = yytext + 1;
-  int length = exercisedataparserlval.stringval.length();
-  if (exercisedataparserlval.stringval[length - 1] != '"') {
+  ExerciseDataParserlval.stringval = yytext + 1;
+  int length = ExerciseDataParserlval.stringval.length();
+  if (ExerciseDataParserlval.stringval[length - 1] != '"') {
     warning("Improperly terminated string!");
   } else {
-    exercisedataparserlval.stringval.chop(1);
+    ExerciseDataParserlval.stringval.chop(1);
   }
   return STRING;  /* Damn.  */
 }
@@ -32,7 +32,7 @@ digit [0-9]
 ")"        { set_location(yytext); return RBRACE; }
 "{"        { set_location(yytext); return LCURLY; }
 "}"        { set_location(yytext); return RCURLY; }
--?{digit}+ { set_location(yytext); exercisedataparserlval.intval = atoi(yytext); return INT; }
+-?{digit}+ { set_location(yytext); ExerciseDataParserlval.intval = atoi(yytext); return INT; }
 shoes      { set_location(yytext); return SHOES; }  /* Sections.  */
 exercises  { set_location(yytext); return EXERCISES; }
 sports     { set_location(yytext); return SPORTS; }

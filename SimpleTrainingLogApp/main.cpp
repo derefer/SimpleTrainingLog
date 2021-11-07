@@ -1,12 +1,12 @@
 #include <QApplication>
 
-#include "ktrainer.h"
+#include "SimpleTrainingLogMainWindow.h"
 
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(SimpleTrainingLog);
     QApplication app(argc, argv);
-    KTrainer mw;
+    SimpleTrainingLogMainWindow mw;
     mw.show();
     return app.exec();
 }

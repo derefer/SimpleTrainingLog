@@ -1,4 +1,4 @@
-#include "exportdialog.h"
+#include "ExportDialog.h"
 
 #include <QLabel>
 #include <QVBoxLayout>

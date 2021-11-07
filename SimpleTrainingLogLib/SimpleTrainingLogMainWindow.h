@@ -5,9 +5,9 @@
 // QFtp was remvoved in Qt5.
 //#include <QFtp>
 
-#include "exercisetable.h"
+#include "ExerciseTable.h"
 #include "SimpleTrainingLogLibDecl.h"
-#include "statisticshandler.h"
+#include "StatisticsHandler.h"
 
 #define DEFAULT_WIDTH 900
 #define DEFAULT_HEIGHT 480
@@ -35,13 +35,13 @@ class QAction;
 class QMenu;
 class QTextEdit;
 
-class SIMPLETRAININGLOGLIB_EXPORT KTrainer : public QMainWindow
+class SIMPLETRAININGLOGLIB_EXPORT SimpleTrainingLogMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    KTrainer();
-    ~KTrainer();
+    SimpleTrainingLogMainWindow();
+    ~SimpleTrainingLogMainWindow();
 
 protected:
     void closeEvent(QCloseEvent *event);

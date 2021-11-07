@@ -4,7 +4,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "ktrainer.h"
+#include "SimpleTrainingLogMainWindow.h"
 #include "QtTypePrinters.h"
 
 using namespace ::testing;
@@ -37,5 +37,5 @@ TEST_F(SimpleTrainingLogTests, dummyTest)
 
 TEST_F(SimpleTrainingLogTests, testIfSimpleTrainingLogMainWindowCanBeInstantiated)
 {
-    KTrainer ktrainer;
+    SimpleTrainingLogMainWindow simpleTrainingLogMainWindow;
 }

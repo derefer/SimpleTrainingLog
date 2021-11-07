@@ -7,8 +7,8 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 
-#include "shoesdialog.h"
-#include "dataelements.h"
+#include "ShoesDialog.h"
+#include "DataElements.h"
 
 ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes,
   QList<Exercise*> *exercises) : QDialog(parent)
@@ -148,7 +148,7 @@ void ShoesDialog::slotRemove()
     if (m_exercises->at(i)->getShoe() == getShoeId(name))
       ++count;
   if (count > 0) {
-    int ret = QMessageBox::warning(this, tr("KTrainer"), tr("%1 is used "
+    int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("%1 is used "
       "by %2 exercises. All of these exercises will be removed. Are "
       "you sure?").arg(name).arg(count), QMessageBox::Yes |
       QMessageBox::Default, QMessageBox::No | QMessageBox::Escape);

@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-#include "settingsdialog.h"
+#include "SettingsDialog.h"
 
 // On an error like this:
 // settingsdialog.o: In function `SettingsDialog::SettingsDialog(QWidget*)':

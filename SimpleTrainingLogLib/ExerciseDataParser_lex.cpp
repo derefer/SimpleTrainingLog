@@ -1,6 +1,6 @@
-#line 2 "exercisedataparser_lex.cpp"
+#line 2 "ExerciseDataParser_lex.cpp"
 
-#line 4 "exercisedataparser_lex.cpp"
+#line 4 "ExerciseDataParser_lex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -9,30 +9,30 @@
 /* %not-for-header */
 /* %if-c-only */
 /* %if-not-reentrant */
-#define yy_create_buffer exercisedataparser_create_buffer
-#define yy_delete_buffer exercisedataparser_delete_buffer
-#define yy_scan_buffer exercisedataparser_scan_buffer
-#define yy_scan_string exercisedataparser_scan_string
-#define yy_scan_bytes exercisedataparser_scan_bytes
-#define yy_init_buffer exercisedataparser_init_buffer
-#define yy_flush_buffer exercisedataparser_flush_buffer
-#define yy_load_buffer_state exercisedataparser_load_buffer_state
-#define yy_switch_to_buffer exercisedataparser_switch_to_buffer
-#define yypush_buffer_state exercisedataparserpush_buffer_state
-#define yypop_buffer_state exercisedataparserpop_buffer_state
-#define yyensure_buffer_stack exercisedataparserensure_buffer_stack
-#define yy_flex_debug exercisedataparser_flex_debug
-#define yyin exercisedataparserin
-#define yyleng exercisedataparserleng
-#define yylex exercisedataparserlex
-#define yylineno exercisedataparserlineno
-#define yyout exercisedataparserout
-#define yyrestart exercisedataparserrestart
-#define yytext exercisedataparsertext
-#define yywrap exercisedataparserwrap
-#define yyalloc exercisedataparseralloc
-#define yyrealloc exercisedataparserrealloc
-#define yyfree exercisedataparserfree
+#define yy_create_buffer ExerciseDataParser_create_buffer
+#define yy_delete_buffer ExerciseDataParser_delete_buffer
+#define yy_scan_buffer ExerciseDataParser_scan_buffer
+#define yy_scan_string ExerciseDataParser_scan_string
+#define yy_scan_bytes ExerciseDataParser_scan_bytes
+#define yy_init_buffer ExerciseDataParser_init_buffer
+#define yy_flush_buffer ExerciseDataParser_flush_buffer
+#define yy_load_buffer_state ExerciseDataParser_load_buffer_state
+#define yy_switch_to_buffer ExerciseDataParser_switch_to_buffer
+#define yypush_buffer_state ExerciseDataParserpush_buffer_state
+#define yypop_buffer_state ExerciseDataParserpop_buffer_state
+#define yyensure_buffer_stack ExerciseDataParserensure_buffer_stack
+#define yy_flex_debug ExerciseDataParser_flex_debug
+#define yyin ExerciseDataParserin
+#define yyleng ExerciseDataParserleng
+#define yylex ExerciseDataParserlex
+#define yylineno ExerciseDataParserlineno
+#define yyout ExerciseDataParserout
+#define yyrestart ExerciseDataParserrestart
+#define yytext ExerciseDataParsertext
+#define yywrap ExerciseDataParserwrap
+#define yyalloc ExerciseDataParseralloc
+#define yyrealloc ExerciseDataParserrealloc
+#define yyfree ExerciseDataParserfree
 
 /* %endif */
 /* %endif */
@@ -51,241 +51,241 @@
 
 /* %if-c-only */
 #ifdef yy_create_buffer
-#define exercisedataparser_create_buffer_ALREADY_DEFINED
+#define ExerciseDataParser_create_buffer_ALREADY_DEFINED
 #else
-#define yy_create_buffer exercisedataparser_create_buffer
+#define yy_create_buffer ExerciseDataParser_create_buffer
 #endif
 
 #ifdef yy_delete_buffer
-#define exercisedataparser_delete_buffer_ALREADY_DEFINED
+#define ExerciseDataParser_delete_buffer_ALREADY_DEFINED
 #else
-#define yy_delete_buffer exercisedataparser_delete_buffer
+#define yy_delete_buffer ExerciseDataParser_delete_buffer
 #endif
 
 #ifdef yy_scan_buffer
-#define exercisedataparser_scan_buffer_ALREADY_DEFINED
+#define ExerciseDataParser_scan_buffer_ALREADY_DEFINED
 #else
-#define yy_scan_buffer exercisedataparser_scan_buffer
+#define yy_scan_buffer ExerciseDataParser_scan_buffer
 #endif
 
 #ifdef yy_scan_string
-#define exercisedataparser_scan_string_ALREADY_DEFINED
+#define ExerciseDataParser_scan_string_ALREADY_DEFINED
 #else
-#define yy_scan_string exercisedataparser_scan_string
+#define yy_scan_string ExerciseDataParser_scan_string
 #endif
 
 #ifdef yy_scan_bytes
-#define exercisedataparser_scan_bytes_ALREADY_DEFINED
+#define ExerciseDataParser_scan_bytes_ALREADY_DEFINED
 #else
-#define yy_scan_bytes exercisedataparser_scan_bytes
+#define yy_scan_bytes ExerciseDataParser_scan_bytes
 #endif
 
 #ifdef yy_init_buffer
-#define exercisedataparser_init_buffer_ALREADY_DEFINED
+#define ExerciseDataParser_init_buffer_ALREADY_DEFINED
 #else
-#define yy_init_buffer exercisedataparser_init_buffer
+#define yy_init_buffer ExerciseDataParser_init_buffer
 #endif
 
 #ifdef yy_flush_buffer
-#define exercisedataparser_flush_buffer_ALREADY_DEFINED
+#define ExerciseDataParser_flush_buffer_ALREADY_DEFINED
 #else
-#define yy_flush_buffer exercisedataparser_flush_buffer
+#define yy_flush_buffer ExerciseDataParser_flush_buffer
 #endif
 
 #ifdef yy_load_buffer_state
-#define exercisedataparser_load_buffer_state_ALREADY_DEFINED
+#define ExerciseDataParser_load_buffer_state_ALREADY_DEFINED
 #else
-#define yy_load_buffer_state exercisedataparser_load_buffer_state
+#define yy_load_buffer_state ExerciseDataParser_load_buffer_state
 #endif
 
 #ifdef yy_switch_to_buffer
-#define exercisedataparser_switch_to_buffer_ALREADY_DEFINED
+#define ExerciseDataParser_switch_to_buffer_ALREADY_DEFINED
 #else
-#define yy_switch_to_buffer exercisedataparser_switch_to_buffer
+#define yy_switch_to_buffer ExerciseDataParser_switch_to_buffer
 #endif
 
 #ifdef yypush_buffer_state
-#define exercisedataparserpush_buffer_state_ALREADY_DEFINED
+#define ExerciseDataParserpush_buffer_state_ALREADY_DEFINED
 #else
-#define yypush_buffer_state exercisedataparserpush_buffer_state
+#define yypush_buffer_state ExerciseDataParserpush_buffer_state
 #endif
 
 #ifdef yypop_buffer_state
-#define exercisedataparserpop_buffer_state_ALREADY_DEFINED
+#define ExerciseDataParserpop_buffer_state_ALREADY_DEFINED
 #else
-#define yypop_buffer_state exercisedataparserpop_buffer_state
+#define yypop_buffer_state ExerciseDataParserpop_buffer_state
 #endif
 
 #ifdef yyensure_buffer_stack
-#define exercisedataparserensure_buffer_stack_ALREADY_DEFINED
+#define ExerciseDataParserensure_buffer_stack_ALREADY_DEFINED
 #else
-#define yyensure_buffer_stack exercisedataparserensure_buffer_stack
+#define yyensure_buffer_stack ExerciseDataParserensure_buffer_stack
 #endif
 
 #ifdef yylex
-#define exercisedataparserlex_ALREADY_DEFINED
+#define ExerciseDataParserlex_ALREADY_DEFINED
 #else
-#define yylex exercisedataparserlex
+#define yylex ExerciseDataParserlex
 #endif
 
 #ifdef yyrestart
-#define exercisedataparserrestart_ALREADY_DEFINED
+#define ExerciseDataParserrestart_ALREADY_DEFINED
 #else
-#define yyrestart exercisedataparserrestart
+#define yyrestart ExerciseDataParserrestart
 #endif
 
 #ifdef yylex_init
-#define exercisedataparserlex_init_ALREADY_DEFINED
+#define ExerciseDataParserlex_init_ALREADY_DEFINED
 #else
-#define yylex_init exercisedataparserlex_init
+#define yylex_init ExerciseDataParserlex_init
 #endif
 
 #ifdef yylex_init_extra
-#define exercisedataparserlex_init_extra_ALREADY_DEFINED
+#define ExerciseDataParserlex_init_extra_ALREADY_DEFINED
 #else
-#define yylex_init_extra exercisedataparserlex_init_extra
+#define yylex_init_extra ExerciseDataParserlex_init_extra
 #endif
 
 #ifdef yylex_destroy
-#define exercisedataparserlex_destroy_ALREADY_DEFINED
+#define ExerciseDataParserlex_destroy_ALREADY_DEFINED
 #else
-#define yylex_destroy exercisedataparserlex_destroy
+#define yylex_destroy ExerciseDataParserlex_destroy
 #endif
 
 #ifdef yyget_debug
-#define exercisedataparserget_debug_ALREADY_DEFINED
+#define ExerciseDataParserget_debug_ALREADY_DEFINED
 #else
-#define yyget_debug exercisedataparserget_debug
+#define yyget_debug ExerciseDataParserget_debug
 #endif
 
 #ifdef yyset_debug
-#define exercisedataparserset_debug_ALREADY_DEFINED
+#define ExerciseDataParserset_debug_ALREADY_DEFINED
 #else
-#define yyset_debug exercisedataparserset_debug
+#define yyset_debug ExerciseDataParserset_debug
 #endif
 
 #ifdef yyget_extra
-#define exercisedataparserget_extra_ALREADY_DEFINED
+#define ExerciseDataParserget_extra_ALREADY_DEFINED
 #else
-#define yyget_extra exercisedataparserget_extra
+#define yyget_extra ExerciseDataParserget_extra
 #endif
 
 #ifdef yyset_extra
-#define exercisedataparserset_extra_ALREADY_DEFINED
+#define ExerciseDataParserset_extra_ALREADY_DEFINED
 #else
-#define yyset_extra exercisedataparserset_extra
+#define yyset_extra ExerciseDataParserset_extra
 #endif
 
 #ifdef yyget_in
-#define exercisedataparserget_in_ALREADY_DEFINED
+#define ExerciseDataParserget_in_ALREADY_DEFINED
 #else
-#define yyget_in exercisedataparserget_in
+#define yyget_in ExerciseDataParserget_in
 #endif
 
 #ifdef yyset_in
-#define exercisedataparserset_in_ALREADY_DEFINED
+#define ExerciseDataParserset_in_ALREADY_DEFINED
 #else
-#define yyset_in exercisedataparserset_in
+#define yyset_in ExerciseDataParserset_in
 #endif
 
 #ifdef yyget_out
-#define exercisedataparserget_out_ALREADY_DEFINED
+#define ExerciseDataParserget_out_ALREADY_DEFINED
 #else
-#define yyget_out exercisedataparserget_out
+#define yyget_out ExerciseDataParserget_out
 #endif
 
 #ifdef yyset_out
-#define exercisedataparserset_out_ALREADY_DEFINED
+#define ExerciseDataParserset_out_ALREADY_DEFINED
 #else
-#define yyset_out exercisedataparserset_out
+#define yyset_out ExerciseDataParserset_out
 #endif
 
 #ifdef yyget_leng
-#define exercisedataparserget_leng_ALREADY_DEFINED
+#define ExerciseDataParserget_leng_ALREADY_DEFINED
 #else
-#define yyget_leng exercisedataparserget_leng
+#define yyget_leng ExerciseDataParserget_leng
 #endif
 
 #ifdef yyget_text
-#define exercisedataparserget_text_ALREADY_DEFINED
+#define ExerciseDataParserget_text_ALREADY_DEFINED
 #else
-#define yyget_text exercisedataparserget_text
+#define yyget_text ExerciseDataParserget_text
 #endif
 
 #ifdef yyget_lineno
-#define exercisedataparserget_lineno_ALREADY_DEFINED
+#define ExerciseDataParserget_lineno_ALREADY_DEFINED
 #else
-#define yyget_lineno exercisedataparserget_lineno
+#define yyget_lineno ExerciseDataParserget_lineno
 #endif
 
 #ifdef yyset_lineno
-#define exercisedataparserset_lineno_ALREADY_DEFINED
+#define ExerciseDataParserset_lineno_ALREADY_DEFINED
 #else
-#define yyset_lineno exercisedataparserset_lineno
+#define yyset_lineno ExerciseDataParserset_lineno
 #endif
 
 #ifdef yywrap
-#define exercisedataparserwrap_ALREADY_DEFINED
+#define ExerciseDataParserwrap_ALREADY_DEFINED
 #else
-#define yywrap exercisedataparserwrap
+#define yywrap ExerciseDataParserwrap
 #endif
 
 /* %endif */
 
 #ifdef yyalloc
-#define exercisedataparseralloc_ALREADY_DEFINED
+#define ExerciseDataParseralloc_ALREADY_DEFINED
 #else
-#define yyalloc exercisedataparseralloc
+#define yyalloc ExerciseDataParseralloc
 #endif
 
 #ifdef yyrealloc
-#define exercisedataparserrealloc_ALREADY_DEFINED
+#define ExerciseDataParserrealloc_ALREADY_DEFINED
 #else
-#define yyrealloc exercisedataparserrealloc
+#define yyrealloc ExerciseDataParserrealloc
 #endif
 
 #ifdef yyfree
-#define exercisedataparserfree_ALREADY_DEFINED
+#define ExerciseDataParserfree_ALREADY_DEFINED
 #else
-#define yyfree exercisedataparserfree
+#define yyfree ExerciseDataParserfree
 #endif
 
 /* %if-c-only */
 
 #ifdef yytext
-#define exercisedataparsertext_ALREADY_DEFINED
+#define ExerciseDataParsertext_ALREADY_DEFINED
 #else
-#define yytext exercisedataparsertext
+#define yytext ExerciseDataParsertext
 #endif
 
 #ifdef yyleng
-#define exercisedataparserleng_ALREADY_DEFINED
+#define ExerciseDataParserleng_ALREADY_DEFINED
 #else
-#define yyleng exercisedataparserleng
+#define yyleng ExerciseDataParserleng
 #endif
 
 #ifdef yyin
-#define exercisedataparserin_ALREADY_DEFINED
+#define ExerciseDataParserin_ALREADY_DEFINED
 #else
-#define yyin exercisedataparserin
+#define yyin ExerciseDataParserin
 #endif
 
 #ifdef yyout
-#define exercisedataparserout_ALREADY_DEFINED
+#define ExerciseDataParserout_ALREADY_DEFINED
 #else
-#define yyout exercisedataparserout
+#define yyout ExerciseDataParserout
 #endif
 
 #ifdef yy_flex_debug
-#define exercisedataparser_flex_debug_ALREADY_DEFINED
+#define ExerciseDataParser_flex_debug_ALREADY_DEFINED
 #else
-#define yy_flex_debug exercisedataparser_flex_debug
+#define yy_flex_debug ExerciseDataParser_flex_debug
 #endif
 
 #ifdef yylineno
-#define exercisedataparserlineno_ALREADY_DEFINED
+#define ExerciseDataParserlineno_ALREADY_DEFINED
 #else
-#define yylineno exercisedataparserlineno
+#define yylineno ExerciseDataParserlineno
 #endif
 
 /* %endif */
@@ -668,7 +668,7 @@ void yyfree ( void *  );
 /* %% [1.0] yytext/yyin/yyout/yy_state_type/yylineno etc. def's & init go here */
 /* Begin user sect3 */
 
-#define exercisedataparserwrap() (/*CONSTCOND*/1)
+#define ExerciseDataParserwrap() (/*CONSTCOND*/1)
 #define YY_SKIP_YYWRAP
 
 #define FLEX_DEBUG
@@ -881,19 +881,19 @@ static const flex_int16_t yy_rule_linenum[32] =
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "./exercisedataparser.l"
-#line 2 "./exercisedataparser.l"
+#line 1 "./ExerciseDataParser.l"
+#line 2 "./ExerciseDataParser.l"
 #include <string.h>
 #include <unistd.h>
 /* QMake renames this.  */
-#include "dataelements.h"
-#include "exercisedataparser_yacc.h"  /* Tokens from the parser.  */
+#include "DataElements.h"
+#include "ExerciseDataParser_yacc.h"  /* Tokens from the parser.  */
 extern YYSTYPE yylval;  /* Defined by us.  */
 extern YYLTYPE yylloc;  /* Location tracking.  */
 extern void set_location(const char *str, int reset = 0);
 static void warning(const char *str);  /* Lexer warnings.  */
-#line 896 "exercisedataparser_lex.cpp"
-#line 897 "exercisedataparser_lex.cpp"
+#line 896 "ExerciseDataParser_lex.cpp"
+#line 897 "ExerciseDataParser_lex.cpp"
 
 #define INITIAL 0
 
@@ -1159,9 +1159,9 @@ YY_DECL
 
 	{
 /* %% [7.0] user's declarations go here */
-#line 14 "./exercisedataparser.l"
+#line 14 "./ExerciseDataParser.l"
 
-#line 1165 "exercisedataparser_lex.cpp"
+#line 1165 "ExerciseDataParser_lex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1254,180 +1254,180 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 15 "./exercisedataparser.l"
+#line 15 "./ExerciseDataParser.l"
 {
   /* An example of using quoted string is found in Tom Niemann's "A Compact
      Guide To Lex & Yacc" book.  This string can be terminated by a '"' or a
      '\n'.  Only single line strings are supported.  */
   set_location(yytext);
-  exercisedataparserlval.stringval = yytext + 1;
-  int length = exercisedataparserlval.stringval.length();
-  if (exercisedataparserlval.stringval[length - 1] != '"') {
+  ExerciseDataParserlval.stringval = yytext + 1;
+  int length = ExerciseDataParserlval.stringval.length();
+  if (ExerciseDataParserlval.stringval[length - 1] != '"') {
     warning("Improperly terminated string!");
   } else {
-    exercisedataparserlval.stringval.chop(1);
+    ExerciseDataParserlval.stringval.chop(1);
   }
   return STRING;  /* Damn.  */
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 29 "./exercisedataparser.l"
+#line 29 "./ExerciseDataParser.l"
 { set_location(yytext); }  /* Don't return anything and don't confuse with "comment".  */
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 30 "./exercisedataparser.l"
+#line 30 "./ExerciseDataParser.l"
 { set_location(yytext); return EQ; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 31 "./exercisedataparser.l"
+#line 31 "./ExerciseDataParser.l"
 { set_location(yytext); return LBRACE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 32 "./exercisedataparser.l"
+#line 32 "./ExerciseDataParser.l"
 { set_location(yytext); return RBRACE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 33 "./exercisedataparser.l"
+#line 33 "./ExerciseDataParser.l"
 { set_location(yytext); return LCURLY; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 34 "./exercisedataparser.l"
+#line 34 "./ExerciseDataParser.l"
 { set_location(yytext); return RCURLY; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 35 "./exercisedataparser.l"
-{ set_location(yytext); exercisedataparserlval.intval = atoi(yytext); return INT; }
+#line 35 "./ExerciseDataParser.l"
+{ set_location(yytext); ExerciseDataParserlval.intval = atoi(yytext); return INT; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 36 "./exercisedataparser.l"
+#line 36 "./ExerciseDataParser.l"
 { set_location(yytext); return SHOES; }  /* Sections.  */
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 37 "./exercisedataparser.l"
+#line 37 "./ExerciseDataParser.l"
 { set_location(yytext); return EXERCISES; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 38 "./exercisedataparser.l"
+#line 38 "./ExerciseDataParser.l"
 { set_location(yytext); return SPORTS; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 39 "./exercisedataparser.l"
+#line 39 "./ExerciseDataParser.l"
 { set_location(yytext); return PLACES; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 40 "./exercisedataparser.l"
+#line 40 "./ExerciseDataParser.l"
 { set_location(yytext); return WEATHERS; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 41 "./exercisedataparser.l"
+#line 41 "./ExerciseDataParser.l"
 { set_location(yytext); return ID; }  /* Attributes.  */
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 42 "./exercisedataparser.l"
+#line 42 "./ExerciseDataParser.l"
 { set_location(yytext); return NAME; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 43 "./exercisedataparser.l"
+#line 43 "./ExerciseDataParser.l"
 { set_location(yytext); return COLOR; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 44 "./exercisedataparser.l"
+#line 44 "./ExerciseDataParser.l"
 { set_location(yytext); return BUY; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 45 "./exercisedataparser.l"
+#line 45 "./ExerciseDataParser.l"
 { set_location(yytext); return COMMENT; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 46 "./exercisedataparser.l"
+#line 46 "./ExerciseDataParser.l"
 { set_location(yytext); return DATE; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 47 "./exercisedataparser.l"
+#line 47 "./ExerciseDataParser.l"
 { set_location(yytext); return TIME; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 48 "./exercisedataparser.l"
+#line 48 "./ExerciseDataParser.l"
 { set_location(yytext); return DISTANCE; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 49 "./exercisedataparser.l"
+#line 49 "./ExerciseDataParser.l"
 { set_location(yytext); return DURATION; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 50 "./exercisedataparser.l"
+#line 50 "./ExerciseDataParser.l"
 { set_location(yytext); return SPORT; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 51 "./exercisedataparser.l"
+#line 51 "./ExerciseDataParser.l"
 { set_location(yytext); return SHOE; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 52 "./exercisedataparser.l"
+#line 52 "./ExerciseDataParser.l"
 { set_location(yytext); return PLACE; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 53 "./exercisedataparser.l"
+#line 53 "./ExerciseDataParser.l"
 { set_location(yytext); return WEATHER; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 54 "./exercisedataparser.l"
+#line 54 "./ExerciseDataParser.l"
 { set_location(yytext); return PULSE; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 55 "./exercisedataparser.l"
+#line 55 "./ExerciseDataParser.l"
 { set_location(yytext); return CALORIES; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 57 "./exercisedataparser.l"
+#line 57 "./ExerciseDataParser.l"
 { set_location(yytext); } /* Blank characters.  Eat up whitespace.  */
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 58 "./exercisedataparser.l"
+#line 58 "./ExerciseDataParser.l"
 { set_location(yytext, 1); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 59 "./exercisedataparser.l"
+#line 59 "./ExerciseDataParser.l"
 { set_location(yytext); return yytext[0]; }  /* Any character (e.g. semicolons, colons, relational
 operators) except newline.  Literals?  */
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 61 "./exercisedataparser.l"
+#line 61 "./ExerciseDataParser.l"
 ECHO;
 	YY_BREAK
-#line 1431 "exercisedataparser_lex.cpp"
+#line 1431 "ExerciseDataParser_lex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2540,7 +2540,7 @@ void yyfree (void * ptr )
 
 /* %ok-for-header */
 
-#line 61 "./exercisedataparser.l"
+#line 61 "./ExerciseDataParser.l"
 
 /* Functions would come here.  */
 

@@ -3,8 +3,8 @@
 #include <QApplication>
 #include <QPainter>
 
-#include "ktrainer.h"
-#include "diagram.h"
+#include "SimpleTrainingLogMainWindow.h"
+#include "Diagram.h"
 
 extern const char *months[];
 
