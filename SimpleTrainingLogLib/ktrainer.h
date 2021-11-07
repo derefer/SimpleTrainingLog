@@ -27,6 +27,7 @@
 //#include <QFtp>
 
 #include "exercisetable.h"
+#include "SimpleTrainingLogLibDecl.h"
 #include "statisticshandler.h"
 
 #define DEFAULT_WIDTH 900
@@ -55,7 +56,7 @@ class QAction;
 class QMenu;
 class QTextEdit;
 
-class KTrainer : public QMainWindow
+class SIMPLETRAININGLOGLIB_EXPORT KTrainer : public QMainWindow
 {
     Q_OBJECT
 

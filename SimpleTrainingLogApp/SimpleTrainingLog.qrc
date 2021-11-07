@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>Images/new.png</file>
+    <file>Images/save.png</file>
+    <file>Images/export.png</file>
+    <file>Images/exit.png</file>
+    <file>Images/about.png</file>
+    <file>Images/configure.png</file>
+</qresource>
+</RCC>

@@ -379,23 +379,23 @@ void KTrainer::documentWasModified()
 
 void KTrainer::createActions()
 {
-    newAct = new QAction(QIcon(":images/new.png"), tr("&New Exercise"), this);
+    newAct = new QAction(QIcon(":Images/new.png"), tr("&New Exercise"), this);
     newAct->setShortcut(tr("Ctrl+N"));
     newAct->setStatusTip(tr("Add a new exercise"));
     connect(newAct, SIGNAL(triggered()), this, SLOT(newExercise()));
 
-    saveAct = new QAction(QIcon(":/images/save.png"), tr("&Save"), this);
+    saveAct = new QAction(QIcon(":Images/save.png"), tr("&Save"), this);
     saveAct->setShortcut(tr("Ctrl+S"));
     saveAct->setStatusTip(tr("Save the changes to database"));
     connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
-    exportHTMLAct = new QAction(QIcon(":/images/export.png"),
+    exportHTMLAct = new QAction(QIcon(":Images/export.png"),
         tr("&Export && Publishing"), this);
     exportHTMLAct->setShortcut(tr("Ctrl+E"));
     exportHTMLAct->setStatusTip(tr("HTML export & FTP upload"));
     connect(exportHTMLAct, SIGNAL(triggered()), this, SLOT(exportHTML()));
 
-    exitAct = new QAction(QIcon(":images/exit.png"), tr("E&xit"), this);
+    exitAct = new QAction(QIcon(":Images/exit.png"), tr("E&xit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
     exitAct->setStatusTip(tr("Exit the application"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
@@ -416,12 +416,12 @@ void KTrainer::createActions()
     m_weathersAct->setStatusTip(tr("Manage weathers"));
     connect(m_weathersAct, SIGNAL(triggered()), this, SLOT(manageWeathers()));
 
-    m_settingsAct = new QAction(QIcon(":images/configure.png"),
+    m_settingsAct = new QAction(QIcon(":Images/configure.png"),
         tr("&Settings"), this);
     m_settingsAct->setStatusTip(tr("Settings"));
     connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
 
-    aboutAct = new QAction(QIcon(":images/about.png"), tr("&About"), this);
+    aboutAct = new QAction(QIcon(":Images/about.png"), tr("&About"), this);
     aboutAct->setStatusTip(tr("About KTrainer"));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 

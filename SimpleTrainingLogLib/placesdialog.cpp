@@ -194,7 +194,7 @@ void PlacesDialog::slotSetNameText(QTreeWidgetItem *item,
 void OSMTileDrawer::paintEvent(QPaintEvent *)
 {
   QPainter p(this);
-  QPixmap pm(":images/osmdemo.png");
+  QPixmap pm(":Images/osmdemo.png");
   QImage genimg(256,256,QImage::Format_RGB32);
   //genimg.create(256,256);
   for (int i=0; i<655536; i++ )                     // build color table

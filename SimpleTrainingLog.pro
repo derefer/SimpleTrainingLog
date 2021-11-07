@@ -1,5 +1,10 @@
 TEMPLATE = subdirs
 
-SUBDIRS = src
+CONFIG += ordered
+
+SUBDIRS += \
+    SimpleTrainingLogLib \
+    SimpleTrainingLogApp \
+    SimpleTrainingLogTests
 
 DISTFILES += README.md TODO
