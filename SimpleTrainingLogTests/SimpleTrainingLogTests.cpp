@@ -37,6 +37,5 @@ TEST_F(SimpleTrainingLogTests, dummyTest)
 
 TEST_F(SimpleTrainingLogTests, testIfSimpleTrainingLogMainWindowCanBeInstantiated)
 {
-    // TODO: Fix!!!
-    //KTrainer ktrainer;
+    KTrainer ktrainer;
 }
