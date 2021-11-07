@@ -2,7 +2,6 @@ New
 ===
 ===
 
-- Replace include guards with #pragma once
 - Rename files to use CamelCase
 - Review/check warnings
 - Fully rename project to SimpleTrainingLog
