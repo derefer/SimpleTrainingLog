@@ -1,6 +1,9 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QFileDialog>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -45,6 +48,7 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
 
     m_curConfig = DEFAULT_CONFIG;
     m_curLog = DEFAULT_LOG;
+    m_curJsonLog = DEFAULT_JSON_LOG;
     m_curHost = DEFAULT_HOST;
     m_curPort = QString("%1").arg(DEFAULT_PORT);
     m_curPath = DEFAULT_PATH;
@@ -62,7 +66,7 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
     setWindowTitle(QApplication::translate("SimpleTrainingLog", "SimpleTrainingLog", 0));
     resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-    loadDatabase(m_curLog);
+    loadDatabase();
 
     // The SIGNAL and the SLOT must have the same signature. Any modification
     // of the table will trigger setDirty.
@@ -73,8 +77,7 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
         this, SLOT(editExercise(QTreeWidgetItem *, int)));
 }
 
-void SimpleTrainingLogMainWindow::setDirty(int row __attribute__((unused)),
-    int col __attribute__((unused)))
+void SimpleTrainingLogMainWindow::setDirty(int row __attribute__((unused)), int col __attribute__((unused)))
 {
     saveAct->setEnabled(true);
     m_dirty = true;
@@ -121,8 +124,7 @@ void SimpleTrainingLogMainWindow::viewExercise()
     }
 }
 
-void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *item __attribute__((unused)),
-    int column __attribute__((unused)))
+void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *item __attribute__((unused)), int column __attribute__((unused)))
 {
     NewExerciseDialog dialog(this, "Edit Exercise");
     dialog.addSportStrings(getSportStrings());
@@ -505,22 +507,94 @@ bool SimpleTrainingLogMainWindow::maybeSave()
     return true;
 }
 
-void SimpleTrainingLogMainWindow::loadDatabase(const QString& fileName)
+void SimpleTrainingLogMainWindow::loadDatabase()
 {
-    QFile file(fileName);
+    loadJsonDatabase();
+
+    QFile file(m_curLog);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Cannot read file" << fileName << ":" << file.errorString();
+        qWarning() << "Cannot read file" << m_curLog << ":" << file.errorString();
         return;
     }
 
-    parseFile((const char *)fileName.toLatin1().data());
+    parseFile((const char *)m_curLog.toLatin1().data());
     file.close();
 
     m_exerciseTable->fillTable(&exercises);
     m_statisticsHandler->fillHandler(&sports, &exercises);
 
-    setCurrentFile(fileName);
+    setCurrentFile(m_curLog);
     statusBar()->showMessage(tr("Database loaded"), 2000);
+}
+
+void SimpleTrainingLogMainWindow::loadJsonDatabase()
+{
+    QString curJsonLogAsString;
+    QFile file(m_curJsonLog);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Cannot read file" << m_curJsonLog << ":" << file.errorString();
+        return;
+    }
+    curJsonLogAsString = file.readAll();
+    file.close();
+
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(curJsonLogAsString.toUtf8());
+    if (jsonDocument.isNull()) {
+        qWarning() << "Invalid JSON document:" << m_curJsonLog;
+        return;
+    }
+    QJsonObject jsonObject = jsonDocument.object();
+    QJsonArray shoesFromJsonAsArray = jsonObject.value("shoes").toArray();
+    QJsonArray sportsFromJsonAsArray = jsonObject.value("sports").toArray();
+    QJsonArray placesFromJsonAsArray = jsonObject.value("places").toArray();
+    QJsonArray weathersFromJsonAsArray = jsonObject.value("weathers").toArray();
+
+    for (int i = 0; i < shoesFromJsonAsArray.size(); i++) {
+        const auto& shoe = shoesFromJsonAsArray[i].toObject();
+        const auto& shoeId = shoe["id"].toInt();
+        if (shoeId < 0) {
+            qWarning() << "Invalid shoe identifier:" << shoeId;
+            continue;
+        }
+        const auto& shoeName = shoe["name"].toString();
+        const auto& shoeBuy = shoe["buy"].toInt();
+        const auto& shoeComment = shoe["comment"].toString();
+        shoes.append(new Shoe(shoeId, shoeName, shoeBuy, shoeComment));
+    }
+
+    for (int i = 0; i < sportsFromJsonAsArray.size(); i++) {
+        const auto& sport = sportsFromJsonAsArray[i].toObject();
+        const auto& sportId = sport["id"].toInt();
+        if (sportId < 0) {
+            qWarning() << "Invalid sport identifier:" << sportId;
+            continue;
+        }
+        const auto& sportName = sport["name"].toString();
+        const auto& sportColor = sport["color"].toString();
+        sports.append(new Sport(sportId, sportName, sportColor));
+    }
+
+    for (int i = 0; i < placesFromJsonAsArray.size(); i++) {
+        const auto& place = placesFromJsonAsArray[i].toObject();
+        const auto& placeId = place["id"].toInt();
+        if (placeId < 0) {
+            qWarning() << "Invalid place identifier:" << placeId;
+            continue;
+        }
+        const auto& placeName = place["name"].toString();
+        places.append(new Place(placeId, placeName));
+    }
+
+    for (int i = 0; i < weathersFromJsonAsArray.size(); i++) {
+        const auto& weather = weathersFromJsonAsArray[i].toObject();
+        const auto& weatherId = weather["id"].toInt();
+        if (weatherId < 0) {
+            qWarning() << "Invalid weather identifier:" << weatherId;
+            continue;
+        }
+        const auto& weatherName = weather["name"].toString();
+        weathers.append(new Weather(weatherId, weatherName));
+    }
 }
 
 // Set the exercise database.
@@ -831,7 +905,7 @@ void SimpleTrainingLogMainWindow::settings()
         if (dLog != m_curLog) {
             clear();
             m_curLog = dLog;
-            loadDatabase(m_curLog);
+            loadDatabase();
         }
         if (dHost != m_curHost) m_curHost = dHost;
         if (dPort != m_curPort) m_curPort = dPort;

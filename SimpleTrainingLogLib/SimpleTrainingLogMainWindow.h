@@ -9,12 +9,10 @@
 #include "SimpleTrainingLogLibDecl.h"
 #include "StatisticsHandler.h"
 
-#define DEFAULT_WIDTH 900
-#define DEFAULT_HEIGHT 480
-
 // Burned in database.  Read these from configuration file.  Password is
 // always requested from the user.
 #define DEFAULT_CONFIG "./.SimpleTrainingLog"
+#define DEFAULT_JSON_LOG "/tmp/log.json"
 #define DEFAULT_LOG "/tmp/log"
 #define DEFAULT_HOST "ftp.myftphost.com"
 #define DEFAULT_PORT 21
@@ -75,7 +73,8 @@ private:
     void readSettings();
     void writeSettings();
     bool maybeSave();
-    void loadDatabase(const QString& fileName);
+    void loadDatabase();
+    void loadJsonDatabase();
     void setCurrentFile(const QString& fileName);
     QString strippedName(const QString& fullFileName);
     int parseFile(const char *fileName);
@@ -84,6 +83,9 @@ private:
     int getPlaceByName(const QString& place) const;
     int getWeatherByName(const QString& weather) const;
     void clear();
+
+    const std::uint32_t DEFAULT_WIDTH = 900;
+    const std::uint32_t DEFAULT_HEIGHT = 480;
 
     QMenu *fileMenu;
     QMenu *editMenu;
@@ -113,6 +115,7 @@ private:
     bool m_dirty;  // Data was modified in the table.
     QString m_curConfig;
     QString m_curLog;
+    QString m_curJsonLog;
     QString m_curHost;
     QString m_curPort;
     QString m_curUser;
