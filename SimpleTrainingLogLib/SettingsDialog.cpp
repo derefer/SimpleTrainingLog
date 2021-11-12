@@ -5,14 +5,6 @@
 
 #include "SettingsDialog.h"
 
-// On an error like this:
-// settingsdialog.o: In function `SettingsDialog::SettingsDialog(QWidget*)':
-// settingsdialog.cpp:(.text+0x1e): undefined reference to `vtable for SettingsDialog'
-// settingsdialog.cpp:(.text+0x26): undefined reference to `vtable for SettingsDialog'
-// settingsdialog.cpp:(.text+0x32): undefined reference to `SettingsDialog::staticMetaObject'
-//
-// Regenerate all of your makefiles.  http://lists.trolltech.com/qt-interest/
-// 2007-06/thread01171-0.html
 SettingsDialog::SettingsDialog(QWidget *parent) : QDialog(parent)
 {
     m_logLabel = new QLabel(tr("Log:"));

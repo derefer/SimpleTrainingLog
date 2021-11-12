@@ -10,13 +10,9 @@
 #include "ShoesDialog.h"
 #include "DataElements.h"
 
-ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes,
-  QList<Exercise*> *exercises) : QDialog(parent)
+ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, QList<Exercise*> *exercises) :
+    QDialog(parent), m_shoes(shoes), m_exercises(exercises), m_dirty(false)
 {
-  m_shoes = shoes;
-  m_exercises = exercises;
-  m_dirty = false;
-
   m_nameLabel = new QLabel(tr("Name:"));
   m_buyLabel = new QLabel(tr("Buy:"));
   m_commentLabel = new QLabel(tr("Comment:"));

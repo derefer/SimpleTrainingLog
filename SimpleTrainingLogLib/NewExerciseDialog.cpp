@@ -9,26 +9,7 @@
 
 #include "NewExerciseDialog.h"
 
-// The generated moc_newexercisedialog.cpp generates "newexercisedialog.h:36:
-// warning: ‘months’ defined but not used" if this definition is moved into
-// the header.  Used from other modules.
-const char *months[12] = {
-    "Jan.",
-    "Feb.",
-    "Mar.",
-    "Apr.",
-    "May",
-    "Jun.",
-    "Jul.",
-    "Aug.",
-    "Sept.",
-    "Oct.",
-    "Nov.",
-    "Dec."
-};
-
-NewExerciseDialog::NewExerciseDialog(QWidget *parent, const QString& title)
-    : QDialog(parent)
+NewExerciseDialog::NewExerciseDialog(QWidget *parent, const QString& title) : QDialog(parent)
 {
     dateLabel = new QLabel(tr("Date:"));
     timeLabel = new QLabel(tr("Time:"));

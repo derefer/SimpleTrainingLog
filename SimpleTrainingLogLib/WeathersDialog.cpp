@@ -9,13 +9,9 @@
 #include "WeathersDialog.h"
 #include "DataElements.h"
 
-WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers,
-    QList<Exercise*> *exercises) : QDialog(parent)
+WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers, QList<Exercise*> *exercises) :
+    QDialog(parent), m_weathers(weathers), m_exercises(exercises), m_dirty(false)
 {
-    m_weathers = weathers;
-    m_exercises = exercises;
-    m_dirty = false;
-
     m_nameLabel = new QLabel(tr("Name:"));
     m_nameLineEdit = new QLineEdit;
     m_weathersTreeWidget = new QTreeWidget;
@@ -162,8 +158,7 @@ void WeathersDialog::slotSave()
     m_dirty = true;
 }
 
-void WeathersDialog::slotSetNameText(QTreeWidgetItem *item,
-    int column __attribute__((unused)))
+void WeathersDialog::slotSetNameText(QTreeWidgetItem *item, int)
 {
     m_nameLineEdit->setText(item->text(COL_NAME));
 }

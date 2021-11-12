@@ -14,13 +14,9 @@
 #define LEN_SPORT 49
 #define LEN_COLOR 7
 
-SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports,
-    QList<Exercise*> *exercises) : QDialog(parent)
+SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, QList<Exercise*> *exercises) :
+    QDialog(parent), m_sports(sports), m_exercises(exercises), m_dirty(false)
 {
-    m_sports = sports;
-    m_exercises = exercises;
-    m_dirty = false;
-
     m_nameLabel = new QLabel(tr("Name:"));
     m_nameLineEdit = new QLineEdit;
     m_nameLineEdit->setMaxLength(LEN_SPORT);
@@ -201,8 +197,7 @@ void SportsDialog::slotSave()
     m_dirty = true;
 }
 
-void SportsDialog::slotSetNameText(QTreeWidgetItem *item,
-    int column __attribute__((unused)))
+void SportsDialog::slotSetNameText(QTreeWidgetItem *item, int)
 {
     m_nameLineEdit->setText(item->text(COL_NAME));
     m_colorLineEdit->setText(item->text(COL_COLOR));

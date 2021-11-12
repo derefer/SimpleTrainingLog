@@ -148,7 +148,7 @@ void StatisticsHandler::calculateStatistics(int index __attribute__((unused)))
     }
 
     int hours = allTimeMinutes / 60;
-    int minutes = allTimeMinutes = allTimeMinutes % 60;
+    int minutes = allTimeMinutes % 60;
     QString formatString = minutes < 10 ? QString("%1:0%2") : QString("%1:%2");
     allTime = formatString.arg(hours).arg(minutes);
 

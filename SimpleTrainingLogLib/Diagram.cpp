@@ -1,12 +1,10 @@
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <QApplication>
 #include <QPainter>
 
 #include "SimpleTrainingLogMainWindow.h"
 #include "Diagram.h"
-
-extern const char *months[];
 
 Diagram::Diagram(QWidget *parent) : QWidget(parent)
 {
@@ -64,14 +62,14 @@ int Diagram::maxData() const
 }
 
 // Calculate distance per tick ratio to use on the diagram's vertical axis.
-#define TICKS_LOW    20
-#define TICKS_MEDIUM 50
-#define TICKS_HIGH   100
 int Diagram::getTickDistance() const
 {
-    int low_diff = abs(10 - maxData() / TICKS_LOW);
-    int medium_diff = abs(10 - maxData() / TICKS_MEDIUM);
-    int high_diff = abs(10 - maxData() / TICKS_HIGH);
+    const std::int32_t TICKS_LOW = 20;
+    const std::int32_t TICKS_MEDIUM = 50;
+    const std::int32_t TICKS_HIGH = 100;
+    int low_diff = std::abs(10 - maxData() / TICKS_LOW);
+    int medium_diff = std::abs(10 - maxData() / TICKS_MEDIUM);
+    int high_diff = std::abs(10 - maxData() / TICKS_HIGH);
 
     if (low_diff < medium_diff) {
         if (low_diff < high_diff) {
@@ -87,9 +85,6 @@ int Diagram::getTickDistance() const
         }
     }
 }
-#undef TICKS_LOW
-#undef TICKS_MEDIUM
-#undef TICKS_HIGH
 
 int Diagram::getTicks() const
 {

@@ -12,13 +12,9 @@
 #include "PlacesDialog.h"
 #include "DataElements.h"
 
-PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places,
-    QList<Exercise*> *exercises) : QDialog(parent)
+PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places, QList<Exercise*> *exercises) :
+    QDialog(parent), m_places(places), m_exercises(exercises), m_dirty(false)
 {
-    m_places = places;
-    m_exercises = exercises;
-    m_dirty = false;
-
     m_nameLineEdit = new QLineEdit;
     m_placesTreeWidget = new QTreeWidget;
 
@@ -54,7 +50,6 @@ PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places,
 
     QVBoxLayout *leftLayout = new QVBoxLayout;
     leftLayout->addLayout(dataLayout);
-    leftLayout->addWidget(new OSMTileDrawer(this));
     //leftLayout->addStretch();
 
     QHBoxLayout *mainLayout = new QHBoxLayout;
@@ -165,22 +160,7 @@ void PlacesDialog::slotSave()
     m_dirty = true;
 }
 
-void PlacesDialog::slotSetNameText(QTreeWidgetItem *item,
-    int column __attribute__((unused)))
+void PlacesDialog::slotSetNameText(QTreeWidgetItem *item, int)
 {
     m_nameLineEdit->setText(item->text(COL_NAME));
-}
-
-void OSMTileDrawer::paintEvent(QPaintEvent *)
-{
-  QPainter p(this);
-  QPixmap pm(":Images/osmdemo.png");
-  QImage genimg(256,256,QImage::Format_RGB32);
-  //genimg.create(256,256);
-  for (int i=0; i<655536; i++ )                     // build color table
-      genimg.setColor( i, qRgb(i,0,0) );
-  QImage image = pm.toImage();
-  qDebug() << image.width() ;
-  p.drawImage(0, 0, genimg, 0, 0, 256, 256);
-  qDebug() << "Called\n";
 }

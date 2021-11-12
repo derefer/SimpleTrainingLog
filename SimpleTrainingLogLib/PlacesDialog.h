@@ -11,13 +11,6 @@ class QPainter;
 class Place;
 class Exercise;
 
-class OSMTileDrawer: public QWidget {
-  Q_OBJECT
-public:
-  OSMTileDrawer(QWidget *obj = NULL): QWidget(obj) { }
-  virtual void paintEvent(QPaintEvent *);
-};
-
 class PlacesDialog : public QDialog
 {
     Q_OBJECT
@@ -50,7 +43,6 @@ private:
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;
 
-    OSMTileDrawer m_tileDrawer;
     QLineEdit *m_nameLineEdit;
     QTreeWidget *m_placesTreeWidget;
     QPushButton *m_okPushButton;

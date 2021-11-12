@@ -15,8 +15,7 @@ class SportsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SportsDialog(QWidget *parent, QList<Sport*> *sports,
-        QList<Exercise*> *exercises);
+    explicit SportsDialog(QWidget *parent, QList<Sport*> *sports, QList<Exercise*> *exercises);
 
     inline bool isDirty() const { return m_dirty; }
     inline const QList<int>& getModifiedExercises() const

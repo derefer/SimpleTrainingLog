@@ -8,11 +8,9 @@
 
 class ExportDialog: public QDialog
 {
-public:
     Q_OBJECT
-
 public:
-    explicit ExportDialog(QWidget *parent = NULL);
+    explicit ExportDialog(QWidget *parent = nullptr);
     void setDefaultFile(const QString& file);
     void setDefaultHost(const QString& host);
     void setDefaultPort(int port);

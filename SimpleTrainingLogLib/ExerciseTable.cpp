@@ -139,11 +139,16 @@ void ExerciseTable::removeExercise(int id)
 
 void ExerciseTable::updateExercise(int id)
 {
-    Exercise *e = getExerciseById(id);
-    QTreeWidgetItem *item = NULL;
-    for (int i = 0; i < topLevelItemCount(); ++i)
-        if ((topLevelItem(i)->data(COL_ID, Qt::DisplayRole)).toInt() == id)
+    QTreeWidgetItem *item = nullptr;
+    for (int i = 0; i < topLevelItemCount(); ++i) {
+        if ((topLevelItem(i)->data(COL_ID, Qt::DisplayRole)).toInt() == id) {
             item = topLevelItem(i);
+        }
+    }
+    if (!item) {
+        return;
+    }
+    Exercise *e = getExerciseById(id);
     item->setData(COL_ID, Qt::DisplayRole, e->getId());
     item->setText(COL_DATE, e->getDate());
     item->setText(COL_TIME, e->getTime());

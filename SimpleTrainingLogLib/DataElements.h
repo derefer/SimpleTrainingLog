@@ -7,6 +7,21 @@
 
 class Exercise;
 
+const QString months[12] = {
+    "Jan.",
+    "Feb.",
+    "Mar.",
+    "Apr.",
+    "May",
+    "Jun.",
+    "Jul.",
+    "Aug.",
+    "Sept.",
+    "Oct.",
+    "Nov.",
+    "Dec."
+};
+
 QString getShoeString(int id);
 QString getSportString(int id);
 QString getPlaceString(int id);

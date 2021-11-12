@@ -16,8 +16,7 @@ class ShoesDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit ShoesDialog(QWidget *parent, QList<Shoe*> *shoes,
-    QList<Exercise*> *exercises);
+  explicit ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, QList<Exercise*> *exercises);
 
   inline bool isDirty() const { return m_dirty; }
   inline const QList<int>& getModifiedExercises() const
