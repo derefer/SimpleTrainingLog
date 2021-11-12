@@ -3,6 +3,11 @@ New
 ===
 
 - Review/check warnings
+- Update database format to JSON, get rid of flex/bison
+  - New class: DatabaseHandler
+  - As a first step only convert the Shoes/Sports... etc. to JSON
+  - As a second step everything else too
+  - Remove flex/bison dependency
 
 
 Legacy

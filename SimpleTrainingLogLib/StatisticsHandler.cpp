@@ -77,15 +77,10 @@ StatisticsHandler::StatisticsHandler(QWidget *parent) : QFrame(parent)
         SLOT(calculateStatistics(int)));
 }
 
-void StatisticsHandler::fillHandler(QList<Shoe*> *shoes, QList<Sport*> *sports,
-    QList<Exercise*> *exercises, QList<Place*> *places,
-    QList<Weather*> *weathers)
+void StatisticsHandler::fillHandler(QList<Sport*> *sports, QList<Exercise*> *exercises)
 {
-    m_shoes = shoes;
     m_sports = sports;
     m_exercises = exercises;
-    m_places = places;
-    m_weathers = weathers;
 
     clear();
 

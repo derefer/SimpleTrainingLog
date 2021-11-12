@@ -21,15 +21,13 @@ class ExerciseTable : public QTreeWidget
     friend class ExerciseItem;
 
 public:
-    explicit ExerciseTable(QWidget *parent = NULL);
+    explicit ExerciseTable(QWidget *parent = nullptr);
     QString encodeHTML() const;
     void appendTable(Exercise *exercise);
     void removeCurrentExercise();
     void removeExercise(int id);
     void updateExercise(int id);
-    void fillTable(QList<Shoe*> *shoes, QList<Sport*> *sports,
-        QList<Exercise*> *exercises, QList<Place*> *places,
-        QList<Weather*> *weathers);
+    void fillTable(QList<Exercise*> *exercises);
     void addExerciseData(const QStringList& exerciseData, const QColor& color);
     Exercise *getCurrentExercise() const;
 
@@ -38,10 +36,5 @@ private:
     enum { COL_ID, COL_DATE, COL_TIME, COL_DISTANCE, COL_DURATION, COL_SPEED,
            COL_PULSE, COL_CALORIES, COL_PLACE, COL_WEATHER, COL_SHOE, COL_COMMENT };
 
-    // Global pointers.
-    QList<Sport*> *m_sports;
-    QList<Place*> *m_places;
-    QList<Shoe*> *m_shoes;
     QList<Exercise*> *m_exercises;
-    QList<Weather*> *m_weathers;
 };

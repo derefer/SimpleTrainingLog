@@ -12,10 +12,8 @@ class StatisticsHandler : public QFrame
 {
     Q_OBJECT
 public:
-    explicit StatisticsHandler(QWidget *parent = NULL);
-    void fillHandler(QList<Shoe*> *shoes, QList<Sport*> *sports,
-        QList<Exercise*> *exercises, QList<Place*> *places,
-        QList<Weather*> *weathers);
+    explicit StatisticsHandler(QWidget *parent = nullptr);
+    void fillHandler(QList<Sport*> *sports, QList<Exercise*> *exercises);
     void clear();
 
 public slots:

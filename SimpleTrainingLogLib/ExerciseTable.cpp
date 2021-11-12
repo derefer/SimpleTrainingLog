@@ -82,15 +82,9 @@ void ExerciseTable::appendTable(Exercise *exercise)
 }
 
 // Initial fill of the table.
-void ExerciseTable::fillTable(QList<Shoe*> *shoes, QList<Sport*> *sports,
-    QList<Exercise*> *exercises, QList<Place*> *places,
-    QList<Weather*> *weathers)
+void ExerciseTable::fillTable(QList<Exercise*> *exercises)
 {
-    m_shoes = shoes;
-    m_sports = sports;
     m_exercises = exercises;
-    m_places = places;
-    m_weathers = weathers;
 
     // Clean-up first.
     for (int i = 0; i < topLevelItemCount(); ++i)

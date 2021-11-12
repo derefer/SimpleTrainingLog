@@ -516,10 +516,8 @@ void SimpleTrainingLogMainWindow::loadDatabase(const QString& fileName)
     parseFile((const char *)fileName.toLatin1().data());
     file.close();
 
-    m_exerciseTable->fillTable(&shoes, &sports, &exercises, &places,
-        &weathers);
-    m_statisticsHandler->fillHandler(&shoes, &sports, &exercises, &places,
-        &weathers);
+    m_exerciseTable->fillTable(&exercises);
+    m_statisticsHandler->fillHandler(&sports, &exercises);
 
     setCurrentFile(fileName);
     statusBar()->showMessage(tr("Database loaded"), 2000);
