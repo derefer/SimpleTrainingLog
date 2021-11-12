@@ -96,7 +96,7 @@ private:
 class Exercise
 {
 public:
-    explicit Exercise(int id) : m_id(id) { }
+    explicit Exercise(int id) : m_id(id), m_sport(0) { }
 
     inline int getId() const { return m_id; }
     inline QString getDate() const { return m_date; }
@@ -112,7 +112,7 @@ public:
     inline int getAvgPulse() const { return m_avgPulse; }
     inline int getCal() const { return m_cal; }
     inline int getFat() const { return m_fat; }
-    inline double getDurationHours() const { return (m_duration.split(":")[0].toDouble() * 60.0 + m_duration.split(":")[1].toDouble()) / 60.0; }
+    inline double getDurationHours() const { return !m_duration.isEmpty() ? (m_duration.split(":")[0].toDouble() * 60.0 + m_duration.split(":")[1].toDouble()) / 60.0 : 0.0; }
     inline double getSpeed() const { return static_cast<double>(m_distance) / getDurationHours(); }
     void setId(int id) { m_id = id; }
     void setDate(QString date) { m_date = date; }

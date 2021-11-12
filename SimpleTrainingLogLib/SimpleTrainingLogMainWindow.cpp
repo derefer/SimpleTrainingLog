@@ -511,15 +511,6 @@ void SimpleTrainingLogMainWindow::loadDatabase()
 {
     loadJsonDatabase();
 
-    QFile file(m_curLog);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Cannot read file" << m_curLog << ":" << file.errorString();
-        return;
-    }
-
-    parseFile((const char *)m_curLog.toLatin1().data());
-    file.close();
-
     m_exerciseTable->fillTable(&exercises);
     m_statisticsHandler->fillHandler(&sports, &exercises);
 
@@ -543,11 +534,13 @@ void SimpleTrainingLogMainWindow::loadJsonDatabase()
         qWarning() << "Invalid JSON document:" << m_curJsonLog;
         return;
     }
+
     QJsonObject jsonObject = jsonDocument.object();
     QJsonArray shoesFromJsonAsArray = jsonObject.value("shoes").toArray();
     QJsonArray sportsFromJsonAsArray = jsonObject.value("sports").toArray();
     QJsonArray placesFromJsonAsArray = jsonObject.value("places").toArray();
     QJsonArray weathersFromJsonAsArray = jsonObject.value("weathers").toArray();
+    QJsonArray exercisesFromJsonAsArray = jsonObject.value("exercises").toArray();
 
     for (int i = 0; i < shoesFromJsonAsArray.size(); i++) {
         const auto& shoe = shoesFromJsonAsArray[i].toObject();
@@ -594,6 +587,45 @@ void SimpleTrainingLogMainWindow::loadJsonDatabase()
         }
         const auto& weatherName = weather["name"].toString();
         weathers.append(new Weather(weatherId, weatherName));
+    }
+
+    for (int i = 0; i < exercisesFromJsonAsArray.size(); i++) {
+        const auto& exercise = exercisesFromJsonAsArray[i].toObject();
+        const auto& exerciseId = exercise["id"].toInt();
+        if (exerciseId < 0) {
+            qWarning() << "Invalid exercise identifier:" << exerciseId;
+            continue;
+        }
+        const auto& exerciseDate = exercise["date"].toString();
+        const auto& exerciseTime = exercise["time"].toString();
+        const auto& exerciseDistance = exercise["distance"].toInt();
+        const auto& exerciseDuration = exercise["duration"].toString();
+        const auto& exerciseSport = exercise["sport"].toInt();
+        const auto& exercisePlace = exercise["place"].toString().split(", ");
+        const auto& exerciseShoe = exercise["shoe"].toInt();
+        const auto& exerciseComment = exercise["comment"].toString();
+        const auto& exerciseWeather = exercise["weather"].toString().split(", ");
+        const auto& exercisePulse = exercise["pulse"].toString().split("/"); // MaxBpm/AvgBpm
+        const auto& exerciseCalories = exercise["calories"].toString().split("/"); // Calories/Fat%
+        Exercise *newExercise = new Exercise(exerciseId);
+        newExercise->setDate(exerciseDate);
+        newExercise->setTime(exerciseTime);
+        newExercise->setDistance(exerciseDistance);
+        newExercise->setDuration(exerciseDuration);
+        newExercise->setSport(exerciseSport);
+        QList<int> places;
+        for (const auto& place : exercisePlace) { places.append(place.toInt()); }
+        newExercise->setPlaces(places);
+        newExercise->setShoe(exerciseShoe);
+        newExercise->setComment(exerciseComment);
+        QList<int> weathers;
+        for (const auto& weather : exerciseWeather) { weathers.append(weather.toInt()); }
+        newExercise->setWeathers(weathers);
+        newExercise->setMaxPulse(exercisePulse[0].toInt());
+        newExercise->setAvgPulse(exercisePulse[1].toInt());
+        newExercise->setCal(exerciseCalories[0].toInt());
+        newExercise->setFat(exerciseCalories[1].toInt());
+        exercises.append(newExercise);
     }
 }
 
