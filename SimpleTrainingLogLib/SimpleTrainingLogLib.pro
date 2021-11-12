@@ -22,8 +22,8 @@ HEADERS += \
     SimpleTrainingLogMainWindow.h \
     SportsDialog.h \
     StatisticsHandler.h \
-    WeathersDialog.h \
-    DataElements.h
+    DataElements.h \
+    WeathersDialog.h
 
 SOURCES += \
     Diagram.cpp \
@@ -36,7 +36,8 @@ SOURCES += \
     SimpleTrainingLogMainWindow.cpp \
     SportsDialog.cpp \
     StatisticsHandler.cpp \
-    WeathersDialog.cpp \
-    DataElements.cpp
+    DataElements.cpp \
+    WeathersDialog.cpp
 
-FORMS +=
+FORMS += \
+    WeathersDialog.ui
