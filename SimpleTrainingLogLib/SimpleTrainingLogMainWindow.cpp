@@ -24,20 +24,11 @@
 #include "WeathersDialog.h"
 #include "SettingsDialog.h"
 
-// This is the driver of the parser.  Everything is prefixed with
-// exercisedataparser*.  The name of the file is for error reporting.
-extern FILE *ExerciseDataParserin;
-extern const char *ExerciseDataParserin_name;
-extern int ExerciseDataParserparse();
-extern int ExerciseDataParserdebug;
-extern int ExerciseDataParser_flex_debug;
-
-// Global data from the parser.
-extern QList<Shoe*> shoes;
-extern QList<Sport*> sports;
-extern QList<Exercise*> exercises;
-extern QList<Place*> places;
-extern QList<Weather*> weathers;
+QList<Shoe*> shoes;
+QList<Sport*> sports;
+QList<Exercise*> exercises;
+QList<Place*> places;
+QList<Weather*> weathers;
 
 SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_dirty(false)
 {
@@ -48,7 +39,6 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
 
     m_curConfig = DEFAULT_CONFIG;
     m_curLog = DEFAULT_LOG;
-    m_curJsonLog = DEFAULT_JSON_LOG;
     m_curHost = DEFAULT_HOST;
     m_curPort = QString("%1").arg(DEFAULT_PORT);
     m_curPath = DEFAULT_PATH;
@@ -269,55 +259,63 @@ bool SimpleTrainingLogMainWindow::save()
     }
     QTextStream out(&file);
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    QStringList outData("shoes {\n");
+    // TODO: Move these to member functions of the corresponding data classes.
+    QStringList outData("{\n  \"shoes\": [\n");
     for (int i = 0; i < shoes.size(); ++i) {
-        outData << QString("{ id=%1").arg(i) <<
-            QString(", name=\"%1\"").arg(shoes.at(i)->getName()) <<
-            QString(", buy=%1").arg(shoes.at(i)->getBuy()) <<
-            QString(", comment=\"%1\" }\n").arg(shoes.at(i)->getComment());
+        outData << QString("    { \"id\": %1").arg(i) <<
+            QString(", \"name\": \"%1\"").arg(shoes.at(i)->getName()) <<
+            QString(", \"buy\": %1").arg(shoes.at(i)->getBuy()) <<
+            QString(", \"comment\": \"%1\" }").arg(shoes.at(i)->getComment());
+        if (i != shoes.size() - 1) outData << ",";
+        outData << "\n";
     }
-    outData << "}\nsports {\n";
+    outData << "  ],\n  \"sports\": [\n";
     for (int i = 0; i < sports.size(); ++i) {
-        outData << QString("{ id=%1").arg(i);
-        outData << QString(", name=\"%1\"").arg(sports.at(i)->getName());
-        outData << QString(", color=\"%1\" }\n").arg((sports.at(i)->getColor()).name());
+        outData << QString("    { \"id\": %1").arg(i);
+        outData << QString(", \"name\": \"%1\"").arg(sports.at(i)->getName());
+        outData << QString(", \"color\": \"%1\" }").arg((sports.at(i)->getColor()).name());
+        if (i != sports.size() - 1) outData << ",";
+        outData << "\n";
     }
-    outData << "}\nplaces {\n";
+    outData << "  ],\n  \"places\": [\n";
     for (int i = 0; i < places.size(); ++i) {
-        outData << QString("{ id=%1").arg(i) <<
-            QString(", name=\"%1\" }\n").arg(places.at(i)->getName());
+        outData << QString("    { \"id\": %1").arg(i) <<
+            QString(", \"name\": \"%1\" }").arg(places.at(i)->getName());
+        if (i != places.size() - 1) outData << ",";
+        outData << "\n";
     }
-    outData << "}\nweathers {\n";
+    outData << "  ],\n  \"weathers\": [\n";
     for (int i = 0; i < weathers.size(); ++i) {
-        outData << QString("{ id=%1").arg(i) <<
-            QString(", name=\"%1\" }\n").arg(weathers.at(i)->getName());
+        outData << QString("    { \"id\": %1").arg(i) <<
+            QString(", \"name\": \"%1\" }").arg(weathers.at(i)->getName());
+        if (i != weathers.size() - 1) outData << ",";
+        outData << "\n";
     }
-    outData << "}\nexercises {\n";
+    outData << "  ],\n  \"exercises\": [\n";
     for (int i = 0; i < exercises.size(); ++i) {
         Exercise *e = exercises.at(i);
-        outData << QString("{ id=%1").arg(i);
-        outData << QString(", date=\"%1\"").arg(e->getDate());
-        outData << QString(", time=\"%1\"").arg(e->getTime());
-        outData << QString(", distance=%1").arg(e->getDistance());
-        outData << QString(", duration=\"%1\"").arg(e->getDuration());
-        outData << QString(", sport=%1").arg(e->getSport());
-        // Need for improvement.
-        QList<int> placeList = e->getPlaces();
+        outData << QString("    { \"id\": %1").arg(i);
+        outData << QString(", \"date\": \"%1\"").arg(e->getDate());
+        outData << QString(", \"time\": \"%1\"").arg(e->getTime());
+        outData << QString(", \"distance\": %1").arg(e->getDistance());
+        outData << QString(", \"duration\": \"%1\"").arg(e->getDuration());
+        outData << QString(", \"sport\": %1").arg(e->getSport());
         QStringList placeNumberList;
-        for (int j = 0; j < placeList.size(); ++j)
-            placeNumberList << QString::number(placeList.at(j));
-        outData << QString(", place=(%1)").arg(placeNumberList.join(", "));
-        outData << QString(", shoe=%1").arg(e->getShoe());
-        outData << QString(", comment=\"%1\"").arg(encodeComment(e->getComment()));
-        QList<int> weatherList = e->getWeathers();
+        const auto& placeList = e->getPlaces();
+        for (const auto& place : placeList) placeNumberList << QString::number(place);
+        outData << QString(", \"place\": \"%1\"").arg(placeNumberList.join(","));
+        outData << QString(", \"shoe\": %1").arg(e->getShoe());
+        outData << QString(", \"comment\": \"%1\"").arg(encodeComment(e->getComment()));
         QStringList weatherNumberList;
-        for (int j = 0; j < weatherList.size(); ++j)
-            weatherNumberList << QString::number(weatherList.at(j));
-        outData << QString(", weather=(%1)").arg(weatherNumberList.join(", "));
-        outData << QString(", pulse=%1/%2").arg(e->getMaxPulse()).arg(e->getAvgPulse());
-        outData << QString(", calories=%1/%2 }\n").arg(e->getCal()).arg(e->getFat());
+        const auto& weatherList = e->getWeathers();
+        for (const auto& weather : weatherList) weatherNumberList << QString::number(weather);
+        outData << QString(", \"weather\": \"%1\"").arg(weatherNumberList.join(","));
+        outData << QString(", \"pulse\": \"%1/%2\"").arg(e->getMaxPulse()).arg(e->getAvgPulse());
+        outData << QString(", \"calories\": \"%1/%2\" }").arg(e->getCal()).arg(e->getFat());
+        if (i != exercises.size() - 1) outData << ",";
+        outData << "\n";
     }
-    outData << "}\n";
+    outData << "  ]\n}\n";
     out << outData.join("");
     QApplication::restoreOverrideCursor();
     file.close();
@@ -520,18 +518,18 @@ void SimpleTrainingLogMainWindow::loadDatabase()
 
 void SimpleTrainingLogMainWindow::loadJsonDatabase()
 {
-    QString curJsonLogAsString;
-    QFile file(m_curJsonLog);
+    QFile file(m_curLog);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Cannot read file" << m_curJsonLog << ":" << file.errorString();
+        qWarning() << "Cannot read file" << m_curLog << ":" << file.errorString();
         return;
     }
-    curJsonLogAsString = file.readAll();
+    QString curLogAsString;
+    curLogAsString = file.readAll();
     file.close();
 
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(curJsonLogAsString.toUtf8());
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(curLogAsString.toUtf8());
     if (jsonDocument.isNull()) {
-        qWarning() << "Invalid JSON document:" << m_curJsonLog;
+        qWarning() << "Invalid JSON document:" << m_curLog;
         return;
     }
 
@@ -774,20 +772,6 @@ SimpleTrainingLogMainWindow::~SimpleTrainingLogMainWindow()
         delete m_ftp;*/
 
     clear();
-}
-
-int SimpleTrainingLogMainWindow::parseFile(const char *fileName)
-{
-    // exercisedataparserdebug = 1;
-    ExerciseDataParser_flex_debug = 0;
-    ExerciseDataParserin_name = fileName;
-    ExerciseDataParserin = fopen(fileName, "r");
-    if (ExerciseDataParserin == 0) {
-        return 1;
-    }
-    int ret = ExerciseDataParserparse();
-    fclose(ExerciseDataParserin);
-    return ret;
 }
 
 void SimpleTrainingLogMainWindow::ftpStateChanged(int /*state*/)

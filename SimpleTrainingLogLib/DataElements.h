@@ -5,33 +5,8 @@
 #include <QString>
 #include <QColor>
 
-// It is declared here.  All data types here are used by the lexer/parser.
-#define YYSTYPE_IS_DECLARED 1
-#define YYLTYPE_IS_DECLARED 1
-
-// Semantic record for the parser propagated this way.  This is the semantic
-// value of a given token.  That value is returned in yylval.  yylval's type
-// is the union defined above.  Currently SimpleTrainingLog works only with integers.
-// Floating point numbers are not supported yet.  Originally it was an "%union
-// semrec { ... }" in the next section.  Include this header in
-// exercisedatalexer.l and exercisedataparser.y.
-typedef struct Result {
-  int intval;  // Plain integers.
-  QList<int> intlist;  // List of places.
-  QString stringval;  // All string data.
-} YYSTYPE;
-// It's better to declare our own.
-typedef struct YYLTYPE
-{
-  int first_line;
-  int first_column;
-  int last_line;
-  int last_column;
-} YYLTYPE;
-
 class Exercise;
 
-// Helper functions.
 QString getShoeString(int id);
 QString getSportString(int id);
 QString getPlaceString(int id);
@@ -153,14 +128,12 @@ private:
 class Place
 {
 public:
-  explicit Place(int id, QString name) : m_id(id), m_lat(-1), m_lon(-1), m_name(name) { }
+  explicit Place(int id, QString name) : m_id(id), m_name(name) { }
   inline int getId() const { return m_id; }
   inline QString getName() const { return m_name; }
   void setName(QString name) { m_name = name; }
 private:
   int m_id;
-  double m_lat;
-  double m_lon;
   QString m_name;
 };
 
