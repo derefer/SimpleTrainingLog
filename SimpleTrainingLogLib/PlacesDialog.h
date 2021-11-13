@@ -2,28 +2,26 @@
 
 #include <QDialog>
 
-class QLabel;
-class QLineEdit;
-class QTreeWidget;
-class QPushButton;
 class QTreeWidgetItem;
-class QPainter;
-class Place;
+
 class Exercise;
+class Place;
+
+namespace Ui {
+class PlacesDialog;
+}
 
 class PlacesDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PlacesDialog(QWidget *parent, QList<Place*> *places,
-        QList<Exercise*> *exercises);
+    explicit PlacesDialog(QWidget *parent, QList<Place*> *places, QList<Exercise*> *exercises);
+    ~PlacesDialog();
 
     inline bool isDirty() const { return m_dirty; }
-    inline const QList<int>& getModifiedExercises() const
-        { return m_modifiedExercises; }
-    inline const QList<int>& getRemovedExercises() const
-        { return m_removedExercises; }
+    inline const QList<int>& getModifiedExercises() const { return m_modifiedExercises; }
+    inline const QList<int>& getRemovedExercises() const { return m_removedExercises; }
 
 private slots:
     void slotOk();
@@ -34,20 +32,14 @@ private slots:
     void slotSetNameText(QTreeWidgetItem *item, int column);
 
 private:
-    enum places_columns { COL_ID, COL_NAME };
+    const std::uint32_t COL_ID = 0;
+    const std::uint32_t COL_NAME = 1;
+
+    Ui::PlacesDialog *ui;
 
     QList<Place*> *m_places;
     QList<Exercise*> *m_exercises;
-
     bool m_dirty;
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;
-
-    QLineEdit *m_nameLineEdit;
-    QTreeWidget *m_placesTreeWidget;
-    QPushButton *m_okPushButton;
-    QPushButton *m_addPushButton;
-    QPushButton *m_removePushButton;
-    QPushButton *m_savePushButton;
-    QPushButton *m_cancelPushButton;
 };

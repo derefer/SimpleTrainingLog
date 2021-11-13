@@ -40,4 +40,5 @@ SOURCES += \
     WeathersDialog.cpp
 
 FORMS += \
+    PlacesDialog.ui \
     WeathersDialog.ui

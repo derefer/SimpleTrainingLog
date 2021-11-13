@@ -1,5 +1,4 @@
 #include <QMessageBox>
-#include <QTreeWidget>
 
 #include "DataElements.h"
 #include "WeathersDialog.h"

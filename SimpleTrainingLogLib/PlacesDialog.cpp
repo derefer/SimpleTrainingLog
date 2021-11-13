@@ -1,75 +1,30 @@
-#include <QDebug>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPixmap>
-#include <QPushButton>
-#include <QTreeWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QMessageBox>
-#include <QPainter>
 
-#include "PlacesDialog.h"
 #include "DataElements.h"
+#include "PlacesDialog.h"
+#include "ui_PlacesDialog.h"
 
 PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places, QList<Exercise*> *exercises) :
-    QDialog(parent), m_places(places), m_exercises(exercises), m_dirty(false)
+    QDialog(parent), ui(new Ui::PlacesDialog), m_places(places), m_exercises(exercises), m_dirty(false)
 {
-    m_nameLineEdit = new QLineEdit;
-    m_placesTreeWidget = new QTreeWidget;
+    ui->setupUi(this);
 
     QStringList headerLabels("#");
     headerLabels << "Name";
-    m_placesTreeWidget->setHeaderLabels(headerLabels);
+    ui->placesTreeWidget->setHeaderLabels(headerLabels);
 
     for (int i = 0; i < places->size(); ++i) {
-        // TODO Set column width to content.
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setText(COL_ID, QString::number(places->at(i)->getId()));
         item->setText(COL_NAME, places->at(i)->getName());
-        m_placesTreeWidget->insertTopLevelItem(i, item);
-        m_placesTreeWidget->setColumnWidth(COL_ID, 56);
+        ui->placesTreeWidget->insertTopLevelItem(i, item);
+        ui->placesTreeWidget->setColumnWidth(COL_ID, 56);
     }
+}
 
-    QHBoxLayout *dataLayout = new QHBoxLayout;
-    dataLayout->addWidget(new QLabel(tr("Name:")));
-    dataLayout->addWidget(m_nameLineEdit);
-
-    m_okPushButton = new QPushButton(tr("&OK"));
-    m_addPushButton = new QPushButton(tr("&Add"));
-    m_removePushButton = new QPushButton(tr("&Remove"));
-    m_savePushButton = new QPushButton(tr("&Save"));
-    m_cancelPushButton = new QPushButton(tr("&Cancel"));
-
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
-    buttonLayout->addWidget(m_okPushButton);
-    buttonLayout->addWidget(m_addPushButton);
-    buttonLayout->addWidget(m_removePushButton);
-    buttonLayout->addWidget(m_savePushButton);
-    buttonLayout->addWidget(m_cancelPushButton);
-
-    QVBoxLayout *leftLayout = new QVBoxLayout;
-    leftLayout->addLayout(dataLayout);
-    //leftLayout->addStretch();
-
-    QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addLayout(leftLayout);
-    mainLayout->addWidget(m_placesTreeWidget);
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addLayout(mainLayout);
-    layout->addLayout(buttonLayout);
-
-    setLayout(layout);
-    setWindowTitle(tr("Manage Places"));
-
-    connect(m_okPushButton, SIGNAL(clicked()), this, SLOT(slotOk()));
-    connect(m_addPushButton, SIGNAL(clicked()), this, SLOT(slotAdd()));
-    connect(m_removePushButton, SIGNAL(clicked()), this, SLOT(slotRemove()));
-    connect(m_savePushButton, SIGNAL(clicked()), this, SLOT(slotSave()));
-    connect(m_cancelPushButton, SIGNAL(clicked()), this, SLOT(slotCancel()));
-    connect(m_placesTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem *, int)),
-        this, SLOT(slotSetNameText(QTreeWidgetItem *, int)));
+PlacesDialog::~PlacesDialog()
+{
+    delete ui;
 }
 
 void PlacesDialog::slotOk()
@@ -84,11 +39,11 @@ void PlacesDialog::slotCancel()
 
 void PlacesDialog::slotAdd()
 {
-    QString name = m_nameLineEdit->text();
+    QString name = ui->nameLineEdit->text();
     if (name.isEmpty()) return;
-    for (int i = 0; i < m_placesTreeWidget->topLevelItemCount(); ++i) {
-        if (name == m_placesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            m_nameLineEdit->setText("");
+    for (int i = 0; i < ui->placesTreeWidget->topLevelItemCount(); ++i) {
+        if (name == ui->placesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
+            ui->nameLineEdit->setText("");
             return;
         }
     }
@@ -97,16 +52,15 @@ void PlacesDialog::slotAdd()
     QTreeWidgetItem *item = new QTreeWidgetItem;
     item->setText(COL_ID, QString::number(place->getId()));
     item->setText(COL_NAME, place->getName());
-    m_placesTreeWidget->insertTopLevelItem(m_placesTreeWidget->
-        topLevelItemCount(), item);
-    m_nameLineEdit->setText("");
+    ui->placesTreeWidget->insertTopLevelItem(ui->placesTreeWidget->topLevelItemCount(), item);
+    ui->nameLineEdit->setText("");
     m_dirty = true;
 }
 
 void PlacesDialog::slotRemove()
 {
     // TODO Place is optional.  Don't remove the affected exercises.
-    QTreeWidgetItem *item = m_placesTreeWidget->currentItem();
+    QTreeWidgetItem *item = ui->placesTreeWidget->currentItem();
     if (!item) return;
     QString name = item->text(COL_NAME);
     int count = 0;
@@ -125,21 +79,20 @@ void PlacesDialog::slotRemove()
         if ((m_exercises->at(i)->getPlaces()).contains(getPlaceId(name)))
             m_removedExercises.append(m_exercises->at(i)->getId());
     removePlaceById(getPlaceId(name));
-    delete m_placesTreeWidget->takeTopLevelItem(m_placesTreeWidget->
-        indexOfTopLevelItem(item));
-    m_nameLineEdit->setText("");
+    delete ui->placesTreeWidget->takeTopLevelItem(ui->placesTreeWidget->indexOfTopLevelItem(item));
+    ui->nameLineEdit->setText("");
     m_dirty = true;
 }
 
 void PlacesDialog::slotSave()
 {
-    QTreeWidgetItem *item = m_placesTreeWidget->currentItem();
+    QTreeWidgetItem *item = ui->placesTreeWidget->currentItem();
     if (!item) slotAdd();
-    QString name = m_nameLineEdit->text();
+    QString name = ui->nameLineEdit->text();
     if (name.isEmpty()) return;
-    for (int i = 0; i < m_placesTreeWidget->topLevelItemCount(); ++i) {
-        if (name == m_placesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            m_nameLineEdit->setText("");
+    for (int i = 0; i < ui->placesTreeWidget->topLevelItemCount(); ++i) {
+        if (name == ui->placesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
+            ui->nameLineEdit->setText("");
             return;
         }
     }
@@ -162,5 +115,5 @@ void PlacesDialog::slotSave()
 
 void PlacesDialog::slotSetNameText(QTreeWidgetItem *item, int)
 {
-    m_nameLineEdit->setText(item->text(COL_NAME));
+    ui->nameLineEdit->setText(item->text(COL_NAME));
 }
