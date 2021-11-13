@@ -906,12 +906,7 @@ void SimpleTrainingLogMainWindow::manageWeathers()
 
 void SimpleTrainingLogMainWindow::settings()
 {
-    SettingsDialog dialog(this);
-    dialog.setLog(m_curLog);
-    dialog.setHost(m_curHost);
-    dialog.setPort(m_curPort);
-    dialog.setPath(m_curPath);
-    dialog.setUser(m_curUser);
+    SettingsDialog dialog(this, m_curLog, m_curHost, m_curPort, m_curPath, m_curUser);
     if (dialog.exec()) {
         QString dLog = dialog.getLog();
         QString dHost = dialog.getHost();

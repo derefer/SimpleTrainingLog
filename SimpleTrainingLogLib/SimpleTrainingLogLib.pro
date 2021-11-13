@@ -41,4 +41,5 @@ SOURCES += \
 
 FORMS += \
     PlacesDialog.ui \
+    SettingsDialog.ui \
     WeathersDialog.ui
