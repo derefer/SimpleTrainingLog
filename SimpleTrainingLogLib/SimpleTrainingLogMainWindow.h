@@ -76,10 +76,6 @@ private:
     void loadJsonDatabase();
     void setCurrentFile(const QString& fileName);
     QString strippedName(const QString& fullFileName);
-    int getSportByName(const QString& sport) const;
-    int getShoeByName(const QString& shoe) const;
-    int getPlaceByName(const QString& place) const;
-    int getWeatherByName(const QString& weather) const;
     void clear();
 
     const std::uint32_t DEFAULT_WIDTH = 900;

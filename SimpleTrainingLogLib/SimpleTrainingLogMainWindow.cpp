@@ -114,7 +114,7 @@ void SimpleTrainingLogMainWindow::viewExercise()
     }
 }
 
-void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *item __attribute__((unused)), int column __attribute__((unused)))
+void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *, int)
 {
     NewExerciseDialog dialog(this, "Edit Exercise");
     dialog.addSportStrings(getSportStrings());
@@ -154,17 +154,17 @@ void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *item __attribute
         QStringList caloriesList = dialog.getCalories().split(PULSE_SEPARATOR);
         e->setCal(caloriesList[0].toInt());
         e->setFat(caloriesList[1].toInt());
-        e->setSport(getSportByName(dialog.getSport()));
+        e->setSport(getSportId(dialog.getSport()));
         e->clearPlaces();
         QStringList placeList = dialog.getPlaceList();
         for (int i = 0; i < placeList.size(); ++i)
-            e->addPlace(getPlaceByName(placeList.at(i)));
-        e->setShoe(getShoeByName(dialog.getShoe()));
+            e->addPlace(getPlaceId(placeList.at(i)));
+        e->setShoe(getShoeId(dialog.getShoe()));
         e->setComment(dialog.getComment());
         e->clearWeathers();
         QStringList weatherList = dialog.getWeatherList();
         for (int i = 0; i < weatherList.size(); ++i)
-            e->addWeather(getWeatherByName(weatherList.at(i)));
+            e->addWeather(getWeatherId(weatherList.at(i)));
         m_exerciseTable->updateExercise(e->getId());
         m_statisticsHandler->calculateStatistics();
         setDirty();
@@ -230,15 +230,15 @@ void SimpleTrainingLogMainWindow::newExercise()
         QStringList caloriesList = dialog.getCalories().split(PULSE_SEPARATOR);
         e->setCal(caloriesList[0].toInt());
         e->setFat(caloriesList[1].toInt());
-        e->setSport(getSportByName(dialog.getSport()));
+        e->setSport(getSportId(dialog.getSport()));
         QStringList placeList = dialog.getPlaceList();
         for (int i = 0; i < placeList.size(); ++i)
-            e->addPlace(getPlaceByName(placeList.at(i)));
-        e->setShoe(getShoeByName(dialog.getShoe()));
+            e->addPlace(getPlaceId(placeList.at(i)));
+        e->setShoe(getShoeId(dialog.getShoe()));
         e->setComment(dialog.getComment());
         QStringList weatherList = dialog.getWeatherList();
         for (int i = 0; i < weatherList.size(); ++i)
-            e->addWeather(getWeatherByName(weatherList.at(i)));
+            e->addWeather(getWeatherId(weatherList.at(i)));
         exercises.append(e);
         m_exerciseTable->appendTable(e);
         m_statisticsHandler->calculateStatistics();
@@ -599,10 +599,10 @@ void SimpleTrainingLogMainWindow::loadJsonDatabase()
         const auto& exerciseDistance = exercise["distance"].toInt();
         const auto& exerciseDuration = exercise["duration"].toString();
         const auto& exerciseSport = exercise["sport"].toInt();
-        const auto& exercisePlace = exercise["place"].toString().split(", ");
+        const auto& exercisePlace = exercise["place"].toString().split(",");
         const auto& exerciseShoe = exercise["shoe"].toInt();
         const auto& exerciseComment = exercise["comment"].toString();
-        const auto& exerciseWeather = exercise["weather"].toString().split(", ");
+        const auto& exerciseWeather = exercise["weather"].toString().split(",");
         const auto& exercisePulse = exercise["pulse"].toString().split("/"); // MaxBpm/AvgBpm
         const auto& exerciseCalories = exercise["calories"].toString().split("/"); // Calories/Fat%
         Exercise *newExercise = new Exercise(exerciseId);
@@ -802,38 +802,6 @@ void SimpleTrainingLogMainWindow::ftpStateChanged(int /*state*/)
         qWarning("Closing...");
         break;
     }*/
-}
-
-int SimpleTrainingLogMainWindow::getSportByName(const QString& sport) const
-{
-    for (int i = 0; i < sports.size(); ++i)
-        if ((sports.at(i))->getName() == sport)
-            return i;
-    return -1;
-}
-
-int SimpleTrainingLogMainWindow::getPlaceByName(const QString& place) const
-{
-    for (int i = 0; i < places.size(); ++i)
-        if ((places.at(i))->getName() == place)
-            return i;
-    return -1;
-}
-
-int SimpleTrainingLogMainWindow::getShoeByName(const QString& shoe) const
-{
-    for (int i = 0; i < shoes.size(); ++i)
-        if ((shoes.at(i))->getName() == shoe)
-            return i;
-    return -1;
-}
-
-int SimpleTrainingLogMainWindow::getWeatherByName(const QString& weather) const
-{
-    for (int i = 0; i < weathers.size(); ++i)
-        if ((weathers.at(i))->getName() == weather)
-            return i;
-    return -1;
 }
 
 void SimpleTrainingLogMainWindow::manageShoes()

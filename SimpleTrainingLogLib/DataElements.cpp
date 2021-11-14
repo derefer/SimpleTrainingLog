@@ -8,97 +8,93 @@ extern QList<Weather*> weathers;
 
 void Exercise::addPlace(int id)
 {
-    if (!m_places.contains(id))
-        m_places.append(id);
+    if (!m_places.contains(id)) m_places.append(id);
 }
 
 void Exercise::setPlaces(QList<int> ids)
 {
     for (int i = 0; i < ids.size(); ++i)
-        if (!m_places.contains(ids.at(i)))
-            m_places.append(ids.at(i));
+        if (!m_places.contains(ids[i])) m_places.append(ids[i]);
 }
 
 void Exercise::addWeather(int id)
 {
-    if (!m_weathers.contains(id))
-        m_weathers.append(id);
+    if (!m_weathers.contains(id)) m_weathers.append(id);
 }
 
 void Exercise::setWeathers(QList<int> ids)
 {
     for (int i = 0; i < ids.size(); ++i)
-        if (!m_weathers.contains(ids.at(i)))
-            m_weathers.append(ids.at(i));
+        if (!m_weathers.contains(ids[i])) m_weathers.append(ids[i]);
 }
 
 QString getSportString(int id)
 {
     for (int i = 0; i < sports.size(); ++i)
-        if ((sports.at(i))->getId() == id) return (sports.at(i))->getName();
+        if (sports[i]->getId() == id) return sports[i]->getName();
     return "<unknown>";
 }
 
 int getSportId(const QString& name)
 {
     for (int i = 0; i < sports.size(); ++i)
-        if (name == (sports.at(i))->getName()) return i;
+        if (name == sports[i]->getName()) return i;
     return -1;
 }
 
 QString getShoeString(int id)
 {
     for (int i = 0; i < shoes.size(); ++i)
-        if ((shoes.at(i))->getId() == id) return (shoes.at(i))->getName();
+        if (shoes[i]->getId() == id) return shoes[i]->getName();
     return "<unknown>";
 }
 
 int getShoeId(const QString& name)
 {
     for (int i = 0; i < shoes.size(); ++i)
-        if (name == (shoes.at(i))->getName()) return i;
+        if (name == shoes[i]->getName()) return i;
     return -1;
 }
 
 QString getPlaceString(int id)
 {
     for (int i = 0; i < places.size(); ++i)
-        if ((places.at(i))->getId() == id) return (places.at(i))->getName();
+        if (places[i]->getId() == id) return places[i]->getName();
     return "<unknown>";
 }
 
 int getPlaceId(const QString& name)
 {
     for (int i = 0; i < places.size(); ++i)
-        if (name == (places.at(i))->getName()) return i;
+        if (name == places[i]->getName()) return i;
     return -1;
 }
 
 QString getWeatherString(int id)
 {
     for (int i = 0; i < weathers.size(); ++i)
-        if ((weathers.at(i))->getId() == id) return (weathers.at(i))->getName();
+        if (weathers[i]->getId() == id) return weathers[i]->getName();
     return "<unknown>";
 }
 
 int getWeatherId(const QString& name)
 {
     for (int i = 0; i < weathers.size(); ++i)
-        if (name == (weathers.at(i))->getName()) return i;
+        if (name == weathers[i]->getName()) return i;
     return -1;
 }
 
 Sport *getSportById(int id)
 {
     for (int i = 0; i < sports.size(); ++i)
-        if ((sports.at(i))->getId() == id) return sports.at(i);
-    return NULL;
+        if (sports[i]->getId() == id) return sports[i];
+    return nullptr;
 }
 
 void removeSportById(int id)
 {
     for (int i = 0; i < sports.size(); ++i)
-        if ((sports.at(i))->getId() == id) sports.removeAt(i);
+        if (sports[i]->getId() == id) sports.removeAt(i);
 }
 
 QList<Place*> getPlacesById(QList<int> ids)
@@ -106,28 +102,28 @@ QList<Place*> getPlacesById(QList<int> ids)
     QList<Place*> resultPlaces;
     for (int i = 0; i < places.size(); ++i)
         for (int j = 0; j < ids.size(); ++j)
-            if ((places.at(i))->getId() == ids.at(j))
-                resultPlaces.append(places.at(i));
+            if (places[i]->getId() == ids[j])
+                resultPlaces.append(places[i]);
     return resultPlaces;
 }
 
 void removePlaceById(int id)
 {
     for (int i = 0; i < places.size(); ++i)
-        if ((places.at(i))->getId() == id) places.removeAt(i);
+        if ((places[i])->getId() == id) places.removeAt(i);
 }
 
 Shoe *getShoeById(int id)
 {
     for (int i = 0; i < shoes.size(); ++i)
-        if ((shoes.at(i))->getId() == id) return shoes.at(i);
-    return NULL;
+        if ((shoes[i])->getId() == id) return shoes[i];
+    return nullptr;
 }
 
 void removeShoeById(int id)
 {
     for (int i = 0; i < shoes.size(); ++i)
-        if ((shoes.at(i))->getId() == id) shoes.removeAt(i);
+        if (shoes[i]->getId() == id) shoes.removeAt(i);
 }
 
 QList<Weather*> getWeathersById(QList<int> ids)
@@ -135,35 +131,35 @@ QList<Weather*> getWeathersById(QList<int> ids)
     QList<Weather*> resultWeathers;
     for (int i = 0; i < weathers.size(); ++i)
         for (int j = 0; j < ids.size(); ++j)
-            if ((weathers.at(i))->getId() == ids.at(j))
-                resultWeathers.append(weathers.at(i));
+            if (weathers[i]->getId() == ids[j])
+                resultWeathers.append(weathers[i]);
     return resultWeathers;
 }
 
 void removeWeatherById(int id)
 {
     for (int i = 0; i < weathers.size(); ++i)
-        if ((weathers.at(i))->getId() == id) weathers.removeAt(i);
+        if (weathers[i]->getId() == id) weathers.removeAt(i);
 }
 
 void removeExerciseById(int id)
 {
     for (int i = 0; i < exercises.size(); ++i)
-        if ((exercises.at(i))->getId() == id) exercises.removeAt(i);
+        if (exercises[i]->getId() == id) exercises.removeAt(i);
 }
 
 Exercise *getExerciseById(int id)
 {
     for (int i = 0; i < exercises.size(); ++i)
-        if ((exercises.at(i))->getId() == id) return exercises.at(i);
-    return NULL;
+        if (exercises[i]->getId() == id) return exercises[i];
+    return nullptr;
 }
 
 QStringList getSportStrings()
 {
     QStringList sportList;
     for (int i = 0; i < sports.size(); ++i)
-        sportList << (sports.at(i))->getName();
+        sportList << sports[i]->getName();
     return sportList;
 }
 
@@ -171,7 +167,7 @@ QStringList getShoeStrings()
 {
     QStringList shoeList;
     for (int i = 0; i < shoes.size(); ++i)
-        shoeList << (shoes.at(i))->getName();
+        shoeList << shoes[i]->getName();
     return shoeList;
 }
 
@@ -179,7 +175,7 @@ QStringList getPlaceStrings()
 {
     QStringList placeList;
     for (int i = 0; i < places.size(); ++i)
-        placeList << (places.at(i))->getName();
+        placeList << places[i]->getName();
     return placeList;
 }
 
@@ -187,7 +183,7 @@ QStringList getWeatherStrings()
 {
     QStringList weatherList;
     for (int i = 0; i < weathers.size(); ++i)
-        weatherList << (weathers.at(i))->getName();
+        weatherList << weathers[i]->getName();
     return weatherList;
 }
 
