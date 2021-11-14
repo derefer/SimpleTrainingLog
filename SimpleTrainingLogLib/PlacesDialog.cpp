@@ -43,17 +43,17 @@ void PlacesDialog::slotAdd()
     if (name.isEmpty()) return;
     for (int i = 0; i < ui->placesTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->placesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            ui->nameLineEdit->setText("");
+            ui->nameLineEdit->clear();
             return;
         }
     }
     Place *place = new Place(m_places->size(), name);
     m_places->append(place);
-    QTreeWidgetItem *item = new QTreeWidgetItem;
+    QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(COL_ID, QString::number(place->getId()));
     item->setText(COL_NAME, place->getName());
     ui->placesTreeWidget->insertTopLevelItem(ui->placesTreeWidget->topLevelItemCount(), item);
-    ui->nameLineEdit->setText("");
+    ui->nameLineEdit->clear();
     m_dirty = true;
 }
 
@@ -80,7 +80,7 @@ void PlacesDialog::slotRemove()
             m_removedExercises.append(m_exercises->at(i)->getId());
     removePlaceById(getPlaceId(name));
     delete ui->placesTreeWidget->takeTopLevelItem(ui->placesTreeWidget->indexOfTopLevelItem(item));
-    ui->nameLineEdit->setText("");
+    ui->nameLineEdit->clear();
     m_dirty = true;
 }
 
@@ -92,7 +92,7 @@ void PlacesDialog::slotSave()
     if (name.isEmpty()) return;
     for (int i = 0; i < ui->placesTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->placesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            ui->nameLineEdit->setText("");
+            ui->nameLineEdit->clear();
             return;
         }
     }

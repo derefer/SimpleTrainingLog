@@ -194,11 +194,9 @@ bool ExerciseItem::operator<(const QTreeWidgetItem& other) const
     switch (column) {
     case ExerciseTable::COL_ID:
     case ExerciseTable::COL_DISTANCE:
-        return data(column, Qt::DisplayRole).toInt() <
-            other.data(column, Qt::DisplayRole).toInt();
+        return data(column, Qt::DisplayRole).toInt() < other.data(column, Qt::DisplayRole).toInt();
     case ExerciseTable::COL_SPEED:
-        return data(column, Qt::DisplayRole).toDouble() <
-            other.data(column, Qt::DisplayRole).toDouble();
+        return data(column, Qt::DisplayRole).toDouble() < other.data(column, Qt::DisplayRole).toDouble();
     case ExerciseTable::COL_DATE: {
         // E.g. "2008-01-01".  It is assumed to be correct.
         QStringList dateList = text(column).split(DATE_SEPARATOR);
@@ -240,7 +238,6 @@ bool ExerciseItem::operator<(const QTreeWidgetItem& other) const
         }
         break; }
     default:  // Sport/Place/Shoe/Comment/Weather.  Alphabetical order.
-        return data(column, Qt::DisplayRole).toString() <
-            other.data(column, Qt::DisplayRole).toString();
+        return data(column, Qt::DisplayRole).toString() < other.data(column, Qt::DisplayRole).toString();
     }
 }

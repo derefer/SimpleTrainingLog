@@ -44,17 +44,17 @@ void WeathersDialog::slotAdd()
     if (name.isEmpty()) return;
     for (int i = 0; i < ui->weathersTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->weathersTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            ui->nameLineEdit->setText("");
+            ui->nameLineEdit->clear();
             return;
         }
     }
     Weather *weather = new Weather(m_weathers->size(), name);
     m_weathers->append(weather);
-    QTreeWidgetItem *item = new QTreeWidgetItem;
+    QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(COL_ID, QString::number(weather->getId()));
     item->setText(COL_NAME, weather->getName());
     ui->weathersTreeWidget->insertTopLevelItem(ui->weathersTreeWidget->topLevelItemCount(), item);
-    ui->nameLineEdit->setText("");
+    ui->nameLineEdit->clear();
     m_dirty = true;  // Activate the "Save" button.
 }
 
@@ -81,7 +81,7 @@ void WeathersDialog::slotRemove()
             m_removedExercises.append(m_exercises->at(i)->getId());
     removeWeatherById(getWeatherId(name));
     delete ui->weathersTreeWidget->takeTopLevelItem(ui->weathersTreeWidget->indexOfTopLevelItem(item));
-    ui->nameLineEdit->setText("");
+    ui->nameLineEdit->clear();
     m_dirty = true;
 }
 
@@ -93,7 +93,7 @@ void WeathersDialog::slotSave()
     if (name.isEmpty()) return;
     for (int i = 0; i < ui->weathersTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->weathersTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            ui->nameLineEdit->setText("");
+            ui->nameLineEdit->clear();
             return;
         }
     }

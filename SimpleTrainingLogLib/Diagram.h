@@ -27,7 +27,7 @@ private:
       LABEL_SPACING = 5
     };
 
-    QList<int> m_data;
+    std::vector<int> m_data;
 
     int maxData() const;
     int getTicks() const;

@@ -48,7 +48,7 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
 
     m_exerciseTable = new ExerciseTable();
     m_statisticsHandler = new StatisticsHandler();
-    m_mainTabWidget = new QTabWidget;
+    m_mainTabWidget = new QTabWidget();
     m_mainTabWidget->addTab(m_exerciseTable, tr("Summary"));
     m_mainTabWidget->addTab(m_statisticsHandler, tr("Statistics"));
     setCentralWidget(m_mainTabWidget);
@@ -67,7 +67,7 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
         this, SLOT(editExercise(QTreeWidgetItem *, int)));
 }
 
-void SimpleTrainingLogMainWindow::setDirty(int row __attribute__((unused)), int col __attribute__((unused)))
+void SimpleTrainingLogMainWindow::setDirty(int, int)
 {
     saveAct->setEnabled(true);
     m_dirty = true;
@@ -175,9 +175,9 @@ void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *, int)
 // QTreeWidget.
 void SimpleTrainingLogMainWindow::contextMenuForTable(const QPoint& pos)
 {
-    QTreeWidgetItem *item = NULL;
+    QTreeWidgetItem *item = nullptr;
     item = m_exerciseTable->itemAt(pos);
-    if (NULL != item) {
+    if (item != nullptr) {
         QMenu menu(m_exerciseTable);
         QAction *viewAct = new QAction(tr("&View"), m_exerciseTable);
         viewAct->setStatusTip(tr("View the selected exercise"));
@@ -193,8 +193,6 @@ void SimpleTrainingLogMainWindow::contextMenuForTable(const QPoint& pos)
         menu.addAction(editAct);
         menu.addAction(deleteAct);
         menu.exec(m_exerciseTable->mapToGlobal(pos));
-    } else {
-        return;
     }
 }
 
