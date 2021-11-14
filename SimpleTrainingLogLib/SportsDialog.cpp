@@ -1,37 +1,20 @@
-#include <QDebug>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QTreeWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QMessageBox>
 #include <QColorDialog>
 
-#include "SportsDialog.h"
 #include "DataElements.h"
-
-#define LEN_SPORT 49
-#define LEN_COLOR 7
+#include "SportsDialog.h"
+#include "ui_SportsDialog.h"
 
 SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, QList<Exercise*> *exercises) :
-    QDialog(parent), m_sports(sports), m_exercises(exercises), m_dirty(false)
+    QDialog(parent), ui(new Ui::SportsDialog), m_sports(sports), m_exercises(exercises), m_dirty(false)
 {
-    m_nameLabel = new QLabel(tr("Name:"));
-    m_nameLineEdit = new QLineEdit;
-    m_nameLineEdit->setMaxLength(LEN_SPORT);
-    m_sportsTreeWidget = new QTreeWidget;
-    m_colorLabel = new QLabel(tr("Color:"));
-    m_colorLineEdit = new QLineEdit;
-    m_colorLineEdit->setMaxLength(LEN_COLOR);
-    m_colorPushButton = new QPushButton(tr("C&hoose"));
+    ui->setupUi(this);
 
     QStringList headerLabels("#");
     headerLabels << "Name" << "Color";
-    m_sportsTreeWidget->setHeaderLabels(headerLabels);
+    ui->sportsTreeWidget->setHeaderLabels(headerLabels);
 
     for (int i = 0; i < sports->size(); ++i) {
-        // TODO Set column width to content.
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setText(COL_ID, QString::number(sports->at(i)->getId()));
         item->setText(COL_NAME, sports->at(i)->getName());
@@ -39,51 +22,14 @@ SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, QList<Exercis
         item->setText(COL_COLOR, (color.name()));
         for (int j = 0; j < item->columnCount(); ++j)
             item->setBackground(j, QBrush(color));
-        m_sportsTreeWidget->insertTopLevelItem(i, item);
-        m_sportsTreeWidget->setColumnWidth(COL_ID, 56);
+        ui->sportsTreeWidget->insertTopLevelItem(i, item);
+        ui->sportsTreeWidget->setColumnWidth(COL_ID, 56);
     }
+}
 
-    m_okPushButton = new QPushButton(tr("&OK"));
-    m_addPushButton = new QPushButton(tr("&Add"));
-    m_removePushButton = new QPushButton(tr("&Remove"));
-    m_savePushButton = new QPushButton(tr("&Save"));
-    m_cancelPushButton = new QPushButton(tr("&Cancel"));
-
-    QHBoxLayout *buttonLayout = new QHBoxLayout;
-    buttonLayout->addWidget(m_okPushButton);
-    buttonLayout->addWidget(m_addPushButton);
-    buttonLayout->addWidget(m_removePushButton);
-    buttonLayout->addWidget(m_savePushButton);
-    buttonLayout->addWidget(m_cancelPushButton);
-
-    QHBoxLayout *colorFieldsLayout = new QHBoxLayout;
-    colorFieldsLayout->addWidget(m_colorLineEdit);
-    colorFieldsLayout->addWidget(m_colorPushButton);
-    QGridLayout *leftLayout = new QGridLayout;
-    leftLayout->addWidget(m_nameLabel, 0, 0);
-    leftLayout->addWidget(m_colorLabel, 1, 0);
-    leftLayout->addWidget(m_nameLineEdit, 0, 1);
-    leftLayout->addLayout(colorFieldsLayout, 1, 1);
-
-    QHBoxLayout *mainLayout = new QHBoxLayout;
-    mainLayout->addLayout(leftLayout);
-    mainLayout->addWidget(m_sportsTreeWidget);
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addLayout(mainLayout);
-    layout->addLayout(buttonLayout);
-
-    setLayout(layout);
-    setWindowTitle(tr("Manage Sports"));
-
-    connect(m_colorPushButton, SIGNAL(clicked()), this, SLOT(slotSetColor()));
-    connect(m_okPushButton, SIGNAL(clicked()), this, SLOT(slotOk()));
-    connect(m_addPushButton, SIGNAL(clicked()), this, SLOT(slotAdd()));
-    connect(m_removePushButton, SIGNAL(clicked()), this, SLOT(slotRemove()));
-    connect(m_savePushButton, SIGNAL(clicked()), this, SLOT(slotSave()));
-    connect(m_cancelPushButton, SIGNAL(clicked()), this, SLOT(slotCancel()));
-    connect(m_sportsTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem *, int)),
-        this, SLOT(slotSetNameText(QTreeWidgetItem *, int)));
+SportsDialog::~SportsDialog()
+{
+    delete ui;
 }
 
 void SportsDialog::slotOk()
@@ -99,20 +45,20 @@ void SportsDialog::slotCancel()
 void SportsDialog::slotSetColor()
 {
     QColor color = QColorDialog::getColor(Qt::white, this);
-    m_colorLineEdit->setText(color.name());
+    ui->colorLineEdit->setText(color.name());
 }
 
 // Add a new sport to the list of sports.  The QTextLineEdit is always
 // cleared.  TODO: Better error handling.
 void SportsDialog::slotAdd()
 {
-    QString name = m_nameLineEdit->text();
-    QColor color = QColor(m_colorLineEdit->text());
+    QString name = ui->nameLineEdit->text();
+    QColor color = QColor(ui->colorLineEdit->text());
     if (name.isEmpty() || !color.isValid()) return;
-    for (int i = 0; i < m_sportsTreeWidget->topLevelItemCount(); ++i) {
-        if (name == m_sportsTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            m_nameLineEdit->setText("");
-            m_colorLineEdit->setText("");
+    for (int i = 0; i < ui->sportsTreeWidget->topLevelItemCount(); ++i) {
+        if (name == ui->sportsTreeWidget->topLevelItem(i)->text(COL_NAME)) {
+            ui->nameLineEdit->setText("");
+            ui->colorLineEdit->setText("");
             return;
         }
     }
@@ -122,10 +68,9 @@ void SportsDialog::slotAdd()
     item->setText(COL_ID, QString::number(sport->getId()));
     item->setText(COL_NAME, name);
     item->setText(COL_COLOR, color.name());
-    m_sportsTreeWidget->insertTopLevelItem(m_sportsTreeWidget->
-        topLevelItemCount(), item);
-    m_nameLineEdit->setText("");
-    m_colorLineEdit->setText("");
+    ui->sportsTreeWidget->insertTopLevelItem(ui->sportsTreeWidget->topLevelItemCount(), item);
+    ui->nameLineEdit->setText("");
+    ui->colorLineEdit->setText("");
     for (int col = 0; col < item->columnCount(); ++col)
         item->setBackground(col, QBrush(color));
     m_dirty = true;  // Activate the "Save" button.
@@ -133,7 +78,7 @@ void SportsDialog::slotAdd()
 
 void SportsDialog::slotRemove()
 {
-    QTreeWidgetItem *item = m_sportsTreeWidget->currentItem();
+    QTreeWidgetItem *item = ui->sportsTreeWidget->currentItem();
     if (!item) return;
     QString name = item->text(COL_NAME);
     int count = 0;
@@ -154,26 +99,25 @@ void SportsDialog::slotRemove()
         if (m_exercises->at(i)->getSport() == getSportId(name))
             m_removedExercises.append(m_exercises->at(i)->getId());
     removeSportById(getSportId(name));
-    delete m_sportsTreeWidget->takeTopLevelItem(m_sportsTreeWidget->
-        indexOfTopLevelItem(item));
-    m_nameLineEdit->setText("");
-    m_colorLineEdit->setText("");
+    delete ui->sportsTreeWidget->takeTopLevelItem(ui->sportsTreeWidget->indexOfTopLevelItem(item));
+    ui->nameLineEdit->setText("");
+    ui->colorLineEdit->setText("");
     m_dirty = true;
 }
 
 void SportsDialog::slotSave()
 {
-    QTreeWidgetItem *item = m_sportsTreeWidget->currentItem();
+    QTreeWidgetItem *item = ui->sportsTreeWidget->currentItem();
     // The default behaviour is "Add".
     if (!item) slotAdd();
-    QString name = m_nameLineEdit->text();
-    QColor color = QColor(m_colorLineEdit->text());
+    QString name = ui->nameLineEdit->text();
+    QColor color = QColor(ui->colorLineEdit->text());
     if (name.isEmpty()) return;
-    for (int i = 0; i < m_sportsTreeWidget->topLevelItemCount(); ++i) {
-        if (name == m_sportsTreeWidget->topLevelItem(i)->text(COL_NAME) &&
-            m_colorLineEdit->text() == m_sportsTreeWidget->topLevelItem(i)->text(COL_COLOR)) {
-            m_nameLineEdit->setText("");
-            m_colorLineEdit->setText("");
+    for (int i = 0; i < ui->sportsTreeWidget->topLevelItemCount(); ++i) {
+        if (name == ui->sportsTreeWidget->topLevelItem(i)->text(COL_NAME) &&
+            ui->colorLineEdit->text() == ui->sportsTreeWidget->topLevelItem(i)->text(COL_COLOR)) {
+            ui->nameLineEdit->setText("");
+            ui->colorLineEdit->setText("");
             return;
         }
     }
@@ -199,6 +143,6 @@ void SportsDialog::slotSave()
 
 void SportsDialog::slotSetNameText(QTreeWidgetItem *item, int)
 {
-    m_nameLineEdit->setText(item->text(COL_NAME));
-    m_colorLineEdit->setText(item->text(COL_COLOR));
+    ui->nameLineEdit->setText(item->text(COL_NAME));
+    ui->colorLineEdit->setText(item->text(COL_COLOR));
 }

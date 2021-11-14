@@ -42,4 +42,5 @@ SOURCES += \
 FORMS += \
     PlacesDialog.ui \
     SettingsDialog.ui \
+    SportsDialog.ui \
     WeathersDialog.ui
