@@ -95,23 +95,23 @@ void SimpleTrainingLogMainWindow::viewExercise()
     dialog.setDuration(e->getDuration());
     dialog.setPulse(e->getMaxPulse(), e->getAvgPulse());
     dialog.setCalories(e->getCal(), e->getFat());
-    dialog.setSport(getSportById(e->getSport())->getName());
-    QList<Place*> placesById = getPlacesById(e->getPlaces());
+    dialog.setSport(getSportString(e->getSport()));
+    const auto& placesById = getPlacesById(e->getPlaces());
     QStringList placesStringList;
-    for (int i = 0; i < placesById.size(); ++i)
-        placesStringList << (placesById.at(i))->getName();
+    for (const auto place : placesById) {
+        placesStringList << place->getName();
+    }
     dialog.setPlaces(placesStringList);
-    dialog.setShoe(getShoeById(e->getShoe())->getName());
-    QList<Weather*> weathersById = getWeathersById(e->getWeathers());
+    dialog.setShoe(getShoeString(e->getShoe()));
+    const auto& weathersById = getWeathersById(e->getWeathers());
     QStringList weathersStringList;
-    for (int i = 0; i < weathersById.size(); ++i)
-        weathersStringList << (weathersById.at(i))->getName();
+    for (const auto weather : weathersById) {
+        weathersStringList << weather->getName();
+    }
     dialog.setWeathers(weathersStringList);
     dialog.setComment(e->getComment());
 
-    if (dialog.exec()) {
-        // Do we need this?
-    }
+    dialog.exec();
 }
 
 void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *, int)

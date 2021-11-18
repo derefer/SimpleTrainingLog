@@ -4,7 +4,6 @@ New
 - Make all buttons inactive at first like in ShoesDialog (when nothing is to be added/removed...)
 - Resize QTreeWidget columns automatically, based on contents
 - Get rid of all warnings
-- Add GUI design for NewExerciseDialog
 - Add GUI design for ExportDialog
 - Add GUI design for the MainWindow
 

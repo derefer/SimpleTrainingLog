@@ -40,6 +40,7 @@ SOURCES += \
     WeathersDialog.cpp
 
 FORMS += \
+    NewExerciseDialog.ui \
     PlacesDialog.ui \
     SettingsDialog.ui \
     ShoesDialog.ui \
