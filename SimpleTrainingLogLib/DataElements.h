@@ -6,6 +6,10 @@
 #include <QColor>
 
 class Exercise;
+class Place;
+class Shoe;
+class Sport;
+class Weather;
 
 const QString months[12] = {
     "Jan.",
@@ -34,6 +38,10 @@ int getShoeId(const QString& name);
 int getSportId(const QString& name);
 int getPlaceId(const QString& name);
 int getWeatherId(const QString& name);
+Shoe *getShoeById(int id);
+Sport *getSportById(int id);
+QList<Place*> getPlacesById(QList<int> ids);
+QList<Weather*> getWeathersById(QList<int> ids);
 void removeSportById(int id);
 void removeShoeById(int id);
 void removeExerciseById(int id);

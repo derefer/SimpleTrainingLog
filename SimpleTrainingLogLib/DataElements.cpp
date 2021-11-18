@@ -1,10 +1,10 @@
 #include "DataElements.h"
 
-extern QList<Shoe*> shoes;
-extern QList<Sport*> sports;
-extern QList<Exercise*> exercises;
-extern QList<Place*> places;
-extern QList<Weather*> weathers;
+QList<Shoe*> shoes;
+QList<Sport*> sports;
+QList<Exercise*> exercises;
+QList<Place*> places;
+QList<Weather*> weathers;
 
 void Exercise::addPlace(int id)
 {

@@ -23,11 +23,6 @@
 #define TIME_SEPARATOR (":")
 #define PULSE_SEPARATOR ("/")
 
-extern Shoe *getShoeById(int id);
-extern Sport *getSportById(int id);
-extern QList<Place*> getPlacesById(QList<int> ids);
-extern QList<Weather*> getWeathersById(QList<int> ids);
-
 class QAction;
 class QMenu;
 class QTextEdit;

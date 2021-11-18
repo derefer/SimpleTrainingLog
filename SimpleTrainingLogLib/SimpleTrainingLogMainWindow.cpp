@@ -24,11 +24,11 @@
 #include "WeathersDialog.h"
 #include "SettingsDialog.h"
 
-QList<Shoe*> shoes;
-QList<Sport*> sports;
-QList<Exercise*> exercises;
-QList<Place*> places;
-QList<Weather*> weathers;
+extern QList<Shoe*> shoes;
+extern QList<Sport*> sports;
+extern QList<Exercise*> exercises;
+extern QList<Place*> places;
+extern QList<Weather*> weathers;
 
 SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_dirty(false)
 {
@@ -129,17 +129,19 @@ void SimpleTrainingLogMainWindow::editExercise(QTreeWidgetItem *, int)
     dialog.setDuration(e->getDuration());
     dialog.setPulse(e->getMaxPulse(), e->getAvgPulse());
     dialog.setCalories(e->getCal(), e->getFat());
-    dialog.setSport(getSportById(e->getSport())->getName());
-    QList<Place*> placesById = getPlacesById(e->getPlaces());
+    dialog.setSport(getSportString(e->getSport()));
+    const auto& placesById = getPlacesById(e->getPlaces());
     QStringList placesStringList;
-    for (int i = 0; i < placesById.size(); ++i)
-        placesStringList << (placesById.at(i))->getName();
+    for (const auto place : placesById) {
+        placesStringList << place->getName();
+    }
     dialog.setPlaces(placesStringList);
-    dialog.setShoe(getShoeById(e->getShoe())->getName());
-    QList<Weather*> weathersById = getWeathersById(e->getWeathers());
+    dialog.setShoe(getShoeString(e->getShoe()));
+    const auto& weathersById = getWeathersById(e->getWeathers());
     QStringList weathersStringList;
-    for (int i = 0; i < weathersById.size(); ++i)
-        weathersStringList << (weathersById.at(i))->getName();
+    for (const auto weather : weathersById) {
+        weathersStringList << weather->getName();
+    }
     dialog.setWeathers(weathersStringList);
     dialog.setComment(e->getComment());
 
@@ -208,7 +210,11 @@ void SimpleTrainingLogMainWindow::closeEvent(QCloseEvent *event)
 
 void SimpleTrainingLogMainWindow::newExercise()
 {
-    if (!(sports.size() > 0 && shoes.size() > 0)) return;
+    if (sports.empty()) {
+        // TODO: Initially, when there is no database, create a preset instead.
+        QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Please define at least one Sport to create an exercise."));
+        return;
+    }
 
     NewExerciseDialog dialog(this, "New Exercise");
     dialog.addSportStrings(getSportStrings());
@@ -368,8 +374,7 @@ void SimpleTrainingLogMainWindow::createActions()
     saveAct->setStatusTip(tr("Save the changes to database"));
     connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
 
-    exportHTMLAct = new QAction(QIcon(":Images/export.png"),
-        tr("&Export && Publishing"), this);
+    exportHTMLAct = new QAction(QIcon(":Images/export.png"), tr("&Export && Publishing"), this);
     exportHTMLAct->setShortcut(tr("Ctrl+E"));
     exportHTMLAct->setStatusTip(tr("HTML export & FTP upload"));
     connect(exportHTMLAct, SIGNAL(triggered()), this, SLOT(exportHTML()));
@@ -395,8 +400,7 @@ void SimpleTrainingLogMainWindow::createActions()
     m_weathersAct->setStatusTip(tr("Manage weathers"));
     connect(m_weathersAct, SIGNAL(triggered()), this, SLOT(manageWeathers()));
 
-    m_settingsAct = new QAction(QIcon(":Images/configure.png"),
-        tr("&Settings"), this);
+    m_settingsAct = new QAction(QIcon(":Images/configure.png"), tr("&Settings"), this);
     m_settingsAct->setStatusTip(tr("Settings"));
     connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
 
@@ -494,8 +498,7 @@ bool SimpleTrainingLogMainWindow::maybeSave()
     if (!m_dirty)
         return true;
     // Ask for confirmation.
-    int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Exercise data "
-        "has been modified. Do you want to save your changes?"),
+    int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Exercise data has been modified. Do you want to save your changes?"),
         QMessageBox::Yes | QMessageBox::Default, QMessageBox::No,
         QMessageBox::Cancel | QMessageBox::Escape);
     if (ret == QMessageBox::Yes) return save();
