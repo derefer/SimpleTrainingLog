@@ -6,28 +6,6 @@ QList<Exercise*> exercises;
 QList<Place*> places;
 QList<Weather*> weathers;
 
-void Exercise::addPlace(int id)
-{
-    if (!m_places.contains(id)) m_places.append(id);
-}
-
-void Exercise::setPlaces(QList<int> ids)
-{
-    for (int i = 0; i < ids.size(); ++i)
-        if (!m_places.contains(ids[i])) m_places.append(ids[i]);
-}
-
-void Exercise::addWeather(int id)
-{
-    if (!m_weathers.contains(id)) m_weathers.append(id);
-}
-
-void Exercise::setWeathers(QList<int> ids)
-{
-    for (int i = 0; i < ids.size(); ++i)
-        if (!m_weathers.contains(ids[i])) m_weathers.append(ids[i]);
-}
-
 QString getSportString(int id)
 {
     for (int i = 0; i < sports.size(); ++i)

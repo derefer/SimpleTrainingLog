@@ -12,21 +12,27 @@ DEFINES += SIMPLETRAININGLOGLIB_LIBRARY
 
 HEADERS += \
     Diagram.h \
+    Exercise.h \
     ExerciseTable.h \
     ExportDialog.h \
     NewExerciseDialog.h \
+    Place.h \
     PlacesDialog.h \
     SettingsDialog.h \
+    Shoe.h \
     ShoesDialog.h \
     SimpleTrainingLogLibDecl.h \
     SimpleTrainingLogMainWindow.h \
+    Sport.h \
     SportsDialog.h \
     StatisticsHandler.h \
     DataElements.h \
+    Weather.h \
     WeathersDialog.h
 
 SOURCES += \
     Diagram.cpp \
+    Exercise.cpp \
     ExerciseTable.cpp \
     ExportDialog.cpp \
     NewExerciseDialog.cpp \
