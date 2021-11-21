@@ -46,6 +46,7 @@ SOURCES += \
     WeathersDialog.cpp
 
 FORMS += \
+    ExportDialog.ui \
     NewExerciseDialog.ui \
     PlacesDialog.ui \
     SettingsDialog.ui \
