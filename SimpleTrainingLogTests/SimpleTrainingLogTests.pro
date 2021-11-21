@@ -19,5 +19,7 @@ HEADERS += \
     QtTypePrinters.h
 
 SOURCES += \
+    ShoeTests.cpp \
+    SportTests.cpp \
     main.cpp \
     SimpleTrainingLogTests.cpp
