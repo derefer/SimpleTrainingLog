@@ -612,14 +612,14 @@ void SimpleTrainingLogMainWindow::loadJsonDatabase()
         newExercise->setDistance(exerciseDistance);
         newExercise->setDuration(exerciseDuration);
         newExercise->setSport(exerciseSport);
-        QList<int> places;
-        for (const auto& place : exercisePlace) { places.append(place.toInt()); }
-        newExercise->setPlaces(places);
+        QSet<int> places;
+        for (const auto& place : exercisePlace) { places.insert(place.toInt()); }
+        newExercise->addPlaces(places);
         newExercise->setShoe(exerciseShoe);
         newExercise->setComment(exerciseComment);
-        QList<int> weathers;
-        for (const auto& weather : exerciseWeather) { weathers.append(weather.toInt()); }
-        newExercise->setWeathers(weathers);
+        QSet<int> weathers;
+        for (const auto& weather : exerciseWeather) { weathers.insert(weather.toInt()); }
+        newExercise->addWeathers(weathers);
         newExercise->setMaxPulse(exercisePulse[0].toInt());
         newExercise->setAvgPulse(exercisePulse[1].toInt());
         newExercise->setCal(exerciseCalories[0].toInt());

@@ -75,13 +75,16 @@ void removeSportById(int id)
         if (sports[i]->getId() == id) sports.removeAt(i);
 }
 
-QList<Place*> getPlacesById(QList<int> ids)
+QList<Place *> getPlacesById(const QSet<int>& ids)
 {
-    QList<Place*> resultPlaces;
-    for (int i = 0; i < places.size(); ++i)
-        for (int j = 0; j < ids.size(); ++j)
-            if (places[i]->getId() == ids[j])
+    QList<Place *> resultPlaces;
+    for (int i = 0; i < places.size(); ++i) {
+        for (const auto& id : ids) {
+            if (places[i]->getId() == id) {
                 resultPlaces.append(places[i]);
+            }
+        }
+    }
     return resultPlaces;
 }
 
@@ -104,13 +107,16 @@ void removeShoeById(int id)
         if (shoes[i]->getId() == id) shoes.removeAt(i);
 }
 
-QList<Weather*> getWeathersById(QList<int> ids)
+QList<Weather *> getWeathersById(const QSet<int>& ids)
 {
-    QList<Weather*> resultWeathers;
-    for (int i = 0; i < weathers.size(); ++i)
-        for (int j = 0; j < ids.size(); ++j)
-            if (weathers[i]->getId() == ids[j])
+    QList<Weather *> resultWeathers;
+    for (int i = 0; i < weathers.size(); ++i) {
+        for (const auto& id : ids) {
+            if (weathers[i]->getId() == id) {
                 resultWeathers.append(weathers[i]);
+            }
+        }
+    }
     return resultWeathers;
 }
 

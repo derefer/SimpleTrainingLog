@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QList>
+#include <QSet>
 #include <QString>
 
 class Exercise
@@ -14,10 +14,10 @@ public:
     inline int getDistance() const { return m_distance; }
     inline const QString& getDuration() const { return m_duration; }
     inline int getSport() const { return m_sport; }
-    inline const QList<int>& getPlaces() const { return m_places; }
+    inline const QSet<int>& getPlaces() const { return m_places; }
     inline int getShoe() const { return m_shoe; }
     inline const QString& getComment() const { return m_comment; }
-    inline const QList<int>& getWeathers() const { return m_weathers; }
+    inline const QSet<int>& getWeathers() const { return m_weathers; }
     inline int getMaxPulse() const { return m_maxPulse; }
     inline int getAvgPulse() const { return m_avgPulse; }
     inline int getCal() const { return m_cal; }
@@ -30,7 +30,7 @@ public:
     void setDistance(int distance) { m_distance = distance; }
     void setDuration(const QString& duration) { m_duration = duration; }
     void setSport(int sport) { m_sport = sport; }
-    void setPlaces(const QList<int>& ids);
+    void addPlaces(const QSet<int>& newPlaceIds);
     void clearPlaces() { m_places.clear(); }
     void addPlace(int id);
     void setShoe(int shoe) { m_shoe = shoe; }
@@ -39,7 +39,7 @@ public:
     void setAvgPulse(int avgPulse) { m_avgPulse = avgPulse; }
     void setCal(int cal) { m_cal = cal; }
     void setFat(int fat) { m_fat = fat; }
-    void setWeathers(const QList<int>& ids);
+    void addWeathers(const QSet<int>& newWeatherIds);
     void clearWeathers() { m_weathers.clear(); }
     void addWeather(int id);
 
@@ -49,11 +49,11 @@ private:
     QString m_time;
     int m_distance;
     QString m_duration;
-    int m_sport; // Reference to the "Sport" table.
-    QList<int> m_places; // References to the "Place" table.
-    int m_shoe; // Reference to the "Shoe" table.
+    int m_sport;
+    QSet<int> m_places;
+    int m_shoe;
     QString m_comment;
-    QList<int> m_weathers;
+    QSet<int> m_weathers;
     int m_maxPulse;
     int m_avgPulse;
     int m_cal;

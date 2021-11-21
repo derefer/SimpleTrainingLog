@@ -49,8 +49,7 @@ QString ExerciseTable::encodeHTML() const
     return tableData.join("");
 }
 
-// Add the given element to the table.  The other elements of the table should
-// stay untouched.
+// Add the given element to the table. The other elements of the table should stay untouched.
 void ExerciseTable::appendTable(Exercise *exercise)
 {
     QStringList exerciseData;
@@ -59,20 +58,22 @@ void ExerciseTable::appendTable(Exercise *exercise)
         << exercise->getDuration() << QString::number(exercise->getSpeed(), 'f', 2)
         << QString("%1/%2").arg(exercise->getMaxPulse()).arg(exercise->getAvgPulse())
         << QString("%1/%2").arg(exercise->getCal()).arg(exercise->getFat());
-    QList<int> place = exercise->getPlaces();
+    const auto& placeIds = exercise->getPlaces();
     QStringList placeData;
-    for (int j = 0; j < place.size(); ++j) {
-        if (placeData.size() > 0)
+    for (const auto& placeId : placeIds) {
+        if (!placeData.empty()) {
             placeData << ", ";
-        placeData << getPlaceString(place.at(j));
+        }
+        placeData << getPlaceString(placeId);
     }
     exerciseData << placeData.join("");
-    QList<int> weather = exercise->getWeathers();
+    const auto& weatherIds = exercise->getWeathers();
     QStringList weatherData;
-    for (int j = 0; j < weather.size(); ++j) {
-        if (weatherData.size() > 0)
+    for (const auto& weatherId : weatherIds) {
+        if (!weatherData.empty()) {
             weatherData << ", ";
-        weatherData << getWeatherString(weather.at(j));
+        }
+        weatherData << getWeatherString(weatherId);
     }
     exerciseData << weatherData.join("");
     exerciseData << getShoeString(exercise->getShoe());
@@ -160,14 +161,16 @@ void ExerciseTable::updateExercise(int id)
     item->setText(COL_CALORIES, QString("%1/%2").arg(e->
         getCal()).arg(e->getFat()));
     QStringList placeStrings;
-    QList<int> placeIds = e->getPlaces();
-    for (int i = 0; i < placeIds.size(); ++i)
-        placeStrings << getPlaceString(placeIds.at(i));
+    const auto& placeIds = e->getPlaces();
+    for (const auto& placeId : placeIds) {
+        placeStrings << getPlaceString(placeId);
+    }
     item->setText(COL_PLACE, placeStrings.join(", "));
     QStringList weatherStrings;
-    QList<int> weatherIds = e->getWeathers();
-    for (int i = 0; i < weatherIds.size(); ++i)
-        weatherStrings << getWeatherString(weatherIds.at(i));
+    const auto& weatherIds = e->getWeathers();
+    for (const auto& weatherId : weatherIds) {
+        weatherStrings << getWeatherString(weatherId);
+    }
     item->setText(COL_WEATHER, weatherStrings.join(", "));
     QString shoeString = getShoeString(e->getShoe());
     item->setText(COL_SHOE, shoeString);

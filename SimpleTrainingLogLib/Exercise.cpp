@@ -2,32 +2,20 @@
 
 void Exercise::addPlace(int id)
 {
-    if (!m_places.contains(id)) {
-        m_places.append(id);
-    }
+    m_places.insert(id);
 }
 
-void Exercise::setPlaces(const QList<int>& ids)
+void Exercise::addPlaces(const QSet<int>& newPlaceIds)
 {
-    for (const auto& id : ids) {
-        if (!m_places.contains(id)) {
-            m_places.append(id);
-        }
-    }
+    m_places += newPlaceIds;
 }
 
 void Exercise::addWeather(int id)
 {
-    if (!m_weathers.contains(id)) {
-        m_weathers.append(id);
-    }
+    m_weathers.insert(id);
 }
 
-void Exercise::setWeathers(const QList<int>& ids)
+void Exercise::addWeathers(const QSet<int>& newWeatherIds)
 {
-    for (const auto& id : ids) {
-        if (!m_weathers.contains(id)) {
-            m_weathers.append(id);
-        }
-    }
+    m_weathers += newWeatherIds;
 }
