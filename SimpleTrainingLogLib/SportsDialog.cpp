@@ -48,8 +48,8 @@ void SportsDialog::slotSetColor()
     ui->colorLineEdit->setText(color.name());
 }
 
-// Add a new sport to the list of sports.  The QTextLineEdit is always
-// cleared.  TODO: Better error handling.
+// Add a new sport to the list of sports. The QTextLineEdit is always cleared.
+// TODO: Better error handling.
 void SportsDialog::slotAdd()
 {
     QString name = ui->nameLineEdit->text();
@@ -57,8 +57,8 @@ void SportsDialog::slotAdd()
     if (name.isEmpty() || !color.isValid()) return;
     for (int i = 0; i < ui->sportsTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->sportsTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            ui->nameLineEdit->setText("");
-            ui->colorLineEdit->setText("");
+            ui->nameLineEdit->clear();
+            ui->colorLineEdit->clear();
             return;
         }
     }
@@ -69,39 +69,45 @@ void SportsDialog::slotAdd()
     item->setText(COL_NAME, name);
     item->setText(COL_COLOR, color.name());
     ui->sportsTreeWidget->insertTopLevelItem(ui->sportsTreeWidget->topLevelItemCount(), item);
-    ui->nameLineEdit->setText("");
-    ui->colorLineEdit->setText("");
+    ui->nameLineEdit->clear();
+    ui->colorLineEdit->clear();
     for (int col = 0; col < item->columnCount(); ++col)
         item->setBackground(col, QBrush(color));
-    m_dirty = true;  // Activate the "Save" button.
+    m_dirty = true; // Activate the "Save" button.
 }
 
 void SportsDialog::slotRemove()
 {
     QTreeWidgetItem *item = ui->sportsTreeWidget->currentItem();
     if (!item) return;
+    int id = (item->text(COL_ID)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if (m_exercises->at(i)->getSport() == getSportId(name))
+    for (const auto& exercise : *m_exercises) {
+        if (exercise->getSport() == id) {
             ++count;
-    // Be user friendly and warn.  The QTreeWidget in the background will be
-    // cleared after the dialog is closed.  It's not done here.
+        }
+    }
+    // Be user friendly and warn. The QTreeWidget in the background will be
+    // cleared after the dialog is closed. It's not done here.
     if (count > 0) {
         int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("%1 is used "
             "by %2 exercises. All of these exercises will be removed. Are "
             "you sure?").arg(name).arg(count), QMessageBox::Yes |
             QMessageBox::Default, QMessageBox::No | QMessageBox::Escape);
-        if (ret != QMessageBox::Yes)
+        if (ret != QMessageBox::Yes) {
             return;
+        }
     }
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if (m_exercises->at(i)->getSport() == getSportId(name))
-            m_removedExercises.append(m_exercises->at(i)->getId());
-    removeSportById(getSportId(name));
+    for (const auto& exercise : *m_exercises) {
+        if (exercise->getSport() == id) {
+            m_removedExercises.append(exercise->getId());
+        }
+    }
+    removeSportById(id);
     delete ui->sportsTreeWidget->takeTopLevelItem(ui->sportsTreeWidget->indexOfTopLevelItem(item));
-    ui->nameLineEdit->setText("");
-    ui->colorLineEdit->setText("");
+    ui->nameLineEdit->clear();
+    ui->colorLineEdit->clear();
     m_dirty = true;
 }
 
@@ -116,8 +122,8 @@ void SportsDialog::slotSave()
     for (int i = 0; i < ui->sportsTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->sportsTreeWidget->topLevelItem(i)->text(COL_NAME) &&
             ui->colorLineEdit->text() == ui->sportsTreeWidget->topLevelItem(i)->text(COL_COLOR)) {
-            ui->nameLineEdit->setText("");
-            ui->colorLineEdit->setText("");
+            ui->nameLineEdit->clear();
+            ui->colorLineEdit->clear();
             return;
         }
     }

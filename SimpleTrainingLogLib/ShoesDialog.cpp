@@ -13,7 +13,7 @@ ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, QList<Exercise*> 
     headerLabels << "Name" << "Buy" << "Running Distance" << "Comment";
     ui->shoesTreeWidget->setHeaderLabels(headerLabels);
 
-    // TODO Set column width to content and don't depend on sport identifiers
+    // TODO: Set column width to content and don't depend on sport identifiers
     // (e.g. matching shoe identifier and running).
     for (size_t i = 0; i < static_cast<size_t>(shoes->size()); ++i) {
         Shoe *shoe = shoes->at(i);
@@ -58,9 +58,9 @@ void ShoesDialog::slotAdd()
     if (name.isEmpty()) return;
     for (int i = 0; i < ui->shoesTreeWidget->topLevelItemCount(); ++i) {
         if (name == ui->shoesTreeWidget->topLevelItem(i)->text(COL_NAME)) {
-            ui->nameLineEdit->setText("");
-            ui->buyLineEdit->setText("");
-            ui->commentTextEdit->setText("");
+            ui->nameLineEdit->clear();
+            ui->buyLineEdit->clear();
+            ui->commentTextEdit->clear();
             return;
         }
     }
@@ -73,9 +73,9 @@ void ShoesDialog::slotAdd()
     item->setText(COL_RUNNING_DISTANCE, "0");
     item->setText(COL_COMMENT, shoe->getComment());
     ui->shoesTreeWidget->insertTopLevelItem(ui->shoesTreeWidget->topLevelItemCount(), item);
-    ui->nameLineEdit->setText("");
-    ui->buyLineEdit->setText("");
-    ui->commentTextEdit->setText("");
+    ui->nameLineEdit->clear();
+    ui->buyLineEdit->clear();
+    ui->commentTextEdit->clear();
     m_dirty = true;
 }
 
@@ -83,26 +83,33 @@ void ShoesDialog::slotRemove()
 {
     QTreeWidgetItem *item = ui->shoesTreeWidget->currentItem();
     if (!item) return;
+    int id = (item->text(COL_ID)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if (m_exercises->at(i)->getShoe() == getShoeId(name)) ++count;
+    for (const auto& exercise : *m_exercises) {
+        if (exercise->getShoe() == id) {
+            ++count;
+        }
+    }
     if (count > 0) {
         int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("%1 is used "
             "by %2 exercises. All of these exercises will be removed. Are "
             "you sure?").arg(name).arg(count), QMessageBox::Yes |
             QMessageBox::Default, QMessageBox::No | QMessageBox::Escape);
-        if (ret != QMessageBox::Yes)
+        if (ret != QMessageBox::Yes) {
             return;
+        }
     }
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if (m_exercises->at(i)->getShoe() == getShoeId(name))
-            m_removedExercises.append(m_exercises->at(i)->getId());
-    removeShoeById(getShoeId(name));
+    for (const auto& exercise : *m_exercises) {
+        if (exercise->getShoe() == id) {
+            m_removedExercises.append(exercise->getId());
+        }
+    }
+    removeShoeById(id);
     delete ui->shoesTreeWidget->takeTopLevelItem(ui->shoesTreeWidget->indexOfTopLevelItem(item));
-    ui->nameLineEdit->setText("");
-    ui->buyLineEdit->setText("");
-    ui->commentTextEdit->setText("");
+    ui->nameLineEdit->clear();
+    ui->buyLineEdit->clear();
+    ui->commentTextEdit->clear();
     m_dirty = true;
 }
 

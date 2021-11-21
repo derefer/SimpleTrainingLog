@@ -55,31 +55,37 @@ void WeathersDialog::slotAdd()
     item->setText(COL_NAME, weather->getName());
     ui->weathersTreeWidget->insertTopLevelItem(ui->weathersTreeWidget->topLevelItemCount(), item);
     ui->nameLineEdit->clear();
-    m_dirty = true;  // Activate the "Save" button.
+    m_dirty = true; // Activate the "Save" button.
 }
 
 void WeathersDialog::slotRemove()
 {
-    // TODO Weather is optional.  Don't remove the affected exercises.
+    // TODO: Weather is optional. Don't remove the affected exercises.
     QTreeWidgetItem *item = ui->weathersTreeWidget->currentItem();
     if (!item) return;
+    int id = (item->text(COL_NAME)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if ((m_exercises->at(i)->getWeathers()).contains(getWeatherId(name)))
+    for (const auto exercise : *m_exercises) {
+        if ((exercise->getWeathers()).contains(id)) {
             ++count;
+        }
+    }
     if (count > 0) {
         int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("%1 is used "
             "by %2 exercises. All of these exercises will be removed. Are "
             "you sure?").arg(name).arg(count), QMessageBox::Yes |
             QMessageBox::Default, QMessageBox::No | QMessageBox::Escape);
-        if (ret != QMessageBox::Yes)
+        if (ret != QMessageBox::Yes) {
             return;
+        }
     }
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if ((m_exercises->at(i)->getWeathers()).contains(getWeatherId(name)))
-            m_removedExercises.append(m_exercises->at(i)->getId());
-    removeWeatherById(getWeatherId(name));
+    for (const auto& exercise : *m_exercises) {
+        if ((exercise->getWeathers()).contains(id)) {
+            m_removedExercises.append(exercise->getId());
+        }
+    }
+    removeWeatherById(id);
     delete ui->weathersTreeWidget->takeTopLevelItem(ui->weathersTreeWidget->indexOfTopLevelItem(item));
     ui->nameLineEdit->clear();
     m_dirty = true;

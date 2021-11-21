@@ -59,26 +59,32 @@ void PlacesDialog::slotAdd()
 
 void PlacesDialog::slotRemove()
 {
-    // TODO Place is optional.  Don't remove the affected exercises.
+    // TODO: Place is optional. Don't remove the affected exercises.
     QTreeWidgetItem *item = ui->placesTreeWidget->currentItem();
     if (!item) return;
+    int id = (item->text(COL_ID)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if ((m_exercises->at(i)->getPlaces()).contains(getPlaceId(name)))
+    for (const auto& exercise : *m_exercises) {
+        if ((exercise->getPlaces()).contains(id)) {
             ++count;
+        }
+    }
     if (count > 0) {
         int ret = QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("%1 is used "
             "by %2 exercises. All of these exercises will be removed. Are "
             "you sure?").arg(name).arg(count), QMessageBox::Yes |
             QMessageBox::Default, QMessageBox::No | QMessageBox::Escape);
-        if (ret != QMessageBox::Yes)
+        if (ret != QMessageBox::Yes) {
             return;
+        }
     }
-    for (int i = 0; i < m_exercises->size(); ++i)
-        if ((m_exercises->at(i)->getPlaces()).contains(getPlaceId(name)))
-            m_removedExercises.append(m_exercises->at(i)->getId());
-    removePlaceById(getPlaceId(name));
+    for (const auto& exercise : *m_exercises) {
+        if ((exercise->getPlaces()).contains(id)) {
+            m_removedExercises.append(exercise->getId());
+        }
+    }
+    removePlaceById(id);
     delete ui->placesTreeWidget->takeTopLevelItem(ui->placesTreeWidget->indexOfTopLevelItem(item));
     ui->nameLineEdit->clear();
     m_dirty = true;
