@@ -4,7 +4,7 @@
 #include "ShoesDialog.h"
 #include "ui_ShoesDialog.h"
 
-ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, QList<Exercise*> *exercises) :
+ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, const QList<Exercise *>& exercises) :
     QDialog(parent), ui(new Ui::ShoesDialog), m_shoes(shoes), m_exercises(exercises), m_dirty(false)
 {
     ui->setupUi(this);
@@ -15,13 +15,13 @@ ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, QList<Exercise*> 
 
     // TODO: Set column width to content and don't depend on sport identifiers
     // (e.g. matching shoe identifier and running).
-    for (size_t i = 0; i < static_cast<size_t>(shoes->size()); ++i) {
+    for (int i = 0; i < shoes->size(); ++i) {
         Shoe *shoe = shoes->at(i);
         size_t running_distance = 0;
-        for (int j = 0; j < exercises->size(); ++j) {
-            Exercise *exercise = exercises->at(j);
-            if (exercise->getShoe() == shoe->getId() && exercise->getSport() == 0)
+        for (const auto& exercise : exercises) {
+            if (exercise->getShoe() == shoe->getId() && exercise->getSport() == 0) {
                 running_distance += exercise->getDistance();
+            }
         }
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setText(COL_ID, QString::number(shoe->getId()));
@@ -86,7 +86,7 @@ void ShoesDialog::slotRemove()
     int id = (item->text(COL_ID)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if (exercise->getShoe() == id) {
             ++count;
         }
@@ -100,7 +100,7 @@ void ShoesDialog::slotRemove()
             return;
         }
     }
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if (exercise->getShoe() == id) {
             m_removedExercises.append(exercise->getId());
         }
@@ -133,9 +133,11 @@ void ShoesDialog::slotSave()
         }
     }
     if (shoeId >= 0) {
-        for (int i = 0; i < m_exercises->size(); ++i)
-            if (m_exercises->at(i)->getShoe() == shoeId)
-                m_modifiedExercises.append(m_exercises->at(i)->getId());
+        for (const auto& exercise : m_exercises) {
+            if (exercise->getShoe() == shoeId) {
+                m_modifiedExercises.append(exercise->getId());
+            }
+        }
     }
     item->setText(COL_NAME, name);
     item->setText(COL_BUY, QString::number(buy));

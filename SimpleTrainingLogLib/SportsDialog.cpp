@@ -5,7 +5,7 @@
 #include "SportsDialog.h"
 #include "ui_SportsDialog.h"
 
-SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, QList<Exercise*> *exercises) :
+SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, const QList<Exercise *>& exercises) :
     QDialog(parent), ui(new Ui::SportsDialog), m_sports(sports), m_exercises(exercises), m_dirty(false)
 {
     ui->setupUi(this);
@@ -83,7 +83,7 @@ void SportsDialog::slotRemove()
     int id = (item->text(COL_ID)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if (exercise->getSport() == id) {
             ++count;
         }
@@ -99,7 +99,7 @@ void SportsDialog::slotRemove()
             return;
         }
     }
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if (exercise->getSport() == id) {
             m_removedExercises.append(exercise->getId());
         }
@@ -136,10 +136,13 @@ void SportsDialog::slotSave()
             break;
         }
     }
-    if (sportId >= 0)
-        for (int i = 0; i < m_exercises->size(); ++i)
-            if (m_exercises->at(i)->getSport() == sportId)
-                m_modifiedExercises.append(m_exercises->at(i)->getId());
+    if (sportId >= 0) {
+        for (const auto& exercise : m_exercises) {
+            if (exercise->getSport() == sportId) {
+                m_modifiedExercises.append(exercise->getId());
+            }
+        }
+    }
     item->setText(COL_NAME, name);
     item->setText(COL_COLOR, color.name());
     for (int col = 0; col < item->columnCount(); ++col)

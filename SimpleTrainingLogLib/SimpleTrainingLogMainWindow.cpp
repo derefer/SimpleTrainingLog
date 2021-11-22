@@ -807,7 +807,7 @@ void SimpleTrainingLogMainWindow::ftpStateChanged(int /*state*/)
 
 void SimpleTrainingLogMainWindow::manageShoes()
 {
-    ShoesDialog dialog(this, &shoes, &exercises);
+    ShoesDialog dialog(this, &shoes, exercises);
     if (dialog.exec()) {
         if (dialog.isDirty())
             setDirty();
@@ -824,7 +824,7 @@ void SimpleTrainingLogMainWindow::manageShoes()
 
 void SimpleTrainingLogMainWindow::manageSports()
 {
-    SportsDialog dialog(this, &sports, &exercises);
+    SportsDialog dialog(this, &sports, exercises);
     if (dialog.exec()) {
         if (dialog.isDirty())
             setDirty();
@@ -841,7 +841,7 @@ void SimpleTrainingLogMainWindow::manageSports()
 
 void SimpleTrainingLogMainWindow::managePlaces()
 {
-    PlacesDialog dialog(this, &places, &exercises);
+    PlacesDialog dialog(this, &places, exercises);
     if (dialog.exec()) {
         if (dialog.isDirty())
             setDirty();
@@ -858,7 +858,7 @@ void SimpleTrainingLogMainWindow::managePlaces()
 
 void SimpleTrainingLogMainWindow::manageWeathers()
 {
-    WeathersDialog dialog(this, &weathers, &exercises);
+    WeathersDialog dialog(this, &weathers, exercises);
     if (dialog.exec()) {
         if (dialog.isDirty())
             setDirty();

@@ -16,7 +16,7 @@ class PlacesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PlacesDialog(QWidget *parent, QList<Place*> *places, QList<Exercise*> *exercises);
+    explicit PlacesDialog(QWidget *parent, QList<Place*> *places, const QList<Exercise *>& exercises);
     ~PlacesDialog();
 
     inline bool isDirty() const { return m_dirty; }
@@ -38,7 +38,7 @@ private:
     Ui::PlacesDialog *ui;
 
     QList<Place*> *m_places;
-    QList<Exercise*> *m_exercises;
+    QList<Exercise *> m_exercises;
     bool m_dirty;
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;

@@ -16,7 +16,7 @@ class WeathersDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit WeathersDialog(QWidget *parent, QList<Weather*> *weathers, QList<Exercise*> *exercises);
+    explicit WeathersDialog(QWidget *parent, QList<Weather*> *weathers, const QList<Exercise *>& exercises);
     ~WeathersDialog();
 
     inline bool isDirty() const { return m_dirty; }
@@ -37,7 +37,7 @@ private:
 
     Ui::WeathersDialog *ui;
     QList<Weather*> *m_weathers;
-    QList<Exercise*> *m_exercises;
+    QList<Exercise *> m_exercises;
     bool m_dirty;
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;

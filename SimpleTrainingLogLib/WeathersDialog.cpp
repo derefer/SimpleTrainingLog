@@ -4,7 +4,7 @@
 #include "WeathersDialog.h"
 #include "ui_WeathersDialog.h"
 
-WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers, QList<Exercise*> *exercises) :
+WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers, const QList<Exercise *>& exercises) :
     QDialog(parent), ui(new Ui::WeathersDialog), m_weathers(weathers), m_exercises(exercises), m_dirty(false)
 {
     ui->setupUi(this);
@@ -14,7 +14,7 @@ WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers, QList
     ui->weathersTreeWidget->setHeaderLabels(headerLabels);
 
     for (int i = 0; i < weathers->size(); ++i) {
-        // TODO Set column width to content.
+        // TODO: Set column width to content.
         QTreeWidgetItem *item = new QTreeWidgetItem;
         item->setText(COL_ID, QString::number(weathers->at(i)->getId()));
         item->setText(COL_NAME, weathers->at(i)->getName());
@@ -66,7 +66,7 @@ void WeathersDialog::slotRemove()
     int id = (item->text(COL_NAME)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (const auto exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if ((exercise->getWeathers()).contains(id)) {
             ++count;
         }
@@ -80,7 +80,7 @@ void WeathersDialog::slotRemove()
             return;
         }
     }
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if ((exercise->getWeathers()).contains(id)) {
             m_removedExercises.append(exercise->getId());
         }
@@ -112,9 +112,11 @@ void WeathersDialog::slotSave()
         }
     }
     if (weatherId >= 0) {
-        for (int i = 0; i < m_exercises->size(); ++i)
-            if ((m_exercises->at(i)->getWeathers()).contains(weatherId))
-                m_modifiedExercises.append(m_exercises->at(i)->getId());
+        for (const auto& exercise: m_exercises) {
+            if ((exercise->getWeathers()).contains(weatherId)) {
+                m_modifiedExercises.append(exercise->getId());
+            }
+        }
     }
     item->setText(COL_NAME, name);
     m_dirty = true;

@@ -4,7 +4,7 @@
 #include "PlacesDialog.h"
 #include "ui_PlacesDialog.h"
 
-PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places, QList<Exercise*> *exercises) :
+PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places, const QList<Exercise *>& exercises) :
     QDialog(parent), ui(new Ui::PlacesDialog), m_places(places), m_exercises(exercises), m_dirty(false)
 {
     ui->setupUi(this);
@@ -65,7 +65,7 @@ void PlacesDialog::slotRemove()
     int id = (item->text(COL_ID)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if ((exercise->getPlaces()).contains(id)) {
             ++count;
         }
@@ -79,7 +79,7 @@ void PlacesDialog::slotRemove()
             return;
         }
     }
-    for (const auto& exercise : *m_exercises) {
+    for (const auto& exercise : m_exercises) {
         if ((exercise->getPlaces()).contains(id)) {
             m_removedExercises.append(exercise->getId());
         }
@@ -111,9 +111,11 @@ void PlacesDialog::slotSave()
         }
     }
     if (placeId >= 0) {
-        for (int i = 0; i < m_exercises->size(); ++i)
-            if ((m_exercises->at(i)->getPlaces()).contains(placeId))
-                m_modifiedExercises.append(m_exercises->at(i)->getId());
+        for (const auto& exercise : m_exercises) {
+            if ((exercise->getPlaces()).contains(placeId)) {
+                m_modifiedExercises.append(exercise->getId());
+            }
+        }
     }
     item->setText(COL_NAME, name);
     m_dirty = true;
