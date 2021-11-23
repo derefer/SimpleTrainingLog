@@ -4,6 +4,8 @@
 
 class QCheckBox;
 
+class DataHandler;
+
 namespace Ui {
 class NewExerciseDialog;
 }
@@ -13,7 +15,7 @@ class NewExerciseDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit NewExerciseDialog(QWidget *parent, const QString& title);
+    explicit NewExerciseDialog(QWidget *parent, const QString& title, DataHandler *dataHandler);
     ~NewExerciseDialog();
     void addSportStrings(const QStringList& sportStrings);
     void addShoeStrings(const QStringList& shoeStrings);
@@ -53,4 +55,5 @@ private slots:
 private:
     Ui::NewExerciseDialog *ui;
     QList<QCheckBox*> m_weathersCheckBoxList;
+    DataHandler *dataHandler;
 };

@@ -1,11 +1,11 @@
 #include <QMessageBox>
 
-#include "DataElements.h"
+#include "DataHandler.h"
 #include "WeathersDialog.h"
 #include "ui_WeathersDialog.h"
 
-WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers, const QList<Exercise *>& exercises) :
-    QDialog(parent), ui(new Ui::WeathersDialog), m_weathers(weathers), m_exercises(exercises), m_dirty(false)
+WeathersDialog::WeathersDialog(QWidget *parent, DataHandler *dataHandler) :
+    QDialog(parent), ui(new Ui::WeathersDialog), m_dirty(false), dataHandler(dataHandler)
 {
     ui->setupUi(this);
 
@@ -13,11 +13,11 @@ WeathersDialog::WeathersDialog(QWidget *parent, QList<Weather*> *weathers, const
     headerLabels << "Name";
     ui->weathersTreeWidget->setHeaderLabels(headerLabels);
 
-    for (int i = 0; i < weathers->size(); ++i) {
+    for (int i = 0; i < dataHandler->weathers.size(); ++i) {
         // TODO: Set column width to content.
-        QTreeWidgetItem *item = new QTreeWidgetItem;
-        item->setText(COL_ID, QString::number(weathers->at(i)->getId()));
-        item->setText(COL_NAME, weathers->at(i)->getName());
+        QTreeWidgetItem *item = new QTreeWidgetItem();
+        item->setText(COL_ID, QString::number(dataHandler->weathers[i]->getId()));
+        item->setText(COL_NAME, dataHandler->weathers[i]->getName());
         ui->weathersTreeWidget->insertTopLevelItem(i, item);
         ui->weathersTreeWidget->setColumnWidth(COL_ID, 56);
     }
@@ -48,8 +48,8 @@ void WeathersDialog::slotAdd()
             return;
         }
     }
-    Weather *weather = new Weather(m_weathers->size(), name);
-    m_weathers->append(weather);
+    Weather *weather = new Weather(dataHandler->weathers.size(), name);
+    dataHandler->weathers.append(weather);
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(COL_ID, QString::number(weather->getId()));
     item->setText(COL_NAME, weather->getName());
@@ -66,7 +66,7 @@ void WeathersDialog::slotRemove()
     int id = (item->text(COL_NAME)).toInt();
     QString name = item->text(COL_NAME);
     int count = 0;
-    for (const auto& exercise : m_exercises) {
+    for (const auto& exercise : dataHandler->exercises) {
         if ((exercise->getWeathers()).contains(id)) {
             ++count;
         }
@@ -80,12 +80,12 @@ void WeathersDialog::slotRemove()
             return;
         }
     }
-    for (const auto& exercise : m_exercises) {
+    for (const auto& exercise : dataHandler->exercises) {
         if ((exercise->getWeathers()).contains(id)) {
             m_removedExercises.append(exercise->getId());
         }
     }
-    removeWeatherById(id);
+    dataHandler->removeWeatherById(id);
     delete ui->weathersTreeWidget->takeTopLevelItem(ui->weathersTreeWidget->indexOfTopLevelItem(item));
     ui->nameLineEdit->clear();
     m_dirty = true;
@@ -104,15 +104,15 @@ void WeathersDialog::slotSave()
         }
     }
     int weatherId = -1;
-    for (int i = 0; i < m_weathers->size(); ++i) {
-        if (m_weathers->at(i)->getName() == item->text(COL_NAME)) {
-            weatherId = m_weathers->at(i)->getId();
-            m_weathers->at(i)->setName(name);
+    for (int i = 0; i < dataHandler->weathers.size(); ++i) {
+        if (dataHandler->weathers[i]->getName() == item->text(COL_NAME)) {
+            weatherId = dataHandler->weathers[i]->getId();
+            dataHandler->weathers[i]->setName(name);
             break;
         }
     }
     if (weatherId >= 0) {
-        for (const auto& exercise: m_exercises) {
+        for (const auto& exercise: dataHandler->exercises) {
             if ((exercise->getWeathers()).contains(weatherId)) {
                 m_modifiedExercises.append(exercise->getId());
             }

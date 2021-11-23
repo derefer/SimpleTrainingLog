@@ -1,11 +1,11 @@
 #include <QMessageBox>
 
-#include "DataElements.h"
+#include "DataHandler.h"
 #include "ShoesDialog.h"
 #include "ui_ShoesDialog.h"
 
-ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, const QList<Exercise *>& exercises) :
-    QDialog(parent), ui(new Ui::ShoesDialog), m_shoes(shoes), m_exercises(exercises), m_dirty(false)
+ShoesDialog::ShoesDialog(QWidget *parent, DataHandler *dataHandler) :
+    QDialog(parent), ui(new Ui::ShoesDialog), m_dirty(false), dataHandler(dataHandler)
 {
     ui->setupUi(this);
 
@@ -15,10 +15,10 @@ ShoesDialog::ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, const QList<Exerc
 
     // TODO: Set column width to content and don't depend on sport identifiers
     // (e.g. matching shoe identifier and running).
-    for (int i = 0; i < shoes->size(); ++i) {
-        Shoe *shoe = shoes->at(i);
+    for (int i = 0; i < dataHandler->shoes.size(); ++i) {
+        Shoe *shoe = dataHandler->shoes.at(i);
         size_t running_distance = 0;
-        for (const auto& exercise : exercises) {
+        for (const auto& exercise : dataHandler->exercises) {
             if (exercise->getShoe() == shoe->getId() && exercise->getSport() == 0) {
                 running_distance += exercise->getDistance();
             }
@@ -105,7 +105,7 @@ void ShoesDialog::slotRemove()
             m_removedExercises.append(exercise->getId());
         }
     }
-    removeShoeById(id);
+    dataHandler->removeShoeById(id);
     delete ui->shoesTreeWidget->takeTopLevelItem(ui->shoesTreeWidget->indexOfTopLevelItem(item));
     ui->nameLineEdit->clear();
     ui->buyLineEdit->clear();

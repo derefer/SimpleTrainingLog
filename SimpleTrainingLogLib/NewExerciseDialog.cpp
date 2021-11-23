@@ -6,9 +6,10 @@
 #include "SimpleTrainingLogMainWindow.h"
 #include "ui_NewExerciseDialog.h"
 
-NewExerciseDialog::NewExerciseDialog(QWidget *parent, const QString& title) :
+NewExerciseDialog::NewExerciseDialog(QWidget *parent, const QString& title, DataHandler *dataHandler) :
     QDialog(parent),
-    ui(new Ui::NewExerciseDialog)
+    ui(new Ui::NewExerciseDialog),
+    dataHandler(dataHandler)
 {
     ui->setupUi(this);
 
@@ -18,7 +19,7 @@ NewExerciseDialog::NewExerciseDialog(QWidget *parent, const QString& title) :
     }
     for (int month = 1; month < 13; ++month) {
         QString monthString = month < 10 ? tr("0%1").arg(month) : QString::number(month);
-        ui->monthsComboBox->addItem(months[month - 1], QVariant(monthString));
+        ui->monthsComboBox->addItem(dataHandler->months[month - 1], QVariant(monthString));
     }
     for (int day = 1; day < getRightDays(date) + 1; ++day) {
         QString dayString = day < 10 ? tr("0%1").arg(day) : QString::number(day);
@@ -271,7 +272,7 @@ void NewExerciseDialog::setDate(const QStringList& date)
         }
 
     for (int i = 0; i < ui->monthsComboBox->count(); ++i)
-        if (months[date.at(1).toInt() - 1] == ui->monthsComboBox->itemText(i)) {
+        if (dataHandler->months[date.at(1).toInt() - 1] == ui->monthsComboBox->itemText(i)) {
             emit ui->monthsComboBox->setCurrentIndex(i);
             break;
         }

@@ -2,18 +2,25 @@
 
 #include <QFrame>
 
-#include "DataElements.h"
 #include "Diagram.h"
 
 class QComboBox;
 class QLabel;
 
+class DataHandler;
+class Exercise;
+class Place;
+class Shoe;
+class Sport;
+class Weather;
+
 class StatisticsHandler : public QFrame
 {
     Q_OBJECT
 public:
-    explicit StatisticsHandler(QWidget *parent = nullptr);
-    void fillHandler(QList<Sport*> *sports, QList<Exercise*> *exercises);
+    explicit StatisticsHandler(QWidget *parent, DataHandler *dataHandler);
+
+    void fillHandler(QList<Sport *> *sports, QList<Exercise *> *exercises);
     void clear();
 
 public slots:
@@ -31,11 +38,12 @@ private:
     QLabel *m_avgCalBurntLabel;
     QLabel *m_avgFatBurntLabel;
 
-    QList<Shoe*> *m_shoes;
-    QList<Sport*> *m_sports;
-    QList<Exercise*> *m_exercises;
-    QList<Place*> *m_places;
-    QList<Weather*> *m_weathers;
+    QList<Shoe *> *m_shoes;
+    QList<Sport *> *m_sports;
+    QList<Exercise *> *m_exercises;
+    QList<Place *> *m_places;
+    QList<Weather *> *m_weathers;
 
     Diagram *m_diagram;
+    DataHandler *dataHandler;
 };

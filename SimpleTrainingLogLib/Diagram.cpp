@@ -3,10 +3,11 @@
 #include <QApplication>
 #include <QPainter>
 
-#include "SimpleTrainingLogMainWindow.h"
+#include "DataHandler.h"
 #include "Diagram.h"
+#include "SimpleTrainingLogMainWindow.h"
 
-Diagram::Diagram(QWidget *parent) : QWidget(parent)
+Diagram::Diagram(QWidget *parent, DataHandler *dataHandler) : QWidget(parent), dataHandler(dataHandler)
 {
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -35,7 +36,7 @@ void Diagram::drawBackground()
         painter.drawText(0, i * getTickHeight(), QString::number(getTicks() * getTickDistance() - (i - 1) * getTickDistance()));
     }
     for (std::size_t i = 0; i < m_data.size(); i++) {
-        painter.drawText(LABEL_INIT_OFFSET + i * LABEL_OFFSET, height() - LABEL_SPACING, months[i]);
+        painter.drawText(LABEL_INIT_OFFSET + i * LABEL_OFFSET, height() - LABEL_SPACING, dataHandler->months[i]);
     }
 }
 
@@ -118,7 +119,7 @@ void Diagram::drawBars()
     }
 }
 
-// Called by update().  Modifications to exercise data should call update()
+// Called by update(). Modifications to exercise data should call update()
 // with the new data as a SIGNAL/SLOT.
 void Diagram::paintEvent(QPaintEvent *)
 {

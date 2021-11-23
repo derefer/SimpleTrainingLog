@@ -2,7 +2,8 @@
 
 #include <QTreeWidgetItem>
 
-#include "DataElements.h"
+class DataHandler;
+class Exercise;
 
 class ExerciseItem : public QTreeWidgetItem
 {
@@ -21,20 +22,22 @@ class ExerciseTable : public QTreeWidget
     friend class ExerciseItem;
 
 public:
-    explicit ExerciseTable(QWidget *parent = nullptr);
+    explicit ExerciseTable(QWidget *parent, DataHandler *dataHandler);
     QString encodeHTML() const;
     void appendTable(Exercise *exercise);
     void removeCurrentExercise();
     void removeExercise(int id);
     void updateExercise(int id);
-    void fillTable(QList<Exercise*> *exercises);
+    void fillTable(QList<Exercise *> *exercises);
     void addExerciseData(const QStringList& exerciseData, const QColor& color);
     Exercise *getCurrentExercise() const;
 
 private:
     int getIndexForExercise(int id) const;
+
     enum { COL_ID, COL_DATE, COL_TIME, COL_DISTANCE, COL_DURATION, COL_SPEED,
            COL_PULSE, COL_CALORIES, COL_PLACE, COL_WEATHER, COL_SHOE, COL_COMMENT };
 
-    QList<Exercise*> *m_exercises;
+    QList<Exercise *> *m_exercises;
+    DataHandler *dataHandler;
 };

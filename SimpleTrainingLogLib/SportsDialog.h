@@ -4,8 +4,9 @@
 
 class QTreeWidgetItem;
 
-class Sport;
+class DataHandler;
 class Exercise;
+class Sport;
 
 namespace Ui {
 class SportsDialog;
@@ -16,7 +17,7 @@ class SportsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SportsDialog(QWidget *parent, QList<Sport*> *sports, const QList<Exercise *>& exercises);
+    explicit SportsDialog(QWidget *parent, DataHandler *dataHandler);
     ~SportsDialog();
 
     inline bool isDirty() const { return m_dirty; }
@@ -43,4 +44,5 @@ private:
     bool m_dirty;
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;
+    DataHandler *dataHandler;
 };

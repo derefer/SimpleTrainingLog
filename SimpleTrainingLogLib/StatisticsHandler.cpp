@@ -7,7 +7,7 @@
 #include "StatisticsHandler.h"
 #include "SimpleTrainingLogMainWindow.h"
 
-StatisticsHandler::StatisticsHandler(QWidget *parent) : QFrame(parent)
+StatisticsHandler::StatisticsHandler(QWidget *parent, DataHandler *dataHandler) : QFrame(parent), dataHandler(dataHandler)
 {
     QVBoxLayout *layout = new QVBoxLayout;
     QGroupBox *filtersGroupBox = new QGroupBox(tr("Filters"));
@@ -65,7 +65,7 @@ StatisticsHandler::StatisticsHandler(QWidget *parent) : QFrame(parent)
     layout->addLayout(avgFatBurntLayout);
 
     // The monthly bar-diagram.
-    m_diagram = new Diagram();
+    m_diagram = new Diagram(this, dataHandler);
     layout->addWidget(m_diagram);
     layout->addStretch();
 
@@ -77,7 +77,7 @@ StatisticsHandler::StatisticsHandler(QWidget *parent) : QFrame(parent)
         SLOT(calculateStatistics(int)));
 }
 
-void StatisticsHandler::fillHandler(QList<Sport*> *sports, QList<Exercise*> *exercises)
+void StatisticsHandler::fillHandler(QList<Sport *> *sports, QList<Exercise *> *exercises)
 {
     m_sports = sports;
     m_exercises = exercises;
@@ -93,9 +93,8 @@ void StatisticsHandler::fillHandler(QList<Sport*> *sports, QList<Exercise*> *exe
     emit m_filterYears->setCurrentIndex(date.year() - DATE_YEAR_START);
 }
 
-// To use it with setCurrentIndex(int) we need a parameter.  The filters are
-// always set here.
-void StatisticsHandler::calculateStatistics(int index __attribute__((unused)))
+// To use it with setCurrentIndex(int) we need a parameter. The filters are always set here.
+void StatisticsHandler::calculateStatistics(int)
 {
     int allDistance = 0;
     int allNumberOfTrainings = 0;
@@ -112,14 +111,13 @@ void StatisticsHandler::calculateStatistics(int index __attribute__((unused)))
     for (int i = 0; i < 12; ++i) monthlyDistances[i] = 0;
 
     int yearSelected = (m_filterYears->currentText()).toInt();
-    int sportSelected = getSportId(m_filterSports->currentText());
+    int sportSelected = dataHandler->getSportId(m_filterSports->currentText());
     for (int i = 0; i < m_exercises->size(); ++i) {
         Exercise *e = m_exercises->at(i);
-        if (e->getSport() != sportSelected ||
-            (e->getDate()).split(DATE_SEPARATOR)[0].toInt() != yearSelected)
-                continue;
-        monthlyDistances[(e->getDate()).split(DATE_SEPARATOR)[1].toInt() - 1]
-            += e->getDistance();
+        if (e->getSport() != sportSelected || (e->getDate()).split(DATE_SEPARATOR)[0].toInt() != yearSelected) {
+            continue;
+        }
+        monthlyDistances[(e->getDate()).split(DATE_SEPARATOR)[1].toInt() - 1] += e->getDistance();
         allNumberOfTrainings++;
         allDistance += e->getDistance();
         QStringList timeList = (e->getDuration()).split(TIME_SEPARATOR);
@@ -136,12 +134,11 @@ void StatisticsHandler::calculateStatistics(int index __attribute__((unused)))
         int avgMinutes = allTimeMinutes / allNumberOfTrainings;
         int avgHours = avgMinutes / 60;
         avgMinutes = avgMinutes % 60;
-        QString formatString = avgMinutes < 10 ? QString("%1:0%2") :
-            QString("%1:%2");
+        QString formatString = avgMinutes < 10 ? QString("%1:0%2") : QString("%1:%2");
         avgTrainingTime = formatString.arg(avgHours).arg(avgMinutes);
     }
 
-    if (hrMeasured > 0) {  // It's optional.
+    if (hrMeasured > 0) { // It's optional.
         avgHR /= (double)hrMeasured;
         avgCalBurnt /= (double)hrMeasured;
         avgFatBurnt /= (double)hrMeasured;

@@ -1,11 +1,11 @@
 #include <QMessageBox>
 
-#include "DataElements.h"
+#include "DataHandler.h"
 #include "PlacesDialog.h"
 #include "ui_PlacesDialog.h"
 
-PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places, const QList<Exercise *>& exercises) :
-    QDialog(parent), ui(new Ui::PlacesDialog), m_places(places), m_exercises(exercises), m_dirty(false)
+PlacesDialog::PlacesDialog(QWidget *parent, DataHandler *dataHandler) :
+    QDialog(parent), ui(new Ui::PlacesDialog), m_dirty(false), dataHandler(dataHandler)
 {
     ui->setupUi(this);
 
@@ -13,10 +13,10 @@ PlacesDialog::PlacesDialog(QWidget *parent, QList<Place*> *places, const QList<E
     headerLabels << "Name";
     ui->placesTreeWidget->setHeaderLabels(headerLabels);
 
-    for (int i = 0; i < places->size(); ++i) {
+    for (int i = 0; i < dataHandler->places.size(); ++i) {
         QTreeWidgetItem *item = new QTreeWidgetItem;
-        item->setText(COL_ID, QString::number(places->at(i)->getId()));
-        item->setText(COL_NAME, places->at(i)->getName());
+        item->setText(COL_ID, QString::number(dataHandler->places[i]->getId()));
+        item->setText(COL_NAME, dataHandler->places[i]->getName());
         ui->placesTreeWidget->insertTopLevelItem(i, item);
         ui->placesTreeWidget->setColumnWidth(COL_ID, 56);
     }
@@ -84,7 +84,7 @@ void PlacesDialog::slotRemove()
             m_removedExercises.append(exercise->getId());
         }
     }
-    removePlaceById(id);
+    dataHandler->removePlaceById(id);
     delete ui->placesTreeWidget->takeTopLevelItem(ui->placesTreeWidget->indexOfTopLevelItem(item));
     ui->nameLineEdit->clear();
     m_dirty = true;

@@ -2,12 +2,15 @@
 
 #include <QWidget>
 
+class DataHandler;
+
 class Diagram : public QWidget
 {
     Q_OBJECT
 
 public:
-    Diagram(QWidget *parent = NULL);
+    Diagram(QWidget *parent, DataHandler *dataHandler);
+
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
     void updateBars(const QList<int>& monthlyDistances);
@@ -16,6 +19,13 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
+    int maxData() const;
+    int getTicks() const;
+    int getTickDistance() const;
+    int getTickHeight() const;
+    void drawBackground();
+    void drawBars();
+
     enum {
       DIAGRAM_WIDTH = 360,
       DIAGRAM_HEIGHT = 300,
@@ -28,11 +38,5 @@ private:
     };
 
     std::vector<int> m_data;
-
-    int maxData() const;
-    int getTicks() const;
-    int getTickDistance() const;
-    int getTickHeight() const;
-    void drawBackground();
-    void drawBars();
+    DataHandler *dataHandler;
 };

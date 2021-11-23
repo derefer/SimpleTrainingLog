@@ -1,8 +1,8 @@
-#include "DataElements.h"
+#include "DataHandler.h"
 #include "ExerciseTable.h"
 #include "SimpleTrainingLogMainWindow.h"
 
-ExerciseTable::ExerciseTable(QWidget *parent) : QTreeWidget(parent)
+ExerciseTable::ExerciseTable(QWidget *parent, DataHandler *dataHandler) : QTreeWidget(parent), dataHandler(dataHandler)
 {
     setSortingEnabled(true);
     QStringList list;
@@ -27,15 +27,14 @@ ExerciseTable::ExerciseTable(QWidget *parent) : QTreeWidget(parent)
 
 QString ExerciseTable::encodeHTML() const
 {
-    // Only the table is encoded.  The surrounding HTML environment must be
-    // set by the caller.
+    // Only the table is encoded. The surrounding HTML environment must be set by the caller.
     QStringList tableData("<table border=\"1\" id=\"exercise_table\">\n");
     for (int col = 0; col < columnCount(); ++col)
         tableData << "<th>" << headerItem()->text(col) << "</th>";
     tableData << "\n";
     for (int row = 0; row < topLevelItemCount(); ++row) {
-        Exercise *e = getExerciseById((topLevelItem(row)->data(COL_ID, Qt::DisplayRole)).toInt());
-        QString sportColor = getSportById(e->getSport())->getColor().name();
+        Exercise *e = dataHandler->getExerciseById((topLevelItem(row)->data(COL_ID, Qt::DisplayRole)).toInt());
+        QString sportColor = dataHandler->getSportById(e->getSport())->getColor().name();
         tableData << "<tr>";
         for (int col = 0; col < columnCount(); ++col) {
             tableData << (!col ? QString("<td bgcolor=\"%1\" class=\"normal\"><b>").arg(sportColor)
@@ -64,7 +63,7 @@ void ExerciseTable::appendTable(Exercise *exercise)
         if (!placeData.empty()) {
             placeData << ", ";
         }
-        placeData << getPlaceString(placeId);
+        placeData << dataHandler->getPlaceString(placeId);
     }
     exerciseData << placeData.join("");
     const auto& weatherIds = exercise->getWeathers();
@@ -73,17 +72,17 @@ void ExerciseTable::appendTable(Exercise *exercise)
         if (!weatherData.empty()) {
             weatherData << ", ";
         }
-        weatherData << getWeatherString(weatherId);
+        weatherData << dataHandler->getWeatherString(weatherId);
     }
     exerciseData << weatherData.join("");
-    exerciseData << getShoeString(exercise->getShoe());
+    exerciseData << dataHandler->getShoeString(exercise->getShoe());
     exerciseData << exercise->getComment();
 
-    addExerciseData(exerciseData, getSportById(exercise->getSport())->getColor());
+    addExerciseData(exerciseData, dataHandler->getSportById(exercise->getSport())->getColor());
 }
 
 // Initial fill of the table.
-void ExerciseTable::fillTable(QList<Exercise*> *exercises)
+void ExerciseTable::fillTable(QList<Exercise *> *exercises)
 {
     m_exercises = exercises;
 
@@ -97,9 +96,9 @@ void ExerciseTable::fillTable(QList<Exercise*> *exercises)
 
 void ExerciseTable::addExerciseData(const QStringList& exerciseData, const QColor& color)
 {
-    // TODO The current implementation depends on the order of the columns.
-    // Implement better sorting algorithms.  For some reason I have problems
-    // with the UTF-8 data read from the file.  It's sorted by identifiers.
+    // TODO: The current implementation depends on the order of the columns.
+    // Implement better sorting algorithms. For some reason I have problems
+    // with the UTF-8 data read from the file. It's sorted by identifiers.
     ExerciseItem *item = new ExerciseItem(this);
     item->setData(COL_ID, Qt::DisplayRole, exerciseData.at(COL_ID).toInt());
     item->setText(COL_DATE, exerciseData.at(COL_DATE));
@@ -149,7 +148,7 @@ void ExerciseTable::updateExercise(int id)
     if (!item) {
         return;
     }
-    Exercise *e = getExerciseById(id);
+    Exercise *e = dataHandler->getExerciseById(id);
     item->setData(COL_ID, Qt::DisplayRole, e->getId());
     item->setText(COL_DATE, e->getDate());
     item->setText(COL_TIME, e->getTime());
@@ -163,16 +162,16 @@ void ExerciseTable::updateExercise(int id)
     QStringList placeStrings;
     const auto& placeIds = e->getPlaces();
     for (const auto& placeId : placeIds) {
-        placeStrings << getPlaceString(placeId);
+        placeStrings << dataHandler->getPlaceString(placeId);
     }
     item->setText(COL_PLACE, placeStrings.join(", "));
     QStringList weatherStrings;
     const auto& weatherIds = e->getWeathers();
     for (const auto& weatherId : weatherIds) {
-        weatherStrings << getWeatherString(weatherId);
+        weatherStrings << dataHandler->getWeatherString(weatherId);
     }
     item->setText(COL_WEATHER, weatherStrings.join(", "));
-    QString shoeString = getShoeString(e->getShoe());
+    QString shoeString = dataHandler->getShoeString(e->getShoe());
     item->setText(COL_SHOE, shoeString);
     item->setText(COL_COMMENT, e->getComment());
 }
@@ -180,8 +179,7 @@ void ExerciseTable::updateExercise(int id)
 Exercise *ExerciseTable::getCurrentExercise() const
 {
     int index = indexOfTopLevelItem(currentItem());
-    return m_exercises->at(getIndexForExercise((topLevelItem(index)->
-        data(COL_ID, Qt::DisplayRole)).toInt()));
+    return m_exercises->at(getIndexForExercise((topLevelItem(index)->data(COL_ID, Qt::DisplayRole)).toInt()));
 }
 
 int ExerciseTable::getIndexForExercise(int id) const
@@ -201,7 +199,7 @@ bool ExerciseItem::operator<(const QTreeWidgetItem& other) const
     case ExerciseTable::COL_SPEED:
         return data(column, Qt::DisplayRole).toDouble() < other.data(column, Qt::DisplayRole).toDouble();
     case ExerciseTable::COL_DATE: {
-        // E.g. "2008-01-01".  It is assumed to be correct.
+        // E.g. "2008-01-01". It is assumed to be correct.
         QStringList dateList = text(column).split(DATE_SEPARATOR);
         QStringList dateListOther = other.text(column).split(DATE_SEPARATOR);
         int year = dateList[0].toInt();
@@ -224,7 +222,7 @@ bool ExerciseItem::operator<(const QTreeWidgetItem& other) const
             }
         }
         break; }
-    case ExerciseTable::COL_TIME:  // E.g. "6:00".
+    case ExerciseTable::COL_TIME: // E.g. "6:00".
     case ExerciseTable::COL_DURATION: {
         QStringList timeList = text(column).split(TIME_SEPARATOR);
         QStringList timeListOther = other.text(column).split(TIME_SEPARATOR);
@@ -240,7 +238,7 @@ bool ExerciseItem::operator<(const QTreeWidgetItem& other) const
             return minute < minuteOther;
         }
         break; }
-    default:  // Sport/Place/Shoe/Comment/Weather.  Alphabetical order.
+    default: // Sport/Place/Shoe/Comment/Weather. Alphabetical order.
         return data(column, Qt::DisplayRole).toString() < other.data(column, Qt::DisplayRole).toString();
     }
 }

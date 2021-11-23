@@ -1,12 +1,12 @@
 #include <QMessageBox>
 #include <QColorDialog>
 
-#include "DataElements.h"
+#include "DataHandler.h"
 #include "SportsDialog.h"
 #include "ui_SportsDialog.h"
 
-SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, const QList<Exercise *>& exercises) :
-    QDialog(parent), ui(new Ui::SportsDialog), m_sports(sports), m_exercises(exercises), m_dirty(false)
+SportsDialog::SportsDialog(QWidget *parent, DataHandler *dataHandler) :
+    QDialog(parent), ui(new Ui::SportsDialog), m_dirty(false), dataHandler(dataHandler)
 {
     ui->setupUi(this);
 
@@ -14,11 +14,11 @@ SportsDialog::SportsDialog(QWidget *parent, QList<Sport*> *sports, const QList<E
     headerLabels << "Name" << "Color";
     ui->sportsTreeWidget->setHeaderLabels(headerLabels);
 
-    for (int i = 0; i < sports->size(); ++i) {
+    for (int i = 0; i < dataHandler->sports.size(); ++i) {
         QTreeWidgetItem *item = new QTreeWidgetItem;
-        item->setText(COL_ID, QString::number(sports->at(i)->getId()));
-        item->setText(COL_NAME, sports->at(i)->getName());
-        QColor color = sports->at(i)->getColor();
+        item->setText(COL_ID, QString::number(dataHandler->sports[i]->getId()));
+        item->setText(COL_NAME, dataHandler->sports[i]->getName());
+        QColor color = dataHandler->sports[i]->getColor();
         item->setText(COL_COLOR, (color.name()));
         for (int j = 0; j < item->columnCount(); ++j)
             item->setBackground(j, QBrush(color));
@@ -104,7 +104,7 @@ void SportsDialog::slotRemove()
             m_removedExercises.append(exercise->getId());
         }
     }
-    removeSportById(id);
+    dataHandler->removeSportById(id);
     delete ui->sportsTreeWidget->takeTopLevelItem(ui->sportsTreeWidget->indexOfTopLevelItem(item));
     ui->nameLineEdit->clear();
     ui->colorLineEdit->clear();

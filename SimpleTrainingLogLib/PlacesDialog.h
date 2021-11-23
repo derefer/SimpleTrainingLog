@@ -4,6 +4,7 @@
 
 class QTreeWidgetItem;
 
+class DataHandler;
 class Exercise;
 class Place;
 
@@ -16,7 +17,7 @@ class PlacesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PlacesDialog(QWidget *parent, QList<Place*> *places, const QList<Exercise *>& exercises);
+    explicit PlacesDialog(QWidget *parent, DataHandler *dataHandler);
     ~PlacesDialog();
 
     inline bool isDirty() const { return m_dirty; }
@@ -42,4 +43,5 @@ private:
     bool m_dirty;
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;
+    DataHandler *dataHandler;
 };

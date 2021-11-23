@@ -11,6 +11,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += SIMPLETRAININGLOGLIB_LIBRARY
 
 HEADERS += \
+    DataHandler.h \
     Diagram.h \
     Exercise.h \
     ExerciseTable.h \
@@ -26,11 +27,11 @@ HEADERS += \
     Sport.h \
     SportsDialog.h \
     StatisticsHandler.h \
-    DataElements.h \
     Weather.h \
     WeathersDialog.h
 
 SOURCES += \
+    DataHandler.cpp \
     Diagram.cpp \
     Exercise.cpp \
     ExerciseTable.cpp \
@@ -42,7 +43,6 @@ SOURCES += \
     SimpleTrainingLogMainWindow.cpp \
     SportsDialog.cpp \
     StatisticsHandler.cpp \
-    DataElements.cpp \
     WeathersDialog.cpp
 
 FORMS += \

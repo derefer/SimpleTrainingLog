@@ -5,6 +5,7 @@
 // QFtp was remvoved in Qt5.
 //#include <QFtp>
 
+#include "DataHandler.h"
 #include "ExerciseTable.h"
 #include "SimpleTrainingLogLibDecl.h"
 #include "StatisticsHandler.h"
@@ -108,4 +109,6 @@ private:
     QString m_curPort;
     QString m_curUser;
     QString m_curPath;
+
+    DataHandler dataHandler;
 };

@@ -3,8 +3,10 @@
 #include <QDialog>
 
 class QTreeWidgetItem;
-class Shoe;
+
+class DataHandler;
 class Exercise;
+class Shoe;
 
 namespace Ui {
 class ShoesDialog;
@@ -15,7 +17,7 @@ class ShoesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShoesDialog(QWidget *parent, QList<Shoe*> *shoes, const QList<Exercise *>& exercises);
+    explicit ShoesDialog(QWidget *parent, DataHandler *dataHandler);
     ~ShoesDialog();
 
     inline bool isDirty() const { return m_dirty; }
@@ -39,10 +41,12 @@ private:
       COL_RUNNING_DISTANCE,
       COL_COMMENT
     };
+
     Ui::ShoesDialog *ui;
     QList<Shoe*> *m_shoes;
     QList<Exercise *> m_exercises;
     bool m_dirty;
     QList<int> m_modifiedExercises;
     QList<int> m_removedExercises;
+    DataHandler *dataHandler;
 };
