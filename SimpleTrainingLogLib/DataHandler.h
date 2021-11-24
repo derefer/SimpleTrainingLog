@@ -37,6 +37,8 @@ public:
     QString encodeComment(const QString& comment);
     QString decodeComment(const QString& comment);
 
+    bool exportData(const QString& fileName);
+
     const QString months[12] = {
         "Jan.",
         "Feb.",
@@ -54,7 +56,7 @@ public:
 
     QList<Shoe *> shoes;
     QList<Sport *> sports;
-    QList<Exercise *> exercises;
     QList<Place *> places;
     QList<Weather *> weathers;
+    QList<Exercise *> exercises;
 };

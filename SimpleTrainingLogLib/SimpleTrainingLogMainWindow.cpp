@@ -246,78 +246,15 @@ void SimpleTrainingLogMainWindow::newExercise()
 
 bool SimpleTrainingLogMainWindow::save()
 {
-    // TODO Ask the user to create a database.  Optionally.  Write the changed
-    // exercises only.  All changes on the table will be present in these
+    // TODO: Ask the user to create a database. Optionally. Write the changed
+    // exercises only. All changes on the table will be present in these
     // data structures as well.
-    QFile file(m_curLog);
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
-        QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write "
-            "file %1: %2.").arg(DEFAULT_LOG).arg(file.errorString()));
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    if (!dataHandler.exportData(m_curLog)) {
+        QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write file: %1").arg(m_curLog));
         return false;
     }
-    QTextStream out(&file);
-    QApplication::setOverrideCursor(Qt::WaitCursor);
-    // TODO: Move these to member functions of the corresponding data classes.
-    QStringList outData("{\n  \"shoes\": [\n");
-    for (int i = 0; i < dataHandler.shoes.size(); ++i) {
-        outData << QString("    { \"id\": %1").arg(i) <<
-            QString(", \"name\": \"%1\"").arg(dataHandler.shoes[i]->getName()) <<
-            QString(", \"buy\": %1").arg(dataHandler.shoes[i]->getBuy()) <<
-            QString(", \"comment\": \"%1\" }").arg(dataHandler.shoes[i]->getComment());
-        if (i != dataHandler.shoes.size() - 1) outData << ",";
-        outData << "\n";
-    }
-    outData << "  ],\n  \"sports\": [\n";
-    for (int i = 0; i < dataHandler.sports.size(); ++i) {
-        outData << QString("    { \"id\": %1").arg(i);
-        outData << QString(", \"name\": \"%1\"").arg(dataHandler.sports[i]->getName());
-        outData << QString(", \"color\": \"%1\" }").arg((dataHandler.sports[i]->getColor()).name());
-        if (i != dataHandler.sports.size() - 1) outData << ",";
-        outData << "\n";
-    }
-    outData << "  ],\n  \"places\": [\n";
-    for (int i = 0; i < dataHandler.places.size(); ++i) {
-        outData << QString("    { \"id\": %1").arg(i) <<
-            QString(", \"name\": \"%1\" }").arg(dataHandler.places[i]->getName());
-        if (i != dataHandler.places.size() - 1) outData << ",";
-        outData << "\n";
-    }
-    outData << "  ],\n  \"weathers\": [\n";
-    for (int i = 0; i < dataHandler.weathers.size(); ++i) {
-        outData << QString("    { \"id\": %1").arg(i) <<
-            QString(", \"name\": \"%1\" }").arg(dataHandler.weathers[i]->getName());
-        if (i != dataHandler.weathers.size() - 1) outData << ",";
-        outData << "\n";
-    }
-    outData << "  ],\n  \"exercises\": [\n";
-    for (int i = 0; i < dataHandler.exercises.size(); ++i) {
-        Exercise *e = dataHandler.exercises[i];
-        outData << QString("    { \"id\": %1").arg(i);
-        outData << QString(", \"date\": \"%1\"").arg(e->getDate());
-        outData << QString(", \"time\": \"%1\"").arg(e->getTime());
-        outData << QString(", \"distance\": %1").arg(e->getDistance());
-        outData << QString(", \"duration\": \"%1\"").arg(e->getDuration());
-        outData << QString(", \"sport\": %1").arg(e->getSport());
-        QStringList placeNumberList;
-        const auto& placeList = e->getPlaces();
-        for (const auto& place : placeList) placeNumberList << QString::number(place);
-        outData << QString(", \"place\": \"%1\"").arg(placeNumberList.join(","));
-        outData << QString(", \"shoe\": %1").arg(e->getShoe());
-        outData << QString(", \"comment\": \"%1\"").arg(dataHandler.encodeComment(e->getComment()));
-        QStringList weatherNumberList;
-        const auto& weatherList = e->getWeathers();
-        for (const auto& weather : weatherList) weatherNumberList << QString::number(weather);
-        outData << QString(", \"weather\": \"%1\"").arg(weatherNumberList.join(","));
-        outData << QString(", \"pulse\": \"%1/%2\"").arg(e->getMaxPulse()).arg(e->getAvgPulse());
-        outData << QString(", \"calories\": \"%1/%2\" }").arg(e->getCal()).arg(e->getFat());
-        if (i != dataHandler.exercises.size() - 1) outData << ",";
-        outData << "\n";
-    }
-    outData << "  ]\n}\n";
-    out << outData.join("");
     QApplication::restoreOverrideCursor();
-    file.close();
-
     saveAct->setEnabled(false);
     m_dirty = false;
     statusBar()->showMessage(tr("Data saved"), 2000);
