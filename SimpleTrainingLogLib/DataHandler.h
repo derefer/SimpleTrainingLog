@@ -37,7 +37,8 @@ public:
     QString encodeComment(const QString& comment);
     QString decodeComment(const QString& comment);
 
-    bool exportData(const QString& fileName);
+    void loadDatabase(const QString& fileName);
+    bool saveDatabase(const QString& fileName);
 
     const QString months[12] = {
         "Jan.",

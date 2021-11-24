@@ -1,9 +1,6 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QFileDialog>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -250,7 +247,7 @@ bool SimpleTrainingLogMainWindow::save()
     // exercises only. All changes on the table will be present in these
     // data structures as well.
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    if (!dataHandler.exportData(m_curLog)) {
+    if (!dataHandler.saveDatabase(m_curLog)) {
         QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write file: %1").arg(m_curLog));
         return false;
     }
@@ -439,124 +436,13 @@ bool SimpleTrainingLogMainWindow::maybeSave()
 
 void SimpleTrainingLogMainWindow::loadDatabase()
 {
-    loadJsonDatabase();
+    dataHandler.loadDatabase(m_curLog);
 
     m_exerciseTable->fillTable(&dataHandler.exercises);
     m_statisticsHandler->fillHandler(&dataHandler.sports, &dataHandler.exercises);
 
     setCurrentFile(m_curLog);
     statusBar()->showMessage(tr("Database loaded"), 2000);
-}
-
-void SimpleTrainingLogMainWindow::loadJsonDatabase()
-{
-    QFile file(m_curLog);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Cannot read file" << m_curLog << ":" << file.errorString();
-        return;
-    }
-    QString curLogAsString;
-    curLogAsString = file.readAll();
-    file.close();
-
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(curLogAsString.toUtf8());
-    if (jsonDocument.isNull()) {
-        qWarning() << "Invalid JSON document:" << m_curLog;
-        return;
-    }
-
-    QJsonObject jsonObject = jsonDocument.object();
-    QJsonArray shoesFromJsonAsArray = jsonObject.value("shoes").toArray();
-    QJsonArray sportsFromJsonAsArray = jsonObject.value("sports").toArray();
-    QJsonArray placesFromJsonAsArray = jsonObject.value("places").toArray();
-    QJsonArray weathersFromJsonAsArray = jsonObject.value("weathers").toArray();
-    QJsonArray exercisesFromJsonAsArray = jsonObject.value("exercises").toArray();
-
-    for (int i = 0; i < shoesFromJsonAsArray.size(); i++) {
-        const auto& shoe = shoesFromJsonAsArray[i].toObject();
-        const auto& shoeId = shoe["id"].toInt();
-        if (shoeId < 0) {
-            qWarning() << "Invalid shoe identifier:" << shoeId;
-            continue;
-        }
-        const auto& shoeName = shoe["name"].toString();
-        const auto& shoeBuy = shoe["buy"].toInt();
-        const auto& shoeComment = shoe["comment"].toString();
-        dataHandler.shoes.append(new Shoe(shoeId, shoeName, shoeBuy, shoeComment));
-    }
-
-    for (int i = 0; i < sportsFromJsonAsArray.size(); i++) {
-        const auto& sport = sportsFromJsonAsArray[i].toObject();
-        const auto& sportId = sport["id"].toInt();
-        if (sportId < 0) {
-            qWarning() << "Invalid sport identifier:" << sportId;
-            continue;
-        }
-        const auto& sportName = sport["name"].toString();
-        const auto& sportColor = sport["color"].toString();
-        dataHandler.sports.append(new Sport(sportId, sportName, sportColor));
-    }
-
-    for (int i = 0; i < placesFromJsonAsArray.size(); i++) {
-        const auto& place = placesFromJsonAsArray[i].toObject();
-        const auto& placeId = place["id"].toInt();
-        if (placeId < 0) {
-            qWarning() << "Invalid place identifier:" << placeId;
-            continue;
-        }
-        const auto& placeName = place["name"].toString();
-        dataHandler.places.append(new Place(placeId, placeName));
-    }
-
-    for (int i = 0; i < weathersFromJsonAsArray.size(); i++) {
-        const auto& weather = weathersFromJsonAsArray[i].toObject();
-        const auto& weatherId = weather["id"].toInt();
-        if (weatherId < 0) {
-            qWarning() << "Invalid weather identifier:" << weatherId;
-            continue;
-        }
-        const auto& weatherName = weather["name"].toString();
-        dataHandler.weathers.append(new Weather(weatherId, weatherName));
-    }
-
-    for (int i = 0; i < exercisesFromJsonAsArray.size(); i++) {
-        const auto& exercise = exercisesFromJsonAsArray[i].toObject();
-        const auto& exerciseId = exercise["id"].toInt();
-        if (exerciseId < 0) {
-            qWarning() << "Invalid exercise identifier:" << exerciseId;
-            continue;
-        }
-        const auto& exerciseDate = exercise["date"].toString();
-        const auto& exerciseTime = exercise["time"].toString();
-        const auto& exerciseDistance = exercise["distance"].toInt();
-        const auto& exerciseDuration = exercise["duration"].toString();
-        const auto& exerciseSport = exercise["sport"].toInt();
-        const auto& exercisePlace = exercise["place"].toString().split(",");
-        const auto& exerciseShoe = exercise["shoe"].toInt();
-        const auto& exerciseComment = exercise["comment"].toString();
-        const auto& exerciseWeather = exercise["weather"].toString().split(",");
-        const auto& exercisePulse = exercise["pulse"].toString().split("/"); // MaxBpm/AvgBpm
-        const auto& exerciseCalories = exercise["calories"].toString().split("/"); // Calories/Fat%
-        Exercise *newExercise = new Exercise(exerciseId);
-        newExercise->setDate(exerciseDate);
-        newExercise->setTime(exerciseTime);
-        newExercise->setDistance(exerciseDistance);
-        newExercise->setDuration(exerciseDuration);
-        newExercise->setSport(exerciseSport);
-        QSet<int> places;
-        for (const auto& place : exercisePlace) { places.insert(place.toInt()); }
-        newExercise->addPlaces(places);
-        newExercise->setShoe(exerciseShoe);
-        newExercise->setComment(exerciseComment);
-        QSet<int> weathers;
-        for (const auto& weather : exerciseWeather) { weathers.insert(weather.toInt()); }
-        newExercise->addWeathers(weathers);
-        newExercise->setMaxPulse(exercisePulse[0].toInt());
-        newExercise->setAvgPulse(exercisePulse[1].toInt());
-        newExercise->setCal(exerciseCalories[0].toInt());
-        newExercise->setFat(exerciseCalories[1].toInt());
-        dataHandler.exercises.append(newExercise);
-    }
 }
 
 // Set the exercise database.
