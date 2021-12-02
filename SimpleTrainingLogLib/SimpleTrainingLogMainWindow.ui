@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SimpleTrainingLogMainWindow</class>
+ <widget class="QMainWindow" name="SimpleTrainingLogMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SimpleTrainingLog</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_New_Exercise"/>
+    <addaction name="action_Save"/>
+    <addaction name="separator"/>
+    <addaction name="action_Export_Publishing"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionShoes"/>
+    <addaction name="actionSports"/>
+    <addaction name="actionPlaces"/>
+    <addaction name="actionWeathers"/>
+    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+    <addaction name="actionAbout_Qt"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About &amp;Qt</string>
+   </property>
+   <property name="statusTip">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset resource="SimpleTrainingLog.qrc">
+     <normaloff>:/Images/about.png</normaloff>:/Images/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+   <property name="statusTip">
+    <string>About SimpleTrainingLog</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="SimpleTrainingLog.qrc">
+     <normaloff>:/Images/configure.png</normaloff>:/Images/configure.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Settings</string>
+   </property>
+   <property name="statusTip">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionWeathers">
+   <property name="text">
+    <string>&amp;Weathers</string>
+   </property>
+   <property name="statusTip">
+    <string>Manage weathers</string>
+   </property>
+  </action>
+  <action name="actionPlaces">
+   <property name="text">
+    <string>&amp;Places</string>
+   </property>
+   <property name="statusTip">
+    <string>Manage places</string>
+   </property>
+  </action>
+  <action name="actionSports">
+   <property name="text">
+    <string>Sp&amp;orts</string>
+   </property>
+   <property name="statusTip">
+    <string>Manage sports</string>
+   </property>
+  </action>
+  <action name="actionShoes">
+   <property name="text">
+    <string>S&amp;hoes</string>
+   </property>
+   <property name="statusTip">
+    <string>Manage shoes</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="SimpleTrainingLog.qrc">
+     <normaloff>:/Images/exit.png</normaloff>:/Images/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+   <property name="statusTip">
+    <string>Exit the application</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_Export_Publishing">
+   <property name="icon">
+    <iconset resource="SimpleTrainingLog.qrc">
+     <normaloff>:/Images/export.png</normaloff>:/Images/export.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Export &amp;&amp; Publishing</string>
+   </property>
+   <property name="statusTip">
+    <string>HTML export &amp; FTP upload</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
+   </property>
+  </action>
+  <action name="action_Save">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="SimpleTrainingLog.qrc">
+     <normaloff>:/Images/save.png</normaloff>:/Images/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="statusTip">
+    <string>Save the changes to database</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_New_Exercise">
+   <property name="icon">
+    <iconset resource="SimpleTrainingLog.qrc">
+     <normaloff>:/Images/new.png</normaloff>:/Images/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;New Exercise</string>
+   </property>
+   <property name="statusTip">
+    <string>Add a new exercise</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="SimpleTrainingLog.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>action_New_Exercise</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>newExercise()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout_Qt</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>aboutQt()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAbout</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>about()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionPlaces</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>managePlaces()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShoes</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>manageShoes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSports</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>manageSports()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionWeathers</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>manageWeathers()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSettings</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>settings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Export_Publishing</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>exportHtml()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Save</sender>
+   <signal>triggered()</signal>
+   <receiver>SimpleTrainingLogMainWindow</receiver>
+   <slot>save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>449</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>newExercise()</slot>
+  <slot>save()</slot>
+  <slot>exportHtml()</slot>
+  <slot>manageShoes()</slot>
+  <slot>manageSports()</slot>
+  <slot>managePlaces()</slot>
+  <slot>manageWeathers()</slot>
+  <slot>settings()</slot>
+  <slot>about()</slot>
+  <slot>aboutQt()</slot>
+ </slots>
+</ui>

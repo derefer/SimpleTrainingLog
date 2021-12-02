@@ -18,5 +18,3 @@ HEADERS +=
 
 SOURCES += \
     main.cpp
-
-RESOURCES = SimpleTrainingLog.qrc

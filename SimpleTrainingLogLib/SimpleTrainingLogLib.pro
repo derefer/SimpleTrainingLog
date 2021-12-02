@@ -51,5 +51,9 @@ FORMS += \
     PlacesDialog.ui \
     SettingsDialog.ui \
     ShoesDialog.ui \
+    SimpleTrainingLogMainWindow.ui \
     SportsDialog.ui \
     WeathersDialog.ui
+
+RESOURCES += \
+    SimpleTrainingLog.qrc

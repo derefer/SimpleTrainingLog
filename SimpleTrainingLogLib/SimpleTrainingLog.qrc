@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/about.png</file>
+        <file>Images/configure.png</file>
+        <file>Images/delete.png</file>
+        <file>Images/edit.png</file>
+        <file>Images/exit.png</file>
+        <file>Images/export.png</file>
+        <file>Images/new.png</file>
+        <file>Images/osmdemo.png</file>
+        <file>Images/save.png</file>
+        <file>Images/view.png</file>
+    </qresource>
+</RCC>

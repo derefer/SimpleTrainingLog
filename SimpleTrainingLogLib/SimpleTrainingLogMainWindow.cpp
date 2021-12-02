@@ -1,30 +1,29 @@
-#include <QApplication>
 #include <QCloseEvent>
 #include <QFileDialog>
-#include <QMenu>
-#include <QMenuBar>
 #include <QMessageBox>
-#include <QStatusBar>
-#include <QTableWidget>
-#include <QTextEdit>
 #include <QTextStream>
 #include <QToolBar>
-#include <QtDebug>
-//#include <QFtp>
 
-#include "SimpleTrainingLogMainWindow.h"
-#include "NewExerciseDialog.h"
+#include "ExerciseTable.h"
 #include "ExportDialog.h"
-#include "ShoesDialog.h"
-#include "SportsDialog.h"
+#include "NewExerciseDialog.h"
 #include "PlacesDialog.h"
-#include "WeathersDialog.h"
 #include "SettingsDialog.h"
+#include "ShoesDialog.h"
+#include "SimpleTrainingLogMainWindow.h"
+#include "SportsDialog.h"
+#include "StatisticsHandler.h"
+#include "ui_SimpleTrainingLogMainWindow.h"
+#include "WeathersDialog.h"
 
-SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_dirty(false)
+SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::SimpleTrainingLogMainWindow),
+    //m_ftp(nullptr),
+    m_dirty(false)
 {
-    createActions();
-    createMenus();
+    ui->setupUi(this);
+
     createToolBars();
     createStatusBar();
 
@@ -44,23 +43,28 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow() : /*m_ftp(NULL),*/ m_
     m_mainTabWidget->addTab(m_statisticsHandler, tr("Statistics"));
     setCentralWidget(m_mainTabWidget);
 
-    setWindowTitle(QApplication::translate("SimpleTrainingLog", "SimpleTrainingLog", 0));
-    resize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
     loadDatabase();
 
     // The SIGNAL and the SLOT must have the same signature. Any modification
     // of the table will trigger setDirty.
     m_exerciseTable->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(m_exerciseTable, SIGNAL(customContextMenuRequested(const QPoint &)),
-        this, SLOT(contextMenuForTable(const QPoint &)));
-    connect(m_exerciseTable, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)),
-        this, SLOT(editExercise(QTreeWidgetItem *, int)));
+    connect(m_exerciseTable, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(contextMenuForTable(const QPoint &)));
+    connect(m_exerciseTable, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(editExercise(QTreeWidgetItem *, int)));
+}
+
+SimpleTrainingLogMainWindow::~SimpleTrainingLogMainWindow()
+{
+    /*if (m_ftp)
+        delete m_ftp;*/
+
+    clear();
+
+    delete ui;
 }
 
 void SimpleTrainingLogMainWindow::setDirty(int, int)
 {
-    saveAct->setEnabled(true);
+    ui->action_Save->setEnabled(true);
     m_dirty = true;
 }
 
@@ -252,7 +256,7 @@ bool SimpleTrainingLogMainWindow::save()
         return false;
     }
     QApplication::restoreOverrideCursor();
-    saveAct->setEnabled(false);
+    ui->action_Save->setEnabled(false);
     m_dirty = false;
     statusBar()->showMessage(tr("Data saved"), 2000);
     return true;
@@ -285,98 +289,23 @@ void SimpleTrainingLogMainWindow::about()
            "&lt;derefer@gmail.com&gt;</p>"));
 }
 
+void SimpleTrainingLogMainWindow::aboutQt()
+{
+    QApplication::aboutQt();
+}
+
 void SimpleTrainingLogMainWindow::documentWasModified()
 {
     setWindowModified(true);
 }
 
-void SimpleTrainingLogMainWindow::createActions()
-{
-    newAct = new QAction(QIcon(":Images/new.png"), tr("&New Exercise"), this);
-    newAct->setShortcut(tr("Ctrl+N"));
-    newAct->setStatusTip(tr("Add a new exercise"));
-    connect(newAct, SIGNAL(triggered()), this, SLOT(newExercise()));
-
-    saveAct = new QAction(QIcon(":Images/save.png"), tr("&Save"), this);
-    saveAct->setShortcut(tr("Ctrl+S"));
-    saveAct->setStatusTip(tr("Save the changes to database"));
-    connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
-
-    exportHTMLAct = new QAction(QIcon(":Images/export.png"), tr("&Export && Publishing"), this);
-    exportHTMLAct->setShortcut(tr("Ctrl+E"));
-    exportHTMLAct->setStatusTip(tr("HTML export & FTP upload"));
-    connect(exportHTMLAct, SIGNAL(triggered()), this, SLOT(exportHTML()));
-
-    exitAct = new QAction(QIcon(":Images/exit.png"), tr("E&xit"), this);
-    exitAct->setShortcut(tr("Ctrl+Q"));
-    exitAct->setStatusTip(tr("Exit the application"));
-    connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
-
-    m_shoesAct = new QAction(tr("S&hoes"), this);
-    m_shoesAct->setStatusTip(tr("Manage shoes"));
-    connect(m_shoesAct, SIGNAL(triggered()), this, SLOT(manageShoes()));
-
-    m_sportsAct = new QAction(tr("Sp&orts"), this);
-    m_sportsAct->setStatusTip(tr("Manage sports"));
-    connect(m_sportsAct, SIGNAL(triggered()), this, SLOT(manageSports()));
-
-    m_placesAct = new QAction(tr("&Places"), this);
-    m_placesAct->setStatusTip(tr("Manage places"));
-    connect(m_placesAct, SIGNAL(triggered()), this, SLOT(managePlaces()));
-
-    m_weathersAct = new QAction(tr("&Weathers"), this);
-    m_weathersAct->setStatusTip(tr("Manage weathers"));
-    connect(m_weathersAct, SIGNAL(triggered()), this, SLOT(manageWeathers()));
-
-    m_settingsAct = new QAction(QIcon(":Images/configure.png"), tr("&Settings"), this);
-    m_settingsAct->setStatusTip(tr("Settings"));
-    connect(m_settingsAct, SIGNAL(triggered()), this, SLOT(settings()));
-
-    aboutAct = new QAction(QIcon(":Images/about.png"), tr("&About"), this);
-    aboutAct->setStatusTip(tr("About SimpleTrainingLog"));
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
-
-    aboutQtAct = new QAction(tr("About &Qt"), this);
-    aboutQtAct->setStatusTip(tr("About Qt"));
-    connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
-
-    saveAct->setEnabled(false);
-    // connect(textEdit, SIGNAL(copyAvailable(bool)), cutAct,
-    // SLOT(setEnabled(bool)));
-}
-
-void SimpleTrainingLogMainWindow::createMenus()
-{
-    fileMenu = menuBar()->addMenu(tr("&File"));
-    fileMenu->addAction(newAct);
-    fileMenu->addAction(saveAct);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exportHTMLAct);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAct);
-
-    editMenu = menuBar()->addMenu(tr("&Edit"));
-    editMenu->addAction(m_shoesAct);
-    editMenu->addAction(m_sportsAct);
-    editMenu->addAction(m_placesAct);
-    editMenu->addAction(m_weathersAct);
-    editMenu->addSeparator();
-    editMenu->addAction(m_settingsAct);
-
-    menuBar()->addSeparator();
-
-    helpMenu = menuBar()->addMenu(tr("&Help"));
-    helpMenu->addAction(aboutAct);
-    helpMenu->addAction(aboutQtAct);
-}
-
 void SimpleTrainingLogMainWindow::createToolBars()
 {
     fileToolBar = addToolBar(tr("File"));
-    fileToolBar->addAction(newAct);
-    fileToolBar->addAction(saveAct);
+    fileToolBar->addAction(ui->action_New_Exercise);
+    fileToolBar->addAction(ui->action_Save);
     fileToolBar->addSeparator();
-    fileToolBar->addAction(exportHTMLAct);
+    fileToolBar->addAction(ui->action_Export_Publishing);
 }
 
 void SimpleTrainingLogMainWindow::createStatusBar()
@@ -458,7 +387,7 @@ void SimpleTrainingLogMainWindow::setCurrentFile(const QString& fileName)
     setWindowTitle(tr("%1 - %2[*]").arg(tr("SimpleTrainingLog")).arg(shownName));
 }
 
-bool SimpleTrainingLogMainWindow::exportHTML()
+bool SimpleTrainingLogMainWindow::exportHtml()
 {
     // Only HTML export is available.
     ExportDialog dialog(this);
@@ -505,14 +434,6 @@ void SimpleTrainingLogMainWindow::clear()
     for (int i = 0; i < dataHandler.sports.size(); ++i) delete dataHandler.sports.at(i);
     m_exerciseTable->clear();
     m_statisticsHandler->clear();
-}
-
-SimpleTrainingLogMainWindow::~SimpleTrainingLogMainWindow()
-{
-    /*if (m_ftp)
-        delete m_ftp;*/
-
-    clear();
 }
 
 void SimpleTrainingLogMainWindow::ftpStateChanged(int /*state*/)

@@ -1,17 +1,13 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QCloseEvent>
 // QFtp was remvoved in Qt5.
 //#include <QFtp>
 
 #include "DataHandler.h"
-#include "ExerciseTable.h"
 #include "SimpleTrainingLogLibDecl.h"
-#include "StatisticsHandler.h"
 
-// Burned in database.  Read these from configuration file.  Password is
-// always requested from the user.
+// Burned in database. Read these from configuration file. Password is always requested from the user.
 #define DEFAULT_CONFIG "./.SimpleTrainingLog"
 #define DEFAULT_LOG "/tmp/log.json"
 #define DEFAULT_HOST "ftp.myftphost.com"
@@ -24,16 +20,21 @@
 #define TIME_SEPARATOR (":")
 #define PULSE_SEPARATOR ("/")
 
-class QAction;
-class QMenu;
-class QTextEdit;
+class QTreeWidgetItem;
+
+class ExerciseTable;
+class StatisticsHandler;
+
+namespace Ui {
+class SimpleTrainingLogMainWindow;
+}
 
 class SIMPLETRAININGLOGLIB_EXPORT SimpleTrainingLogMainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    SimpleTrainingLogMainWindow();
+    explicit SimpleTrainingLogMainWindow(QWidget *parent = nullptr);
     ~SimpleTrainingLogMainWindow();
 
 protected:
@@ -42,7 +43,7 @@ protected:
 private slots:
     void newExercise();
     bool save();
-    bool exportHTML();
+    bool exportHtml();
     bool saveAs();
     void about();
     void documentWasModified();
@@ -56,13 +57,12 @@ private slots:
     void managePlaces();
     void manageWeathers();
     void settings();
+    void aboutQt();
 
 public slots:
     void editExercise(QTreeWidgetItem *item = 0, int column = 0);
 
 private:
-    void createActions();
-    void createMenus();
     void createToolBars();
     void createStatusBar();
     void readSettings();
@@ -74,41 +74,18 @@ private:
     QString strippedName(const QString& fullFileName);
     void clear();
 
-    const std::uint32_t DEFAULT_WIDTH = 900;
-    const std::uint32_t DEFAULT_HEIGHT = 480;
-
-    QMenu *fileMenu;
-    QMenu *editMenu;
-    QMenu *helpMenu;
+    Ui::SimpleTrainingLogMainWindow *ui;
     QToolBar *fileToolBar;
-    QAction *newAct;
-    QAction *openAct;
-    QAction *saveAct;
-    QAction *saveAsAct;
-    QAction *exitAct;
-    QAction *cutAct;
-    QAction *copyAct;
-    QAction *pasteAct;
-    QAction *aboutAct;
-    QAction *aboutQtAct;
-    QAction *exportHTMLAct;
-    QAction *m_shoesAct;
-    QAction *m_sportsAct;
-    QAction *m_placesAct;
-    QAction *m_weathersAct;
-    QAction *m_settingsAct;
     QTabWidget *m_mainTabWidget;
-
     //QFtp *m_ftp;
     ExerciseTable *m_exerciseTable;
     StatisticsHandler *m_statisticsHandler;
-    bool m_dirty;  // Data was modified in the table.
+    bool m_dirty; // Data was modified in the table.
     QString m_curConfig;
     QString m_curLog;
     QString m_curHost;
     QString m_curPort;
     QString m_curUser;
     QString m_curPath;
-
     DataHandler dataHandler;
 };
