@@ -368,3 +368,135 @@ bool DataHandler::saveDatabase(const QString& fileName)
     file.close();
     return true;
 }
+
+bool DataHandler::exportDatabaseAsHtml(const QString& fileName)
+{
+    QFile file(fileName);
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        qWarning() << QObject::tr("Cannot write file: %1: %2").arg(fileName).arg(file.errorString());
+        return false;
+    }
+    QTextStream out(&file);
+    QStringList outList;
+    outList << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html>\n";
+    outList << "<head>\n";
+    outList << "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"/>\n<title>Exercises</title>\n";
+    outList << "<script type=\"text/javascript\">\n"
+        "function display_year(year) {\n"
+        "  var table = document.getElementById(\"exercise_table\");\n"
+        "  for (var i = 0; i < table.tBodies.length; i++) {\n"
+        "    for (var j = 1; j < table.tBodies[i].rows.length; j++) {\n"
+        "      row_year = parseInt(table.tBodies[i].rows[j].cells[1].innerHTML.split(\"-\")[0]);\n"
+        "      if (year == row_year) table.tBodies[i].rows[j].style.display = \"\";\n"
+        "      else table.tBodies[i].rows[j].style.display = \"none\";\n"
+        "    }\n"
+        "  }\n"
+        "}\n"
+        "</script>\n";
+    outList << "<style type=\"text/css\">\n"
+        "h1 {\n"
+        "  font-family: verdana, arial, sans-serif;\n"
+        "  font-size: 14px;\n"
+        "  font-weight: bold;\n"
+        "}\n"
+        "a:link, a:visited a:hover, a:active {\n"
+        "  font-family: verdana, arial, sans-serif;\n"
+        "  font-size: 10px;\n"
+        "  text-decoration: none;\n"
+        "}\n"
+        "a:hover {\n"
+        "  text-decoration: underline;\n"
+        "}\n"
+        "p.normal {\n"
+        "  font-family: verdana, arial, sans-serif;\n"
+        "  font-size: 10px;\n"
+        "}\n"
+        "th {\n"
+        "  font-family: verdana, arial, sans-serif;\n"
+        "  font-size: 10px;\n"
+        "  background: #1b63ac;\n"
+        "  color: white;\n"
+        "}\n"
+        "td {\n"
+        "  vertical-align: top;\n"
+        "  padding: 0.5em;\n"
+        "}\n"
+        "td.normal {\n"
+        "  font-family: verdana, arial, sans-serif;\n"
+        "  font-size: 10px;\n"
+        "}\n";
+    outList << "</style>\n";
+    outList << "</head>\n";
+    outList << "<body>\n";
+    outList << "<h1>EXERCISES</h1>\n";
+    outList << "<p class=\"normal\">\nFILTER BY YEAR: ";
+    QSet<QString> yearsSet;
+    for (const auto& exercise : exercises) {
+        yearsSet.insert(exercise->getDate().split("-")[0]);
+    }
+    QList<QString> yearsList(yearsSet.constBegin(), yearsSet.constEnd());
+    std::sort(yearsList.begin(), yearsList.end());
+    for (const QString& year : yearsList) {
+        outList << "<a href=\"javascript:display_year(" << year << ")\"><b>" << year << "</b></a>\n";
+    }
+    outList << "</p>\n";
+    outList << "<table cellspacing=\"2\" border=\"1\">\n";
+    outList << "<tr>\n";
+    for (const auto& sport : sports) {
+        outList << "<td bgcolor=\"" << sport->getColor().name() << "\" class=\"normal\"><b>" << sport->getName() << "</b></td>\n";
+    }
+    outList << "</tr>\n";
+    outList << "</table>\n";
+    outList << "<table border=\"1\" id=\"exercise_table\">\n";
+    // TODO: Move this to the exercise.
+    QStringList columnHeaders;
+    columnHeaders << "#" << "Date" << "Time" << "Distance" << "Duration" << "Speed" << "HR (M/A)" << "Calories (C/F)" << "Place" << "Weather" << "Shoe" << "Comment";
+    for (const auto& columnHeader : columnHeaders) {
+        outList << "<th>" << columnHeader << "</th>";
+    }
+    outList << "\n";
+    for (const auto& exercise : exercises) {
+        QString sportColor = getSportById(exercise->getSport())->getColor().name();
+        outList << "<tr>";
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\"><b>%2</b></td>\n").arg(sportColor).arg(exercise->getId());
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(exercise->getDate());
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(exercise->getTime());
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(exercise->getDistance());
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(exercise->getDuration());
+        // TODO: Move this to the exercise.
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(QString::number(exercise->getSpeed(), 'f', 2));
+        // TODO: Move this to the exercise.
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2/%3</td>\n").arg(sportColor).arg(exercise->getMaxPulse()).arg(exercise->getAvgPulse());
+        // TODO: Move this to the exercise.
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2/%3</td>\n").arg(sportColor).arg(exercise->getCal()).arg(exercise->getFat());
+        // TODO: Move this to the exercise.
+        const auto& placeIds = exercise->getPlaces();
+        QStringList placeData;
+        for (const auto& placeId : placeIds) {
+            if (!placeData.empty()) {
+                placeData << ", ";
+            }
+            placeData << getPlaceString(placeId);
+        }
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(placeData.join(""));
+        // TODO: Move this to the exercise.
+        const auto& weatherIds = exercise->getWeathers();
+        QStringList weatherData;
+        for (const auto& weatherId : weatherIds) {
+            if (!weatherData.empty()) {
+                weatherData << ", ";
+            }
+            weatherData << getWeatherString(weatherId);
+        }
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(weatherData.join(""));
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(getShoeString(exercise->getShoe()));
+        outList << QString("<td bgcolor=\"%1\" class=\"normal\">%2</td>\n").arg(sportColor).arg(exercise->getComment());
+        outList << "</tr>\n";
+    }
+    outList << "\n</table>\n";
+    outList << "</body>\n";
+    outList << "</html>\n";
+    out << outList.join("");
+    file.close();
+    return true;
+}

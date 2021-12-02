@@ -23,7 +23,6 @@ class ExerciseTable : public QTreeWidget
 
 public:
     explicit ExerciseTable(QWidget *parent, DataHandler *dataHandler);
-    QString encodeHTML() const;
     void appendTable(Exercise *exercise);
     void removeCurrentExercise();
     void removeExercise(int id);

@@ -39,6 +39,7 @@ public:
 
     void loadDatabase(const QString& fileName);
     bool saveDatabase(const QString& fileName);
+    bool exportDatabaseAsHtml(const QString& fileName);
 
     const QString months[12] = {
         "Jan.",

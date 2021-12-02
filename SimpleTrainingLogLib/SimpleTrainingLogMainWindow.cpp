@@ -468,90 +468,12 @@ bool SimpleTrainingLogMainWindow::exportHTML()
     dialog.setDefaultPath(m_curPath);
     dialog.setDefaultUser(m_curUser);
     if (dialog.exec()) {
-        QString fileName(QString(m_curLog).append(".html"));
-        QFile file(fileName);
-        if (!file.open(QFile::WriteOnly | QFile::Text)) {
-            QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write "
-                "file %1: %2.").arg(fileName).arg(file.errorString()));
+        QApplication::setOverrideCursor(Qt::WaitCursor);
+        QString htmlFileName(QString(m_curLog).append(".html"));
+        if (!dataHandler.exportDatabaseAsHtml(htmlFileName)) {
+            QMessageBox::warning(this, tr("SimpleTrainingLog"), tr("Cannot write file: %1").arg(htmlFileName));
             return false;
         }
-        QTextStream out(&file);
-        QStringList outList;
-        QApplication::setOverrideCursor(Qt::WaitCursor);
-        // TODO Create a template.  As a QStringList we can reuse the HTML
-        // data during the uploading process.
-        outList << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<html>\n";
-        outList << "<head>\n";
-        outList << "<meta http-equiv=\"content-type\" content=\"text/html; "
-            "charset=utf-8\"/>\n<title>Exercises</title>\n";
-        outList << "<script type=\"text/javascript\">\n"
-            "function display_year(year) {\n"
-            "  var table = document.getElementById(\"exercise_table\");\n"
-            "  for (var i = 0; i < table.tBodies.length; i++) {\n"
-            "    for (var j = 1; j < table.tBodies[i].rows.length; j++) {\n"
-            "      row_year = parseInt(table.tBodies[i].rows[j].cells[1].innerHTML.split(\"-\")[0]);\n"
-            "      if (year == row_year) table.tBodies[i].rows[j].style.display = \"\";\n"
-            "      else table.tBodies[i].rows[j].style.display = \"none\";\n"
-            "    }\n"
-            "  }\n"
-            "}\n"
-            "</script>\n";
-        outList << "<style type=\"text/css\">\n"
-            "h1 {\n"
-            "  font-family: verdana, arial, sans-serif;\n"
-            "  font-size: 14px;\n"
-            "  font-weight: bold;\n"
-            "}\n"
-            "a:link, a:visited a:hover, a:active {\n"
-            "  font-family: verdana, arial, sans-serif;\n"
-            "  font-size: 10px;\n"
-            "  text-decoration: none;\n"
-            "}\n"
-            "a:hover {\n"
-            "  text-decoration: underline;\n"
-            "}\n"
-            "p.normal {\n"
-            "  font-family: verdana, arial, sans-serif;\n"
-            "  font-size: 10px;\n"
-            "}\n"
-            "th {\n"
-            "  font-family: verdana, arial, sans-serif;\n"
-            "  font-size: 10px;\n"
-            "  background: #1b63ac;\n"
-            "  color: white;\n"
-            "}\n"
-            "td {\n"
-            "  vertical-align: top;\n"
-            "  padding: 0.5em;\n"
-            "}\n"
-            "td.normal {\n"
-            "  font-family: verdana, arial, sans-serif;\n"
-            "  font-size: 10px;\n"
-            "}\n";
-        outList << "</style>\n";
-        outList << "</head>\n";
-        outList << "<body>\n";
-        outList << "<h1>EXERCISES</h1>\n";
-        outList << "<p class=\"normal\">\nFILTER BY YEAR: ";
-        QSet<QString> years;
-        for (int i = 0; i < dataHandler.exercises.size(); ++i)
-            years.insert(dataHandler.exercises.at(i)->getDate().split("-")[0]);
-        foreach (QString year, years)  // Qt's construct.
-            outList << "<a href=\"javascript:display_year(" << year << ")\"><b>"
-                    << year << "</b></a>\n";
-        outList << "</p>\n";
-        outList << "<table cellspacing=\"2\" border=\"1\">\n";
-        outList << "<tr>\n";
-        for (int i = 0; i < dataHandler.sports.size(); ++i)
-            outList << "<td bgcolor=\"" << dataHandler.sports.at(i)->getColor().name()
-                    << "\" class=\"normal\"><b>" << dataHandler.sports.at(i)->getName()
-                    << "</b></td>\n";
-        outList << "</tr>\n";
-        outList << "</table>\n";
-        outList << m_exerciseTable->encodeHTML();
-        outList << "</body>\n";
-        outList << "</html>\n";
-        out << outList.join("");  // Use the QStringList.
         QApplication::restoreOverrideCursor();
         /*
         if (dialog.isUpload()) {
@@ -563,8 +485,9 @@ bool SimpleTrainingLogMainWindow::exportHTML()
             m_ftp->connectToHost(dialog.getHost(), dialog.getPort());
             m_ftp->login(dialog.getUser(), dialog.getPassword());
             m_ftp->put(outList.join("").toUtf8(), dialog.getPath());
-        }*/
-        statusBar()->showMessage(tr("HTML export successful"), 2000);
+        }
+        */
+        statusBar()->showMessage(tr("HTML export successful"), 5000);
     }
     return true;
 }

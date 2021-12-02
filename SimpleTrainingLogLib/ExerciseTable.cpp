@@ -25,29 +25,6 @@ ExerciseTable::ExerciseTable(QWidget *parent, DataHandler *dataHandler) : QTreeW
     setColumnWidth(COL_COMMENT, 150);
 }
 
-QString ExerciseTable::encodeHTML() const
-{
-    // Only the table is encoded. The surrounding HTML environment must be set by the caller.
-    QStringList tableData("<table border=\"1\" id=\"exercise_table\">\n");
-    for (int col = 0; col < columnCount(); ++col)
-        tableData << "<th>" << headerItem()->text(col) << "</th>";
-    tableData << "\n";
-    for (int row = 0; row < topLevelItemCount(); ++row) {
-        Exercise *e = dataHandler->getExerciseById((topLevelItem(row)->data(COL_ID, Qt::DisplayRole)).toInt());
-        QString sportColor = dataHandler->getSportById(e->getSport())->getColor().name();
-        tableData << "<tr>";
-        for (int col = 0; col < columnCount(); ++col) {
-            tableData << (!col ? QString("<td bgcolor=\"%1\" class=\"normal\"><b>").arg(sportColor)
-                               : QString("<td bgcolor=\"%1\" class=\"normal\">").arg(sportColor));
-            tableData << topLevelItem(row)->text(col);
-            tableData << (!col ? "</b></td>\n" : "</td>\n");
-        }
-        tableData << "</tr>\n";
-    }
-    tableData << "\n</table>\n";
-    return tableData.join("");
-}
-
 // Add the given element to the table. The other elements of the table should stay untouched.
 void ExerciseTable::appendTable(Exercise *exercise)
 {
