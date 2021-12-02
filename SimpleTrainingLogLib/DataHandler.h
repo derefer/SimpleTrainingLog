@@ -10,6 +10,11 @@
 #include "Sport.h"
 #include "Weather.h"
 
+const std::uint32_t DATE_YEAR_START = 2002;
+const char DATE_SEPARATOR = '-';
+const char TIME_SEPARATOR = ':';
+const char PULSE_SEPARATOR = '/';
+
 class DataHandler {
 public:
     QString getShoeString(int id);

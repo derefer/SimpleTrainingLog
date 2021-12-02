@@ -30,7 +30,7 @@ SimpleTrainingLogMainWindow::SimpleTrainingLogMainWindow(QWidget *parent) :
     m_curConfig = DEFAULT_CONFIG;
     m_curLog = DEFAULT_LOG;
     m_curHost = DEFAULT_HOST;
-    m_curPort = QString("%1").arg(DEFAULT_PORT);
+    m_curPort = QString::number(DEFAULT_PORT);
     m_curPath = DEFAULT_PATH;
     m_curUser = DEFAULT_USER;
 

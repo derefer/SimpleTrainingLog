@@ -7,19 +7,6 @@
 #include "DataHandler.h"
 #include "SimpleTrainingLogLibDecl.h"
 
-// Burned in database. Read these from configuration file. Password is always requested from the user.
-#define DEFAULT_CONFIG "./.SimpleTrainingLog"
-#define DEFAULT_LOG "/tmp/log.json"
-#define DEFAULT_HOST "ftp.myftphost.com"
-#define DEFAULT_PORT 21
-#define DEFAULT_PATH "/tmp/log.html"
-#define DEFAULT_USER "myuser"
-
-#define DATE_YEAR_START 2002
-#define DATE_SEPARATOR ("-")
-#define TIME_SEPARATOR (":")
-#define PULSE_SEPARATOR ("/")
-
 class QTreeWidgetItem;
 
 class ExerciseTable;
@@ -73,6 +60,14 @@ private:
     void setCurrentFile(const QString& fileName);
     QString strippedName(const QString& fullFileName);
     void clear();
+
+    // Burned in database. Read these from configuration file. Password is always requested from the user.
+    const QString DEFAULT_CONFIG = "./.SimpleTrainingLog";
+    const QString DEFAULT_LOG = "/tmp/log.json";
+    const QString DEFAULT_HOST = "ftp.myftphost.com";
+    const std::uint32_t DEFAULT_PORT = 21;
+    const QString DEFAULT_PATH = "/tmp/log.html";
+    const QString DEFAULT_USER = "myuser";
 
     Ui::SimpleTrainingLogMainWindow *ui;
     QToolBar *fileToolBar;
